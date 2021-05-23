@@ -4,28 +4,43 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
-import HomeScreen from "./containers/HomeScreen";
-import ProfileScreen from "./containers/ProfileScreen";
-import SignInScreen from "./containers/SignInScreen";
-import SignUpScreen from "./containers/SignUpScreen";
+
+// Containers
+import SignInUpScreen from "./containers/SignInUpScreen";
+import LaunchScreen from "./containers/LaunchScreen";
+import OnboardingScreen from "./containers/OnboardingScreen";
+import ExploreScreen from "./containers/ExploreScreen";
+import ListsScreen from "./containers/ListsScreen";
+import AccountScreen from "./containers/AccountScreen";
+import AccountInfosScreen from "./containers/AccountInfosScreen";
 import SettingsScreen from "./containers/SettingsScreen";
+import FeedbackScreen from "./containers/FeedbackScreen";
+import ListScreen from "./containers/ListScreen";
+
+// Useful variables
+const serverURL = "";
+// Local server : "http://localhost:3001"
+// Heroku server : "A compléter"
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
 export default function App() {
   const [isLoading, setIsLoading] = useState(true);
-  const [userToken, setUserToken] = useState(null);
+  // Création d'un state temporaire/fictif à revoir par la suite
+  const [userToken, setUserToken] = useState("1234");
+  // State pour gérer l'affichage du Onboarding
+  const [firstConnection, setFirstConnection] = useState(false);
 
-  const setToken = async (token) => {
-    if (token) {
-      AsyncStorage.setItem("userToken", token);
-    } else {
-      AsyncStorage.removeItem("userToken");
-    }
+  // const setToken = async (token) => {
+  //   if (token) {
+  //     AsyncStorage.setItem("userToken", token);
+  //   } else {
+  //     AsyncStorage.removeItem("userToken");
+  //   }
 
-    setUserToken(token);
-  };
+  //   setUserToken(token);
+  // };
 
   useEffect(() => {
     // Fetch the token from storage then navigate to our appropriate place
@@ -36,7 +51,7 @@ export default function App() {
       // This will switch to the App screen or Auth screen and this loading
       // screen will be unmounted and thrown away.
       setIsLoading(false);
-      setUserToken(userToken);
+      // setUserToken(userToken);
     };
 
     bootstrapAsync();
@@ -44,16 +59,17 @@ export default function App() {
 
   return (
     <NavigationContainer>
-      {isLoading ? null : userToken === null ? ( // We haven't finished checking for the token yet
+      {isLoading ? (
+        <LaunchScreen />
+      ) : userToken === null ? ( // We haven't finished checking for the token yet
         // No token found, user isn't signed in
         <Stack.Navigator>
-          <Stack.Screen name="SignIn">
-            {() => <SignInScreen setToken={setToken} />}
-          </Stack.Screen>
-          <Stack.Screen name="SignUp">
-            {() => <SignUpScreen setToken={setToken} />}
+          <Stack.Screen name="SignInUpScreen">
+            {(props) => <SignInUpScreen {...props} />}
           </Stack.Screen>
         </Stack.Navigator>
+      ) : firstConnection ? (
+        <OnboardingScreen />
       ) : (
         // User is signed in
         <Stack.Navigator>
@@ -65,10 +81,14 @@ export default function App() {
                   inactiveTintColor: "gray",
                 }}
               >
+                {/* ----------------- */}
+                {/* ---- EXPLORE ---- */}
+                {/* ----------------- */}
+
                 <Tab.Screen
-                  name="Home"
+                  name="Explore"
                   options={{
-                    tabBarLabel: "Home",
+                    tabBarLabel: "Explorer",
                     tabBarIcon: ({ color, size }) => (
                       <Ionicons name={"ios-home"} size={size} color={color} />
                     ),
@@ -77,31 +97,27 @@ export default function App() {
                   {() => (
                     <Stack.Navigator>
                       <Stack.Screen
-                        name="Home"
+                        name="ExploreScreen"
                         options={{
-                          title: "My App",
+                          title: "Explore Screen",
                           headerStyle: { backgroundColor: "red" },
                           headerTitleStyle: { color: "white" },
                         }}
                       >
-                        {() => <HomeScreen />}
-                      </Stack.Screen>
-
-                      <Stack.Screen
-                        name="Profile"
-                        options={{
-                          title: "User Profile",
-                        }}
-                      >
-                        {() => <ProfileScreen />}
+                        {(props) => <ExploreScreen {...props} />}
                       </Stack.Screen>
                     </Stack.Navigator>
                   )}
                 </Tab.Screen>
+
+                {/* ----------------- */}
+                {/* ---- LISTS ---- */}
+                {/* ----------------- */}
+
                 <Tab.Screen
-                  name="Settings"
+                  name="Lists"
                   options={{
-                    tabBarLabel: "Settings",
+                    tabBarLabel: "Liste",
                     tabBarIcon: ({ color, size }) => (
                       <Ionicons
                         name={"ios-options"}
@@ -114,10 +130,63 @@ export default function App() {
                   {() => (
                     <Stack.Navigator>
                       <Stack.Screen
-                        name="Settings"
-                        options={{ title: "Settings", tabBarLabel: "Settings" }}
+                        name="ShoppingScreen"
+                        options={{ title: "Ma liste de course" }}
                       >
-                        {() => <SettingsScreen setToken={setToken} />}
+                        {(props) => <ListsScreen {...props} />}
+                      </Stack.Screen>
+                      <Stack.Screen
+                        name="ListScreen"
+                        options={{ title: "Liste maison" }}
+                      >
+                        {(props) => <ListScreen {...props} />}
+                      </Stack.Screen>
+                    </Stack.Navigator>
+                  )}
+                </Tab.Screen>
+
+                {/* ----------------- */}
+                {/* ---- ACCOUNT ---- */}
+                {/* ----------------- */}
+
+                <Tab.Screen
+                  name="Account"
+                  options={{
+                    tabBarLabel: "Compte",
+                    tabBarIcon: ({ color, size }) => (
+                      <Ionicons
+                        name={"ios-options"}
+                        size={size}
+                        color={color}
+                      />
+                    ),
+                  }}
+                >
+                  {() => (
+                    <Stack.Navigator>
+                      <Stack.Screen
+                        name="AccountScreen"
+                        options={{ title: "Mon compte" }}
+                      >
+                        {(props) => <AccountScreen {...props} />}
+                      </Stack.Screen>
+                      <Stack.Screen
+                        name="AccountInfos"
+                        options={{ title: "Mes informations personnelles" }}
+                      >
+                        {(props) => <AccountInfosScreen {...props} />}
+                      </Stack.Screen>
+                      <Stack.Screen
+                        name="SettingsScreen"
+                        options={{ title: "Paramètres" }}
+                      >
+                        {(props) => <SettingsScreen {...props} />}
+                      </Stack.Screen>
+                      <Stack.Screen
+                        name="FeedbackScreen"
+                        options={{ title: "J'ai une suggestion" }}
+                      >
+                        {(props) => <FeedbackScreen {...props} />}
                       </Stack.Screen>
                     </Stack.Navigator>
                   )}
