@@ -128,17 +128,20 @@ export default function App() {
                   }}
                 >
                   {() => (
-                    <Stack.Navigator>
+                    <Stack.Navigator
+                      screenOptions={{
+                        headerStyle: {
+                          height: 0,
+                        },
+                      }}
+                    >
                       <Stack.Screen
                         name="ShoppingScreen"
-                        options={{ title: "Ma liste de course" }}
+                        options={{ title: "" }}
                       >
                         {(props) => <ListsScreen {...props} />}
                       </Stack.Screen>
-                      <Stack.Screen
-                        name="ListScreen"
-                        options={{ title: "Liste maison" }}
-                      >
+                      <Stack.Screen name="ListScreen" options={{ title: "" }}>
                         {(props) => <ListScreen {...props} />}
                       </Stack.Screen>
                     </Stack.Navigator>
