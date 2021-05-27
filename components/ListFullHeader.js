@@ -2,6 +2,10 @@
 import React from "react";
 import { Text, View, StyleSheet } from "react-native";
 
+// Colors - import
+import colors from "../assets/colors";
+const { radioBg, mainBlueText, orangeTotalPrice, white, darkGreyText } = colors;
+
 const ListFullHeader = () => {
   return (
     <View style={styles.listTitle}>
@@ -21,26 +25,26 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    borderBottomColor: "rgba(0, 0, 0, 0.06)",
+    borderBottomColor: radioBg,
     paddingBottom: 15,
     borderBottomWidth: 1,
   },
   h2: {
-    color: "#181725",
+    color: mainBlueText,
     fontSize: 24,
     // add semi-bold
   },
   nbArticles: {
     fontSize: 14,
-    color: "#8E94A0",
+    color: darkGreyText,
   },
   totalPrice: {
-    backgroundColor: "#F3AB3F",
+    backgroundColor: orangeTotalPrice,
     paddingVertical: 3,
     paddingHorizontal: 10,
     borderRadius: 4,
   },
   priceText: {
-    color: "#fff",
+    color: white,
   },
 });

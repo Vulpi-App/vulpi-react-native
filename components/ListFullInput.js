@@ -2,6 +2,11 @@
 import React from "react";
 import { Text, View, TouchableOpacity, StyleSheet } from "react-native";
 
+// Colors - import
+import colors from "../assets/colors";
+const { radioBg, mainBlueText, productDetails, radioBorder, midGreyText } =
+  colors;
+
 const ListFullInput = ({ name, price, custom }) => {
   return (
     <View style={styles.listProduct}>
@@ -35,24 +40,24 @@ const styles = StyleSheet.create({
     width: 26,
     height: 26,
     borderRadius: 13,
-    backgroundColor: "rgba(0, 0, 0, 0.06)",
+    backgroundColor: radioBg,
     borderWidth: 1,
-    borderColor: "rgba(0, 0, 0, 0.19)",
+    borderColor: radioBorder,
     marginRight: 20,
   },
   listProductText: {
     fontSize: 16,
     fontWeight: "bold",
-    color: "#181725",
+    color: mainBlueText,
     lineHeight: 19,
   },
   listNotCustom: {
     fontSize: 14,
-    color: " rgba(144, 145, 154, 0.69)",
+    color: midGreyText,
   },
   listCustom: {
     fontSize: 14,
-    color: "#3E4685",
+    color: productDetails,
     // add medium
   },
   price: {
@@ -60,6 +65,6 @@ const styles = StyleSheet.create({
     top: 0,
     right: 0,
     fontSize: 16,
-    color: "rgba(24, 23, 37, 0.31)",
+    color: midGreyText,
   },
 });
