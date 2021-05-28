@@ -27,10 +27,10 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 
 import { LinearGradient } from "expo-linear-gradient";
 
-import Message from "./components/Message";
-import SignInput from "./components/SignInput";
-import ModalExample from "./components/Modal";
-import LostPassword from "./components/LostPassword";
+// import Message from "./components/Message";
+// import SignInput from "./components/SignInput";
+// import ModalExample from "./components/Modal";
+// import LostPassword from "./components/LostPassword";
 
 const windowHeight = Dimensions.get("window").height;
 const statusBarHeight = Constants.statusBarHeight;
