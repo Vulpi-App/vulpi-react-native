@@ -156,7 +156,10 @@ export default function App() {
                           />
                         )}
                       </Stack.Screen>
-                      <Stack.Screen name="ListScreen" options={{ title: "" }}>
+                      <Stack.Screen
+                        name="ListScreen"
+                        options={{ headerShown: false }}
+                      >
                         {(props) => <ListScreen {...props} />}
                       </Stack.Screen>
                     </Stack.Navigator>

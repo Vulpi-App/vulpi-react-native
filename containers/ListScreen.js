@@ -1,6 +1,7 @@
 // Tools
 import React from "react";
 import {
+
   ScrollView,
   SafeAreaView,
   Platform,
@@ -51,9 +52,12 @@ const ListScreen = () => {
         </View>
         <Text>Hier à 12:20</Text>
       </ScrollView>
+
     </SafeAreaView>
   );
 };
+
+
 
 export default ListScreen;
 
