@@ -2,6 +2,10 @@
 import React from "react";
 import { Text, TouchableOpacity, StyleSheet } from "react-native";
 
+// Colors - import
+import colors from "../assets/colors";
+const { buttonNewList } = colors;
+
 const ListButtonNew = ({ toggleModal }) => {
   return (
     <TouchableOpacity style={styles.addNewList} onPress={toggleModal}>
@@ -16,13 +20,13 @@ const styles = StyleSheet.create({
   addNewList: {
     marginRight: 10,
     borderWidth: 1,
-    borderColor: "rgba(255, 255, 255, 0.32)",
+    borderColor: buttonNewList,
     borderStyle: "dashed",
     borderRadius: 20,
     paddingVertical: 10,
     paddingHorizontal: 15,
   },
   addNewListText: {
-    color: "rgba(255, 255, 255, 0.32)",
+    color: buttonNewList,
   },
 });

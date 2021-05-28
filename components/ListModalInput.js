@@ -2,6 +2,10 @@
 import React from "react";
 import { Text, TextInput, View, StyleSheet } from "react-native";
 
+// Colors - import
+import colors from "../assets/colors";
+const { inputBg } = colors;
+
 const ListModalInput = ({ placeholder }) => {
   return (
     <View>
@@ -18,7 +22,7 @@ const styles = StyleSheet.create({
     // add semi-bold
   },
   modalInput: {
-    backgroundColor: "#FAFAFA",
+    backgroundColor: inputBg,
     borderRadius: 8,
     padding: 15,
     paddingLeft: 10,

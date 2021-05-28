@@ -2,6 +2,10 @@
 import React from "react";
 import { Text, View, Image, StyleSheet } from "react-native";
 
+// Colors - import
+import colors from "../assets/colors";
+const { darkGreyText } = colors;
+
 const ListEmptyContent = () => {
   return (
     <View style={styles.listEmptyContent}>
@@ -24,13 +28,13 @@ const styles = StyleSheet.create({
   iconEmptyList: {
     width: 250,
     height: 200,
-    marginVertical: 15,
+    marginVertical: 5,
   },
   listEmptyContent: {
     alignItems: "center",
   },
   listEmptyText: {
-    color: "#545560",
+    color: darkGreyText,
     fontSize: 14,
     // add semi-bold
   },

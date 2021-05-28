@@ -28,30 +28,38 @@ const Stack = createStackNavigator();
 export default function App() {
   const [isLoading, setIsLoading] = useState(true);
   // Création d'un state temporaire/fictif à revoir par la suite
-  const [userToken, setUserToken] = useState("1234");
+  const [userToken, setUserToken] = useState(
+    "2uBKteBLqM7Ni01EXYAOdYLzbcUBIDYvA3tUUe5STQ70NJ56WGpCGAXCW6iGFQqc"
+  );
+  const [userId, setUserId] = useState("60af8eeab4a37e118de05b61");
   // State pour gérer l'affichage du Onboarding
   const [firstConnection, setFirstConnection] = useState(false);
 
-  // const setToken = async (token) => {
-  //   if (token) {
-  //     AsyncStorage.setItem("userToken", token);
-  //   } else {
-  //     AsyncStorage.removeItem("userToken");
-  //   }
+  // console.log(1, userId);
+  // console.log(2, userToken);
 
-  //   setUserToken(token);
-  // };
+  const setToken = async (token, id) => {
+    if (token) {
+      await AsyncStorage.setItem("userToken", token);
+      await AsyncStorage.setItem("userId", id);
+    } else {
+      await AsyncStorage.removeItem("userToken");
+      await AsyncStorage.removeItem("userId");
+    }
+    setUserToken(token);
+    setUserId(id);
+  };
 
   useEffect(() => {
     // Fetch the token from storage then navigate to our appropriate place
     const bootstrapAsync = async () => {
       // We should also handle error for production apps
       const userToken = await AsyncStorage.getItem("userToken");
-
+      // const userId = await AsyncStorage.getItem("userId");
       // This will switch to the App screen or Auth screen and this loading
       // screen will be unmounted and thrown away.
       setIsLoading(false);
-      // setUserToken(userToken);
+      setUserToken(userToken);
     };
 
     bootstrapAsync();
@@ -139,7 +147,14 @@ export default function App() {
                         name="ShoppingScreen"
                         options={{ title: "" }}
                       >
-                        {(props) => <ListsScreen {...props} />}
+                        {(props) => (
+                          <ListsScreen
+                            {...props}
+                            userToken={userToken}
+                            userId={userId}
+                            setToken={setToken}
+                          />
+                        )}
                       </Stack.Screen>
                       <Stack.Screen
                         name="ListScreen"

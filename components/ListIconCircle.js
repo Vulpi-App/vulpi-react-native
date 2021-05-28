@@ -2,6 +2,10 @@
 import React from "react";
 import { View, Image, StyleSheet } from "react-native";
 
+// Colors - import
+import colors from "../assets/colors";
+const { orangeNotifications, mainBlueText } = colors;
+
 // Ce-dessous en props: {color, source, resizeMode}
 const ListIconCircle = ({ color }) => {
   return (
@@ -26,10 +30,10 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   circleIconOrange: {
-    backgroundColor: "#FF9900",
+    backgroundColor: orangeNotifications,
   },
   circleIconBlue: {
-    backgroundColor: "#181D39",
+    backgroundColor: mainBlueText,
   },
   icon: {
     width: 30,

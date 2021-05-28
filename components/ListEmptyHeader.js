@@ -2,6 +2,10 @@
 import React from "react";
 import { Text, View, StyleSheet } from "react-native";
 
+// Colors - import
+import colors from "../assets/colors";
+const { radioBg, mainBlueText } = colors;
+
 const ListEmptyHeader = () => {
   return (
     <View style={styles.listTitle}>
@@ -17,12 +21,12 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    borderBottomColor: "rgba(0, 0, 0, 0.06)",
+    borderBottomColor: radioBg,
     paddingBottom: 15,
     borderBottomWidth: 1,
   },
   h2: {
-    color: "#181725",
+    color: mainBlueText,
     fontSize: 24,
     // add semi-bold
   },
