@@ -19,21 +19,21 @@ import ListScreen from "./containers/ListScreen";
 
 // Useful variables
 const serverURL = "";
-// Local server : "http://localhost:3001"
-// Heroku server : "A compléter"
+// Local server : "http://localhost:3310"
+// Heroku server : "https://vulpi-forest.herokuapp.com/"
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
 export default function App() {
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   // Création d'un state temporaire/fictif à revoir par la suite
   const [userToken, setUserToken] = useState(
-    "2uBKteBLqM7Ni01EXYAOdYLzbcUBIDYvA3tUUe5STQ70NJ56WGpCGAXCW6iGFQqc"
+    "aY6F1blbUpsGS5GmjDKUd6ryKdL8KEwgJvaZRr3DSiEScSQpooJReSf7z4PrRJax"
   );
-  const [userId, setUserId] = useState("60af8eeab4a37e118de05b61");
+  const [userId, setUserId] = useState("60ae2381a338aa0f23126a89");
   // State pour gérer l'affichage du Onboarding
-  const [firstConnection, setFirstConnection] = useState(false);
+  const [firstConnection, setFirstConnection] = useState(true);
 
   // console.log(1, userId);
   // console.log(2, userToken);
@@ -50,20 +50,20 @@ export default function App() {
     setUserId(id);
   };
 
-  useEffect(() => {
-    // Fetch the token from storage then navigate to our appropriate place
-    const bootstrapAsync = async () => {
-      // We should also handle error for production apps
-      const userToken = await AsyncStorage.getItem("userToken");
-      // const userId = await AsyncStorage.getItem("userId");
-      // This will switch to the App screen or Auth screen and this loading
-      // screen will be unmounted and thrown away.
-      setIsLoading(false);
-      setUserToken(userToken);
-    };
+  // useEffect(() => {
+  //   // Fetch the token from storage then navigate to our appropriate place
+  //   const bootstrapAsync = async () => {
+  //     // We should also handle error for production apps
+  //     const userToken = await AsyncStorage.getItem("userToken");
+  //     // const userId = await AsyncStorage.getItem("userId");
+  //     // This will switch to the App screen or Auth screen and this loading
+  //     // screen will be unmounted and thrown away.
+  //     setIsLoading(false);
+  //     setUserToken(userToken);
+  //   };
 
-    bootstrapAsync();
-  }, []);
+  //   bootstrapAsync();
+  // }, []);
 
   return (
     <NavigationContainer>
