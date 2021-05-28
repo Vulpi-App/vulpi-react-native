@@ -2,6 +2,10 @@
 import React from "react";
 import { Text, TouchableOpacity, StyleSheet } from "react-native";
 
+// Colors - import
+import colors from "../assets/colors";
+const { buttonFlashBlue, white, deleteRed } = colors;
+
 const ListModalButton = ({ name, color }) => {
   return color === "blue" ? (
     <TouchableOpacity style={styles.buttonBlue}>
@@ -18,13 +22,13 @@ export default ListModalButton;
 
 const styles = StyleSheet.create({
   buttonBlue: {
-    backgroundColor: "#3443B9",
+    backgroundColor: buttonFlashBlue,
     borderRadius: 8,
     padding: 15,
     textAlign: "center",
   },
   buttonTextBlue: {
-    color: "#fff",
+    color: white,
     textAlign: "center",
     // add bold
   },
@@ -34,7 +38,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   buttonTextDelete: {
-    color: "#CA2121",
+    color: deleteRed,
     fontSize: 16,
     textAlign: "center",
     // add bold

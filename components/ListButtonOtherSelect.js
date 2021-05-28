@@ -2,6 +2,10 @@
 import React from "react";
 import { Text, TouchableOpacity, StyleSheet } from "react-native";
 
+// Colors - import
+import colors from "../assets/colors";
+const { buttonFlashBlue, white } = colors;
+
 const ListButtonOtherSelect = () => {
   return (
     <TouchableOpacity style={styles.otherList}>
@@ -18,9 +22,9 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     paddingVertical: 10,
     paddingHorizontal: 15,
-    backgroundColor: "#4556C8",
+    backgroundColor: buttonFlashBlue,
   },
   otherListText: {
-    color: "#fff",
+    color: white,
   },
 });
