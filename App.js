@@ -16,11 +16,12 @@ import AccountInfosScreen from "./containers/AccountInfosScreen";
 import SettingsScreen from "./containers/SettingsScreen";
 import FeedbackScreen from "./containers/FeedbackScreen";
 import ListScreen from "./containers/ListScreen";
+import axios from "axios";
 
 // Useful variables
-const serverURL = "";
+const serverURL = "http://localhost:3310";
 // Local server : "http://localhost:3310"
-// Heroku server : "https://vulpi-forest.herokuapp.com/"
+// Heroku server : "https://vulpi-forest.herokuapp.com"
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -48,6 +49,19 @@ export default function App() {
     }
     setUserToken(token);
     setUserId(id);
+  };
+
+  const setOnBoardingDone = async () => {
+    try {
+      // Save in Local Storage the fact that the user has seen the onBoarding
+      await AsyncStorage.setItem("onBoarding", "done");
+
+      // Save in DB the fact that it is not the user's 1st connection
+      const FormData = new FormData();
+      const response = await axios.put(`${serverUrl}/user/update/userId`);
+    } catch (error) {
+      console.log(error.message);
+    }
   };
 
   // useEffect(() => {
