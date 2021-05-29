@@ -1,25 +1,39 @@
 // React & React Native - Imports
 import React from "react";
-import { View, StyleSheet } from "react-native";
+import { View, FlatList, StyleSheet } from "react-native";
 
 // Components - import
 import ListMainTitle from "./ListMainTitle";
 import ListToggle from "./ListToggle";
 import ListIconCircle from "./ListIconCircle";
 
-const ListHeader = () => {
+const ListHeader = ({ data, idListActive }) => {
   return (
     <View style={[styles.wrapper, styles.headerWrap]}>
       <View>
         <ListMainTitle />
-        <ListToggle />
+        <FlatList
+          data={data.lists}
+          keyExtractor={(item) => item._id}
+          renderItem={({ item }) => {
+            return <ListToggle item={item} idListActive={idListActive} />;
+          }}
+        />
       </View>
 
       <View style={styles.headerIcon}>
-        {/* Ci-dessous en props : color="blue/orange" source={} resizeMode="contain" */}
-        <ListIconCircle color="orange" />
-        <ListIconCircle color="blue" />
-        <ListIconCircle color="blue" />
+        <ListIconCircle
+          color="blue"
+          source={require("../assets/icon-bell.png")}
+          resizeMode="contain"
+          onPress={() => console.log("press")} // TO DO
+        />
+        <ListIconCircle
+          color="blue"
+          source={require("../assets/icon-share.png")}
+          resizeMode="contain"
+          onPress={() => console.log("press")} // TO DO
+        />
       </View>
     </View>
   );

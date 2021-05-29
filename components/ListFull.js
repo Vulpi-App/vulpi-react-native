@@ -1,19 +1,34 @@
 // React & React Native - Imports
 import React from "react";
-import { View, StyleSheet } from "react-native";
+import { View, Text, FlatList, StyleSheet } from "react-native";
 
 // Components - import
 import ListFullHeader from "./ListFullHeader";
 import ListFullInput from "./ListFullInput";
 
-const ListFull = () => {
+const ListFull = ({ data, idListActive }) => {
   return (
     <View style={styles.list}>
-      <ListFullHeader />
+      <FlatList
+        data={data.lists}
+        keyExtractor={(item) => item._id}
+        renderItem={({ item }) => {
+          return <ListFullHeader item={item} idListActive={idListActive} />;
+        }}
+      />
 
       <View style={styles.listContent}>
+        <FlatList
+          data={data.lists}
+          keyExtractor={(item) => item._id}
+          renderItem={({ item }) => {
+            return <ListFullInput item={item} idListActive={idListActive} />;
+          }}
+        />
+
+        {/*       
         <ListFullInput name="Bananes" price="2.80" custom={false} />
-        <ListFullInput name="Bonbons" price="4.10" custom={true} />
+        <ListFullInput name="Bonbons" price="4.10" custom={true} /> */}
       </View>
     </View>
   );

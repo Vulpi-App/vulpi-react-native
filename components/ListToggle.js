@@ -2,8 +2,12 @@
 import React from "react";
 import { Text, StyleSheet } from "react-native";
 
-const ListToggle = () => {
-  return <Text style={styles.listDeploy}>Courses maison ∨</Text>;
+const ListToggle = ({ item, idListActive }) => {
+  return (
+    item._id === idListActive && (
+      <Text style={styles.listDeploy}>{item.title} ∨</Text>
+    )
+  );
 };
 
 export default ListToggle;

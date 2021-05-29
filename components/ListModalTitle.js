@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
   modalTitle: {
     textAlign: "center",
     fontSize: 24,
-    marginBottom: 30,
+    marginBottom: 10,
     // add semi-bold
   },
 });

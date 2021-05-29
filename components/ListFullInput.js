@@ -2,29 +2,48 @@
 import React from "react";
 import { Text, View, TouchableOpacity, StyleSheet } from "react-native";
 
+// Components - import
+import ListEmptyContent from "./ListEmptyContent";
+
 // Colors - import
 import colors from "../assets/colors";
 const { radioBg, mainBlueText, productDetails, radioBorder, midGreyText } =
   colors;
 
-const ListFullInput = ({ name, price, custom }) => {
+const ListFullInput = ({ item, idListActive }) => {
   return (
-    <View style={styles.listProduct}>
-      <TouchableOpacity>
-        <View style={styles.listRadioButton}></View>
-      </TouchableOpacity>
-
+    item._id === idListActive &&
+    (item.products.length > 0 ? (
       <View>
-        <Text style={styles.listProductText}>{name}</Text>
-        {custom === false ? (
-          <Text style={styles.listNotCustom}>Toucher pour personnaliser</Text>
-        ) : (
-          <Text style={styles.listCustom}>2 paquets, Haribo</Text>
-        )}
-      </View>
+        {item.products.map((el, index) => {
+          return (
+            <View style={styles.listProduct}>
+              <TouchableOpacity>
+                <View style={styles.listRadioButton}></View>
+              </TouchableOpacity>
 
-      <Text style={styles.price}>{price} €</Text>
-    </View>
+              <View>
+                <Text style={styles.listProductText}>{el.reference}</Text>
+
+                {el.quantity || el.brand || el.shop ? (
+                  <Text style={styles.listCustom}>
+                    {el.quantity} paquets, {el.brand} | {el.shop}
+                  </Text>
+                ) : (
+                  <Text style={styles.listNotCustom}>
+                    Toucher pour personnaliser
+                  </Text>
+                )}
+              </View>
+
+              {el.price ? <Text style={styles.price}>{el.price} €</Text> : null}
+            </View>
+          );
+        })}
+      </View>
+    ) : (
+      <ListEmptyContent />
+    ))
   );
 };
 
@@ -43,7 +62,7 @@ const styles = StyleSheet.create({
     backgroundColor: radioBg,
     borderWidth: 1,
     borderColor: radioBorder,
-    marginRight: 20,
+    marginRight: 10,
   },
   listProductText: {
     fontSize: 16,

@@ -1,20 +1,50 @@
 // React & React Native - Imports
 import React from "react";
-import { Text, View, StyleSheet } from "react-native";
+import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
 
 // Colors - import
 import colors from "../assets/colors";
-const { radioBg, mainBlueText, orangeTotalPrice, white, darkGreyText } = colors;
+const {
+  radioBg,
+  mainBlueText,
+  orangeTotalPrice,
+  white,
+  darkGreyText,
+  buttonFlashBlue,
+} = colors;
 
-const ListFullHeader = () => {
+const ListFullHeader = ({ item, idListActive }) => {
   return (
-    <View style={styles.listTitle}>
-      <Text style={styles.h2}>Courses maison</Text>
-      <Text style={styles.nbArticles}>2 articles</Text>
-      <View style={styles.totalPrice}>
-        <Text style={styles.priceText}>6.90 €</Text>
+    item._id === idListActive && (
+      <View style={styles.listTitle}>
+        <View>
+          <Text style={styles.h2}>{item.title}</Text>
+        </View>
+
+        <View style={styles.headerDetailsWrap}>
+          {item.products.length > 0 ? (
+            <View style={styles.headerDetailsWrap}>
+              <View style={styles.totalPrice}>
+                <Text style={styles.priceText}>6 €</Text>
+              </View>
+              <Text style={styles.nbArticles}>2 articles</Text>
+            </View>
+          ) : null}
+
+          <TouchableOpacity>
+            <View style={styles.blueDot}></View>
+            <View style={[styles.blueDot, styles.marginDot]}></View>
+            <View style={styles.blueDot}></View>
+          </TouchableOpacity>
+        </View>
+        {/* <View>
+                <Text style={styles.nbArticles}>2 articles</Text>
+                <View style={styles.totalPrice}>
+                  <Text style={styles.priceText}>6 €</Text>
+                </View>
+              </View> */}
       </View>
-    </View>
+    )
   );
 };
 
@@ -34,9 +64,14 @@ const styles = StyleSheet.create({
     fontSize: 24,
     // add semi-bold
   },
+  headerDetailsWrap: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
   nbArticles: {
     fontSize: 14,
     color: darkGreyText,
+    marginHorizontal: 20,
   },
   totalPrice: {
     backgroundColor: orangeTotalPrice,
@@ -46,5 +81,14 @@ const styles = StyleSheet.create({
   },
   priceText: {
     color: white,
+  },
+  blueDot: {
+    width: 6,
+    height: 6,
+    borderRadius: 3,
+    backgroundColor: buttonFlashBlue,
+  },
+  marginDot: {
+    marginVertical: 3,
   },
 });
