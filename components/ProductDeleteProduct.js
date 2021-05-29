@@ -2,15 +2,9 @@
 import React from "react";
 import { View, Text, StyleSheet, TouchableHighlight } from "react-native";
 
-// Components
-import ModalDeleteProduct from "./ProductModalConfirmDelete";
-
 const ProductDeleteProduct = ({
-  modalAddProductVisible,
   setModalAddProductVisible,
-  modalDeleteProductVisible,
   setModalDeleteProductVisible,
-  deleteProduct,
 }) => {
   return (
     <View>
@@ -18,19 +12,11 @@ const ProductDeleteProduct = ({
         style={styles.buttonDeleteProduct}
         onPress={() => {
           setModalDeleteProductVisible(true);
-          // setModalAddProductVisible(false);
+          setModalAddProductVisible(false);
         }}
       >
         <Text style={styles.textDeleteProduct}>Supprimer cet article</Text>
       </TouchableHighlight>
-      {/* Modal "Delete Product" */}
-      <ModalDeleteProduct
-        modalAddProductVisible={modalAddProductVisible}
-        setModalAddProductVisible={setModalAddProductVisible}
-        modalDeleteProductVisible={modalDeleteProductVisible}
-        setModalDeleteProductVisible={setModalDeleteProductVisible}
-        deleteProduct={deleteProduct}
-      />
     </View>
   );
 };

@@ -13,13 +13,14 @@ import {
 } from "react-native";
 import Constants from "expo-constants";
 import axios from "axios";
-// import  from "expo"
 
 // Components
 import InputProduct from "./ProductInputAddUpdate";
 import ProductButtonPicture from "./ProductButtonPicture";
 import ProductButtonCancelSave from "./ProductButtonCancelSave";
 import ProductDeleteProduct from "./ProductDeleteProduct";
+import ProductModalTakePicture from "./ProductModalTakePicture";
+import ModalDeleteProduct from "./ProductModalConfirmDelete";
 import { BlurView } from "expo-blur";
 
 // URL request
@@ -42,8 +43,11 @@ const ModalProduct = ({
   const [brandProduct, setBrandProduct] = useState();
   const [shopProduct, setShopProduct] = useState();
   const [priceProduct, setPriceProduct] = useState();
+  const [pictureProduct, setPictureProduct] = useState();
   const [messageErrorAfterSubmit, setMessageErrorAfterSubmit] = useState(null);
   const [modalDeleteProductVisible, setModalDeleteProductVisible] =
+    useState(false);
+  const [productModalPictureVisible, setProductModalPictureVisible] =
     useState(false);
 
   const submitInfosProduct = async () => {
@@ -62,6 +66,15 @@ const ModalProduct = ({
             shopProduct && formData.append("shop", shopProduct);
             priceProduct && formData.append("price", priceProduct);
 
+            // Photo
+            const tabPicture = pictureProduct.split(".");
+            pictureProduct &&
+              formData.append("picture", {
+                uri: pictureProduct,
+                name: `picture-product.${tabPicture[tabPicture.length - 1]}`,
+                type: `image/${tabPicture[tabPicture.length - 1]}`,
+              });
+
             const response = await axios.post(
               `${localURLAdd}${idList}`,
               formData,
@@ -77,6 +90,7 @@ const ModalProduct = ({
               setBrandProduct();
               setShopProduct();
               setPriceProduct();
+              setPictureProduct();
               setMessageErrorAfterSubmit();
               setModalAddProductVisible(false);
               alert("Produt added successfully !");
@@ -100,6 +114,15 @@ const ModalProduct = ({
         shopProduct && formData.append("shop", shopProduct);
         priceProduct && formData.append("price", priceProduct);
 
+        // Photo
+        const tabPicture = pictureProduct.split(".");
+        pictureProduct &&
+          formData.append("picture", {
+            uri: pictureProduct,
+            name: `picture-product.${tabPicture[tabPicture.length - 1]}`,
+            type: `image/${tabPicture[tabPicture.length - 1]}`,
+          });
+
         const response = await axios.put(
           `${localURLUpdate}${idList}?idProduct=${idProduct}`,
           formData,
@@ -115,6 +138,7 @@ const ModalProduct = ({
           setBrandProduct();
           setShopProduct();
           setPriceProduct();
+          setPictureProduct();
           setMessageErrorAfterSubmit();
           setModalAddProductVisible(false);
           alert("Produt updated successfully !");
@@ -164,6 +188,7 @@ const ModalProduct = ({
           setBrandProduct();
           setShopProduct();
           setPriceProduct();
+          setPictureProduct();
           setMessageErrorAfterSubmit();
           setModalAddProductVisible(false);
           setModalDeleteProductVisible(false);
@@ -197,93 +222,121 @@ const ModalProduct = ({
     }
   };
 
+  const closeModalProduct = () => {
+    setModalAddProductVisible(false);
+    setNameProduct();
+    setQuantityProduct();
+    setBrandProduct();
+    setShopProduct();
+    setPriceProduct();
+    setPictureProduct();
+    setMessageErrorAfterSubmit();
+  };
+
   return (
-    <Modal
-      style={styles.centeredView}
-      animationType="slide"
-      transparent={true}
-      visible={modalAddProductVisible}
-    >
-      <TouchableOpacity
-        style={
-          modalAddProductVisible
-            ? [styles.centeredViewModalVisible, styles.centeredViewModal]
-            : styles.centeredViewModal
-        }
-        onPressOut={() => {
-          setModalAddProductVisible(false);
-        }}
+    <View style={styles.screenModal}>
+      <Modal
+        style={styles.centeredView}
+        animationType="fade"
+        transparent={true}
+        visible={modalAddProductVisible}
       >
-        <TouchableWithoutFeedback>
-          <View style={styles.modalView}>
-            {typeModalProduct === "new product" && (
-              <Text style={styles.modalTitle}>Ajouter un article</Text>
-            )}
-            {typeModalProduct === "update product" && (
-              <Text style={styles.modalTitle}>Personnaliser l'article</Text>
-            )}
-            <View style={styles.blockInputs}>
+        <TouchableOpacity
+          style={
+            modalAddProductVisible
+              ? [styles.centeredViewModalVisible, styles.centeredViewModal]
+              : styles.centeredViewModal
+          }
+          onPressOut={closeModalProduct}
+        >
+          <TouchableWithoutFeedback>
+            <View style={styles.modalView}>
               {typeModalProduct === "new product" && (
+                <Text style={styles.modalTitle}>Ajouter un article</Text>
+              )}
+              {typeModalProduct === "update product" && (
+                <Text style={styles.modalTitle}>Personnaliser l'article</Text>
+              )}
+              <View style={styles.blockInputs}>
                 <InputProduct
                   nameInput="nameProduct"
                   valueInput={nameProduct}
                   setValueInput={setNameProduct}
                 />
-              )}
-              <InputProduct
-                nameInput="quantity"
-                valueInput={quantityProduct}
-                setValueInput={setQuantityProduct}
-              />
-              <InputProduct
-                nameInput="brand"
-                valueInput={brandProduct}
-                setValueInput={setBrandProduct}
-              />
-              <InputProduct
-                nameInput="shop"
-                valueInput={shopProduct}
-                setValueInput={setShopProduct}
-              />
-              <InputProduct
-                nameInput="price"
-                valueInput={priceProduct}
-                setValueInput={setPriceProduct}
-              />
-            </View>
 
-            <ProductButtonPicture />
+                <InputProduct
+                  nameInput="quantity"
+                  valueInput={quantityProduct}
+                  setValueInput={setQuantityProduct}
+                />
+                <InputProduct
+                  nameInput="brand"
+                  valueInput={brandProduct}
+                  setValueInput={setBrandProduct}
+                />
+                <InputProduct
+                  nameInput="shop"
+                  valueInput={shopProduct}
+                  setValueInput={setShopProduct}
+                />
+                <InputProduct
+                  nameInput="price"
+                  valueInput={priceProduct}
+                  setValueInput={setPriceProduct}
+                />
+              </View>
 
-            {messageErrorAfterSubmit && (
-              <Text style={styles.messageErrorAfterSubmit}>
-                {messageErrorAfterSubmit}
-              </Text>
-            )}
-
-            <ProductButtonCancelSave
-              modalAddProductVisible={modalAddProductVisible}
-              setModalAddProductVisible={setModalAddProductVisible}
-              submitInfosProduct={submitInfosProduct}
-            />
-            {typeModalProduct === "update product" && (
-              <ProductDeleteProduct
-                modalAddProductVisible={modalAddProductVisible}
+              <ProductButtonPicture
+                pictureProduct={pictureProduct}
+                setProductModalPictureVisible={setProductModalPictureVisible}
                 setModalAddProductVisible={setModalAddProductVisible}
-                modalDeleteProductVisible={modalDeleteProductVisible}
-                setModalDeleteProductVisible={setModalDeleteProductVisible}
-                deleteProduct={deleteProduct}
               />
-            )}
-          </View>
-        </TouchableWithoutFeedback>
-      </TouchableOpacity>
-    </Modal>
+
+              {messageErrorAfterSubmit && (
+                <Text style={styles.messageErrorAfterSubmit}>
+                  {messageErrorAfterSubmit}
+                </Text>
+              )}
+
+              <ProductButtonCancelSave
+                closeModalProduct={closeModalProduct}
+                submitInfosProduct={submitInfosProduct}
+              />
+              {typeModalProduct === "update product" && (
+                <ProductDeleteProduct
+                  setModalDeleteProductVisible={setModalDeleteProductVisible}
+                  setModalAddProductVisible={setModalAddProductVisible}
+                />
+              )}
+            </View>
+          </TouchableWithoutFeedback>
+        </TouchableOpacity>
+      </Modal>
+
+      {/* Modal "Choose picture Product" */}
+      <ProductModalTakePicture
+        productModalPictureVisible={productModalPictureVisible}
+        setProductModalPictureVisible={setProductModalPictureVisible}
+        setPictureProduct={setPictureProduct}
+        setModalAddProductVisible={setModalAddProductVisible}
+      />
+
+      {/* Modal "Delete Product" */}
+      <ModalDeleteProduct
+        modalAddProductVisible={modalAddProductVisible}
+        setModalAddProductVisible={setModalAddProductVisible}
+        modalDeleteProductVisible={modalDeleteProductVisible}
+        setModalDeleteProductVisible={setModalDeleteProductVisible}
+        deleteProduct={deleteProduct}
+      />
+    </View>
   );
 };
 
 export default ModalProduct;
 
 const styles = StyleSheet.create({
+  screenModal: { flex: 1 },
   centeredView: {
     flex: 1,
     justifyContent: "center",
@@ -316,7 +369,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "bold",
     color: "#181725",
-    marginBottom: 40,
+    marginBottom: 20,
   },
 
   blockInputs: { width: "100%" },

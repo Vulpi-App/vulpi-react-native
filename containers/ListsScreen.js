@@ -50,9 +50,8 @@ const ListsScreen = ({ navigation }) => {
   const [productCheck, setProductCheck] = useState(false);
 
   // TEST ROUTE
-  const userToken =
-    "0rrwD83Xi4K2VJMbEhQy1XMdjo9mNmejYrYm9AY745At9r1E3HcJGOW7f4EBuZmx";
-  const userId = "60af5e6d8e67798590ac5ed2";
+  const userToken = "cccc";
+  const userId = "60abcb97ac82f76c79939767";
 
   // console.log("userToken ", userToken);
   // console.log("userId ", userId);
@@ -61,13 +60,14 @@ const ListsScreen = ({ navigation }) => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:3310/lists/${userId}`,
+          `http://192.168.0.20:3310/lists/${userId}`,
           {
             headers: {
               Authorization: `Bearer ${userToken}`,
             },
           }
         );
+
         // console.log("response.data", response.data);
         // console.log("response.data.lists", response.data.lists);
         setData(response.data);
@@ -79,13 +79,9 @@ const ListsScreen = ({ navigation }) => {
     fetchData();
   }, []);
 
-  console.log(data);
-
-
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
   };
-
 
   return loading ? (
     <View style={styles.loading}>
@@ -93,25 +89,22 @@ const ListsScreen = ({ navigation }) => {
     </View>
   ) : (
     <KeyboardAwareScrollView style={styles.pageScreen}>
-    <SafeAreaView style={styles.screen}>
-      <ScrollView style={styles.scrollView}>
-        <StatusBar style="light" />
-
+      <SafeAreaView style={styles.screen}>
+        <ScrollView style={styles.scrollView}>
+          <StatusBar style="light" />
 
           <View style={styles.wrapper}>
             {/* Header */}
             <ListHeader />
 
-
-          {/* All the lists & possibility to add a new list */}
-          <ListButtonChoice toggleModal={toggleModal} data={data} />
-          {/* ----- If list IS empty ----- */}
-          {/* <ListEmpty /> */}
-          {/* ----- If list is NOT not empty ----- */}
-          {/* <ListFull /> */}
-          {/* ----- If list is FOLDED ----- */}
-          <ListFolded />
-
+            {/* All the lists & possibility to add a new list */}
+            <ListButtonChoice toggleModal={toggleModal} data={data} />
+            {/* ----- If list IS empty ----- */}
+            {/* <ListEmpty /> */}
+            {/* ----- If list is NOT not empty ----- */}
+            {/* <ListFull /> */}
+            {/* ----- If list is FOLDED ----- */}
+            <ListFolded />
 
             <Button
               title="Ma liste maison"
@@ -144,7 +137,6 @@ const ListsScreen = ({ navigation }) => {
 export default ListsScreen;
 
 const styles = StyleSheet.create({
-
   pageScreen: { flex: 1 },
 
   loading: {

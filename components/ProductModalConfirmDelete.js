@@ -9,24 +9,19 @@ import {
   TouchableHighlight,
   TouchableWithoutFeedback,
 } from "react-native";
-import Constants from "expo-constants";
-import axios from "axios";
-import { BlurView } from "expo-blur";
-// import  from "expo"
 
 // Components
 
 const ModalDeleteProduct = ({
   modalDeleteProductVisible,
   setModalDeleteProductVisible,
-  modalAddProductVisible,
   setModalAddProductVisible,
   deleteProduct,
 }) => {
   return (
     <Modal
       style={styles.centeredView}
-      animationType="slide"
+      animationType="fade"
       transparent={true}
       visible={modalDeleteProductVisible}
     >
@@ -38,30 +33,38 @@ const ModalDeleteProduct = ({
         }
         onPressOut={() => {
           setModalDeleteProductVisible(false);
+          setModalAddProductVisible(true);
         }}
       >
         <TouchableWithoutFeedback>
           <View style={styles.modalView}>
-            <Text style={styles.modalDeleteTitle}>Supprimer cet article ?</Text>
-            <Text style={styles.modalDeleteText}>
-              Êtes-vous sûr de vouloir supprimer cet article de votre liste ?
-            </Text>
-            <TouchableHighlight
-              style={[styles.buttonDelete, styles.buttonsModalDelete]}
-              onPress={deleteProduct}
-            >
-              <Text style={styles.textButtonDelete}>Supprimer</Text>
-            </TouchableHighlight>
-            <TouchableHighlight
-              style={[styles.buttonCancel, styles.buttonsModalDelete]}
-              onPress={() => {
-                setModalDeleteProductVisible(false);
-              }}
-            >
-              <Text style={styles.textButtonCancel}>
-                Annuler et retourner à la personnalisation
+            <View style={styles.blockTop}>
+              <Text style={styles.modalDeleteTitle}>
+                Supprimer cet article ?
               </Text>
-            </TouchableHighlight>
+              <Text style={styles.modalDeleteText}>
+                Êtes-vous sûr de vouloir supprimer cet article de votre liste ?
+              </Text>
+            </View>
+            <View style={styles.blockBottom}>
+              <TouchableHighlight
+                style={[styles.buttonDelete, styles.buttonsModalDelete]}
+                onPress={deleteProduct}
+              >
+                <Text style={styles.textButtonDelete}>Supprimer</Text>
+              </TouchableHighlight>
+              <TouchableHighlight
+                style={[styles.buttonCancel, styles.buttonsModalDelete]}
+                onPress={() => {
+                  setModalDeleteProductVisible(false);
+                  setModalAddProductVisible(true);
+                }}
+              >
+                <Text style={styles.textButtonCancel}>
+                  Annuler et retourner à la personnalisation
+                </Text>
+              </TouchableHighlight>
+            </View>
           </View>
         </TouchableWithoutFeedback>
       </TouchableOpacity>
@@ -86,7 +89,7 @@ const styles = StyleSheet.create({
   centeredViewModalVisible: { backgroundColor: "rgba(0,0,0,0.7)" },
   modalView: {
     width: "90%",
-    height: "40%",
+    height: "35%",
     backgroundColor: "white",
     borderRadius: 20,
     paddingHorizontal: 20,
@@ -99,22 +102,34 @@ const styles = StyleSheet.create({
       height: 2,
     },
   },
+  blockTop: { width: "100%" },
 
   modalDeleteTitle: {
     fontSize: 20,
     fontWeight: "bold",
     color: "#181725",
-    marginBottom: 40,
+    marginBottom: 30,
+    textAlign: "left",
+    width: "100%",
   },
-  modalDeleteText: { color: "#545560" },
+  modalDeleteText: {
+    color: "#545560",
+    textAlign: "left",
+    width: "100%",
+    fontSize: 15,
+  },
+
+  blockBottom: { width: "100%" },
+
   buttonsModalDelete: {
     width: "100%",
     justifyContent: "center",
     alignItems: "center",
-    padding: 18,
+    paddingVertical: 18,
+    paddingHorizontal: 10,
     borderRadius: 10,
   },
-  buttonDelete: { backgroundColor: "#CA2121" },
+  buttonDelete: { backgroundColor: "#CA2121", marginBottom: 15 },
   buttonCancel: {
     borderStyle: "solid",
     borderWidth: 1,
