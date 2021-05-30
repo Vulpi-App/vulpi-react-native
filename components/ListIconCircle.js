@@ -1,22 +1,23 @@
 // React & React Native - Imports
 import React from "react";
-import { View, Image, StyleSheet } from "react-native";
+import { Image, TouchableOpacity, StyleSheet } from "react-native";
 
 // Colors - import
 import colors from "../assets/colors";
 const { orangeNotifications, mainBlueText } = colors;
 
 // Ce-dessous en props: {color, source, resizeMode}
-const ListIconCircle = ({ color }) => {
+const ListIconCircle = ({ color, source, resizeMode }) => {
   return (
-    <View
+    <TouchableOpacity
+      // Orange icon still possible in new design? In case, keep it here
       style={
         (color === "orange" && [styles.circleIcon, styles.circleIconOrange]) ||
         (color === "blue" && [styles.circleIcon, styles.circleIconBlue])
       }
     >
-      <Image style={styles.icon} />
-    </View>
+      <Image style={styles.icon} source={source} resizeMode={resizeMode} />
+    </TouchableOpacity>
   );
 };
 
@@ -24,10 +25,12 @@ export default ListIconCircle;
 
 const styles = StyleSheet.create({
   circleIcon: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
+    width: 40,
+    height: 40,
+    borderRadius: 20,
     marginLeft: 10,
+    alignItems: "center",
+    justifyContent: "center",
   },
   circleIconOrange: {
     backgroundColor: orangeNotifications,
@@ -36,7 +39,7 @@ const styles = StyleSheet.create({
     backgroundColor: mainBlueText,
   },
   icon: {
-    width: 30,
-    height: 30,
+    width: 20,
+    height: 20,
   },
 });

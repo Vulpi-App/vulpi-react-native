@@ -6,11 +6,13 @@ import { Text, View, StyleSheet } from "react-native";
 import colors from "../assets/colors";
 const { radioBg, mainBlueText } = colors;
 
-const ListEmptyHeader = () => {
+const ListEmptyHeader = ({ item, idListActive }) => {
   return (
-    <View style={styles.listTitle}>
-      <Text style={styles.h2}>Courses maison</Text>
-    </View>
+    item._id === idListActive && (
+      <View style={styles.listTitle}>
+        <Text style={styles.h2}>{item.title}</Text>
+      </View>
+    )
   );
 };
 

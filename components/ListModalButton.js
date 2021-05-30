@@ -6,9 +6,14 @@ import { Text, TouchableOpacity, StyleSheet } from "react-native";
 import colors from "../assets/colors";
 const { buttonFlashBlue, white, deleteRed } = colors;
 
-const ListModalButton = ({ name, color }) => {
+const ListModalButton = ({ name, color, handleSubmit }) => {
   return color === "blue" ? (
-    <TouchableOpacity style={styles.buttonBlue}>
+    <TouchableOpacity
+      style={styles.buttonBlue}
+      onPress={async () => {
+        handleSubmit();
+      }}
+    >
       <Text style={styles.buttonTextBlue}>{name}</Text>
     </TouchableOpacity>
   ) : (

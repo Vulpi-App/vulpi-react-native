@@ -15,7 +15,6 @@ import { StatusBar } from "expo-status-bar";
 import Constants from "expo-constants";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 // import { BlurView } from "expo-blur"; TO TEST
-// import LinearGradient from "react-native-linear-gradient"; // TO TEST
 
 // Axios - import
 import axios from "axios";
@@ -23,9 +22,7 @@ import axios from "axios";
 // Components - import
 import ListHeader from "../components/ListHeader";
 import ListButtonChoice from "../components/ListButtonChoice";
-import ListEmpty from "../components/ListEmpty";
 import ListFull from "../components/ListFull";
-import ListFolded from "../components/ListFolded";
 import ListModalNewList from "../components/ListModalNewList";
 import ProductBottomBlockAdd from "../components/ProductBottomBlockAdd";
 import ModalProduct from "../components/ProductModalAddUpdate";
@@ -38,24 +35,36 @@ const { buttonDarkBlue, white } = colors;
 // ======================================
 
 const ListsScreen = ({ navigation }) => {
+  // States for modals
   const [isModalVisible, setModalVisible] = useState(false);
-
   const [modalAddProductVisible, setModalAddProductVisible] = useState(false);
   const [valueInputAddQuickly, setValueInputAddQuickly] = useState();
 
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState();
-  // States different screens
-  const [emptyList, setEmptyList] = useState(true);
-  const [selectedList, setSelectedList] = useState();
-  const [productCheck, setProductCheck] = useState(false);
 
-  // TEST ROUTE
-  const userToken = "cccc";
-  const userId = "60abcb97ac82f76c79939767";
 
-  // console.log("userToken ", userToken);
-  // console.log("userId ", userId);
+  // State for active lists (scrollbar horizontal)
+  const [idListActive, setIdListActive] = useState();
+
+  // State for new list
+  const [newListCreated, setNewListCreated] = useState("");
+
+  // State for delete or update a list
+  const [updateList, setUpdateList] = useState("");
+  const [deleteList, setDeleteList] = useState("");
+
+  // State for fold or unfold list of lists
+  const [foldedNav, setFoldedNav] = useState(true);
+
+  // TEST EN DUR
+  const userToken =
+    "KSpUkFnIaPDmIYfzmc24iaWzzlsISjQ2m3mPkdfK8jhshqBUx4ApsLNIMEivqut0";
+  const userId = "60b34cdb27fe1e80df064679";
+  const listId = "60b34d3127fe1e80df06467c";
+
+
+  console.log(idListActive);
 
   const [dataProductsDisplay, setDataProductsDisplay] = useState([]);
 
@@ -71,26 +80,38 @@ const ListsScreen = ({ navigation }) => {
           }
         );
 
+
         // console.log("response.data", response.data);
         // console.log("response.data.lists", response.data.lists);
+
         setData(response.data);
         setLoading(false);
+        setIdListActive(response.data.lists[0]._id);
       } catch (error) {
         console.log(error.message);
       }
     };
     fetchData();
-  }, []);
+
+  }, [newListCreated, updateList, deleteList]);
+
 
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
   };
+
+
+  const foldOrUnfoldLists = () => {
+    setFoldedNav(!foldedNav);
+  };
+
 
   return loading ? (
     <View style={styles.loading}>
       <ActivityIndicator size="large" color={white} />
     </View>
   ) : (
+
     <View style={styles.screen}>
       <KeyboardAwareScrollView
         contentContainerStyle={{ height: "100%", margin: 0 }}
@@ -99,26 +120,43 @@ const ListsScreen = ({ navigation }) => {
         <StatusBar style="light" />
         <SafeAreaView style={styles.pageScreen}>
           <View style={styles.globalContainer}>
-            <View style={styles.wrapper}>
-              {/* Header */}
-              <ListHeader />
+            
+<View style={styles.wrapper}>
+            {/* ----- Header 
+            ✅  Gérer le toggle dépliant 
+            🚨 Gérer les onPress "notifications" + "partager" - vers quelles screen ça renvoit ?*/}
+            <ListHeader
+              data={data}
+              idListActive={idListActive}
+              foldedNav={foldedNav}
+              setFoldedNav={setFoldedNav}
+              foldOrUnfoldLists={foldOrUnfoldLists}
+            />
 
-              {/* All the lists & possibility to add a new list */}
-              <ListButtonChoice toggleModal={toggleModal} data={data} />
-              {/* ----- If list IS empty ----- */}
-              {/* <ListEmpty /> */}
-              {/* ----- If list is NOT not empty ----- */}
-              {/* <ListFull /> */}
-              {/* ----- If list is FOLDED ----- */}
-              <ListFolded />
-
-              <Button
-                title="Ma liste maison"
-                onPress={() => {
-                  navigation.navigate("ListScreen");
-                }}
+            {/* ----- Navigation scrollbar horizontal ✅ 
+            🚨 Gérer l'ajout de la nouvelle liste au DEBUT et non à la suite des listes existantes */}
+            {foldedNav ? null : (
+              <ListButtonChoice
+                toggleModal={toggleModal}
+                data={data}
+                idListActive={idListActive}
+                setIdListActive={setIdListActive}
               />
-            </View>
+            )}
+
+            {/* ----- List(s) ✅ 
+             🚨 Problème de récupération du nom du produit (route back listcontent/:listId ne fonctionne pas) 
+             🚨 Gérer le screen au clic sur les 3 points */}
+            <ListFull data={data} idListActive={idListActive} />
+
+            <Button
+              title="Ma liste maison"
+              onPress={() => {
+                navigation.navigate("ListScreen");
+              }}
+            />
+          </View>
+
             <View style={styles.blockBottomAddQuicklyAutocomplete}>
               {valueInputAddQuickly && dataProductsDisplay.length > 0 ? (
                 <ProductLineAutoComplete
@@ -155,14 +193,33 @@ const ListsScreen = ({ navigation }) => {
             isModalVisible={isModalVisible}
             setModalVisible={setModalVisible}
           />
-          {/* Modal "Add or Update Product"
-        <ModalProduct
-          modalAddProductVisible={modalAddProductVisible}
-          setModalAddProductVisible={setModalAddProductVisible}
-          typeModalProduct="update product"
-        /> */}
+
+        
         </SafeAreaView>
       </KeyboardAwareScrollView>
+
+ {/* Modal "+ New list" */}
+        <ListModalNewList
+          isModalVisible={isModalVisible}
+          setModalVisible={setModalVisible}
+          userToken={userToken}
+          listId={listId}
+          setNewListCreated={setNewListCreated}
+          newListCreated={newListCreated}
+        />
+
+        {/* Modal "update or delete a list" */}
+        <ListModalRenameList
+          isModalVisible={isModalVisible}
+          setModalVisible={setModalVisible}
+          userToken={userToken}
+          listId={listId}
+          updateList={updateList}
+          setUpdateList={setUpdateList}
+          deleteList={deleteList}
+          setDeleteList={setDeleteList}
+        />
+
       {/* Modal "Add or Update Product" */}
       <ModalProduct
         modalAddProductVisible={modalAddProductVisible}
@@ -176,6 +233,7 @@ const ListsScreen = ({ navigation }) => {
 export default ListsScreen;
 
 const styles = StyleSheet.create({
+
   loading: {
     flex: 1,
     justifyContent: "center",
@@ -184,14 +242,17 @@ const styles = StyleSheet.create({
   screen: { flex: 1 },
 
   pageScreen: {
+
     backgroundColor: buttonDarkBlue,
     flex: 1,
     // height: "100%",
   },
 
+
   globalContainer: {
     height: "100%",
     justifyContent: "space-between",
+
   },
 
   wrapper: {
