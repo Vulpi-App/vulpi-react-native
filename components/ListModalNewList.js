@@ -22,7 +22,7 @@ const ListModalNewList = ({
   setNewListCreated,
   newListCreated,
 }) => {
-  // State for add a new list
+  // States for add a new list
   const [title, setTitle] = useState("");
   const [emoji, setEmoji] = useState("");
   const [disabled, setDisabled] = useState(true);

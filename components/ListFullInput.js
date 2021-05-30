@@ -17,7 +17,7 @@ const ListFullInput = ({ item, idListActive }) => {
       <View>
         {item.products.map((el, index) => {
           return (
-            <View style={styles.listProduct}>
+            <View style={styles.listProduct} key={index}>
               <TouchableOpacity>
                 <View style={styles.listRadioButton}></View>
               </TouchableOpacity>

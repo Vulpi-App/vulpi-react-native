@@ -48,6 +48,10 @@ const ListsScreen = ({ navigation }) => {
   // State for new list
   const [newListCreated, setNewListCreated] = useState("");
 
+  // State for delete or update a list
+  const [updateList, setUpdateList] = useState("");
+  const [deleteList, setDeleteList] = useState("");
+
   // State for fold or unfold list of lists
   const [foldedNav, setFoldedNav] = useState(true);
 
@@ -80,7 +84,7 @@ const ListsScreen = ({ navigation }) => {
       }
     };
     fetchData();
-  }, [newListCreated]);
+  }, [newListCreated, updateList, deleteList]);
 
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
@@ -148,6 +152,18 @@ const ListsScreen = ({ navigation }) => {
           listId={listId}
           setNewListCreated={setNewListCreated}
           newListCreated={newListCreated}
+        />
+
+        {/* Modal "update or delete a list" */}
+        <ListModalRenameList
+          isModalVisible={isModalVisible}
+          setModalVisible={setModalVisible}
+          userToken={userToken}
+          listId={listId}
+          updateList={updateList}
+          setUpdateList={setUpdateList}
+          deleteList={deleteList}
+          setDeleteList={setDeleteList}
         />
 
         {/* Modal "Add or Update Product" */}
