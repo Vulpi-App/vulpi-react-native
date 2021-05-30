@@ -1,9 +1,18 @@
 // Tools
-import React from "react";
-import { Text } from "react-native";
+import React, { useState, useEffect } from "react";
+
+// Components
+import FormFeedback from "../components/FormFeedback";
+import FeedbackSent from "../components/FeedbackSent";
 
 const FeedbackScreen = () => {
-  return <Text>FeedbackScreen</Text>;
+  const [feedbackSent, setFeedbackSent] = useState(false);
+
+  return !feedbackSent ? (
+    <FormFeedback setFeedbackSent={setFeedbackSent} />
+  ) : (
+    <FeedbackSent />
+  );
 };
 
 export default FeedbackScreen;

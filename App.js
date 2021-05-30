@@ -34,7 +34,7 @@ export default function App() {
   );
   const [userId, setUserId] = useState("60ae2381a338aa0f23126a89");
   // State pour gérer l'affichage du Onboarding
-  const [firstConnection, setFirstConnection] = useState(true);
+  const [firstConnection, setFirstConnection] = useState(false);
 
   // console.log(1, userId);
   // console.log(2, userToken);
@@ -53,12 +53,20 @@ export default function App() {
 
   const setOnBoardingDone = async () => {
     try {
+      setFirstConnection = false;
       // Save in Local Storage the fact that the user has seen the onBoarding
       await AsyncStorage.setItem("onBoarding", "done");
 
       // Save in DB the fact that it is not the user's 1st connection
       const FormData = new FormData();
-      const response = await axios.put(`${serverUrl}/user/update/userId`);
+      formData.append("firstConnection", false);
+      const response = await axios.put(
+        `${serverUrl}/user/update/userId`,
+        FormData,
+        {
+          headers: { authorization: `Bearer ${userToken}` },
+        }
+      );
     } catch (error) {
       console.log(error.message);
     }
