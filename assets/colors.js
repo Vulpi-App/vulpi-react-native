@@ -8,7 +8,7 @@ const colors = {
   buttonFlashBlue: "#3443B9",
   buttonDarkBlue: "#232952",
   buttonDisconnect: "#E3E3EE",
-  buttonNewList: "rgba(255, 255, 255, 0.32)", // work or not ?
+  buttonNewList: "rgba(255, 255, 255, 0.32)",
   radioBg: "rgba(0, 0, 0, 0.06)",
   radioBorder: "rgba(0, 0, 0, 0.19)",
   inputBg: "#FAFAFA",
