@@ -10,7 +10,6 @@ import {
   SafeAreaView,
   ActivityIndicator,
   StyleSheet,
-  Dimensions,
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import Constants from "expo-constants";
@@ -30,6 +29,7 @@ import ListFolded from "../components/ListFolded";
 import ListModalNewList from "../components/ListModalNewList";
 import ProductBottomBlockAdd from "../components/ProductBottomBlockAdd";
 import ModalProduct from "../components/ProductModalAddUpdate";
+import ProductLineAutoComplete from "../components/ProductLineAutocomplete";
 
 // Colors - import
 import colors from "../assets/colors";
@@ -41,6 +41,7 @@ const ListsScreen = ({ navigation }) => {
   const [isModalVisible, setModalVisible] = useState(false);
 
   const [modalAddProductVisible, setModalAddProductVisible] = useState(false);
+  const [valueInputAddQuickly, setValueInputAddQuickly] = useState();
 
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState();
@@ -88,77 +89,115 @@ const ListsScreen = ({ navigation }) => {
       <ActivityIndicator size="large" color={white} />
     </View>
   ) : (
-    <KeyboardAwareScrollView style={styles.pageScreen}>
-      <SafeAreaView style={styles.screen}>
-        <ScrollView style={styles.scrollView}>
-          <StatusBar style="light" />
+    <View style={styles.screen}>
+      <KeyboardAwareScrollView
+        contentContainerStyle={{ height: "100%", margin: 0 }}
+        viewIsInsideTabBar={false}
+      >
+        <StatusBar style="light" />
+        <SafeAreaView style={styles.pageScreen}>
+          <View style={styles.globalContainer}>
+            <View style={styles.wrapper}>
+              {/* Header */}
+              <ListHeader />
 
-          <View style={styles.wrapper}>
-            {/* Header */}
-            <ListHeader />
+              {/* All the lists & possibility to add a new list */}
+              <ListButtonChoice toggleModal={toggleModal} data={data} />
+              {/* ----- If list IS empty ----- */}
+              {/* <ListEmpty /> */}
+              {/* ----- If list is NOT not empty ----- */}
+              {/* <ListFull /> */}
+              {/* ----- If list is FOLDED ----- */}
+              <ListFolded />
 
-            {/* All the lists & possibility to add a new list */}
-            <ListButtonChoice toggleModal={toggleModal} data={data} />
-            {/* ----- If list IS empty ----- */}
-            {/* <ListEmpty /> */}
-            {/* ----- If list is NOT not empty ----- */}
-            {/* <ListFull /> */}
-            {/* ----- If list is FOLDED ----- */}
-            <ListFolded />
-
-            <Button
-              title="Ma liste maison"
-              onPress={() => {
-                navigation.navigate("ListScreen");
-              }}
-            />
+              <Button
+                title="Ma liste maison"
+                onPress={() => {
+                  navigation.navigate("ListScreen");
+                }}
+              />
+            </View>
+            <View style={styles.blockBottomAddQuickly}>
+              {valueInputAddQuickly ? (
+                <ProductLineAutoComplete
+                  firstLine={true}
+                  valueInputAddQuickly={valueInputAddQuickly}
+                  setValueInputAddQuickly={setValueInputAddQuickly}
+                />
+              ) : null}
+              {valueInputAddQuickly ? (
+                <ProductLineAutoComplete
+                  firstLine={false}
+                  valueInputAddQuickly={valueInputAddQuickly}
+                  setValueInputAddQuickly={setValueInputAddQuickly}
+                />
+              ) : null}
+              {valueInputAddQuickly ? (
+                <ProductLineAutoComplete
+                  firstLine={false}
+                  valueInputAddQuickly={valueInputAddQuickly}
+                  setValueInputAddQuickly={setValueInputAddQuickly}
+                />
+              ) : null}
+              <ProductBottomBlockAdd
+                setModalAddProductVisible={setModalAddProductVisible}
+                valueInputAddQuickly={valueInputAddQuickly}
+                setValueInputAddQuickly={setValueInputAddQuickly}
+              />
+            </View>
           </View>
-        </ScrollView>
-        <ProductBottomBlockAdd
-          setModalAddProductVisible={setModalAddProductVisible}
-        />
-
-        {/* Modal "+ Nouvelle liste" */}
-        <ListModalNewList
-          isModalVisible={isModalVisible}
-          setModalVisible={setModalVisible}
-        />
-        {/* Modal "Add or Update Product" */}
+          {/* Modal "+ Nouvelle liste" */}
+          <ListModalNewList
+            isModalVisible={isModalVisible}
+            setModalVisible={setModalVisible}
+          />
+          {/* Modal "Add or Update Product"
         <ModalProduct
           modalAddProductVisible={modalAddProductVisible}
           setModalAddProductVisible={setModalAddProductVisible}
           typeModalProduct="update product"
-        />
-      </SafeAreaView>
-    </KeyboardAwareScrollView>
+        /> */}
+        </SafeAreaView>
+      </KeyboardAwareScrollView>
+      {/* Modal "Add or Update Product" */}
+      <ModalProduct
+        modalAddProductVisible={modalAddProductVisible}
+        setModalAddProductVisible={setModalAddProductVisible}
+        typeModalProduct="update product"
+      />
+    </View>
   );
 };
 
 export default ListsScreen;
 
 const styles = StyleSheet.create({
-  pageScreen: { flex: 1 },
-
   loading: {
     flex: 1,
     justifyContent: "center",
   },
 
-  screen: {
+  screen: { flex: 1 },
+
+  pageScreen: {
     backgroundColor: buttonDarkBlue,
     flex: 1,
+    // height: "100%",
+  },
+
+  globalContainer: {
+    height: "100%",
     justifyContent: "space-between",
   },
 
-  scrollView: {
-    marginTop: Platform.OS === "android" ? Constants.statusBarHeight : 0,
-    paddingTop: 20,
-  },
   wrapper: {
+    paddingTop: 20,
     width: "96%",
-    marginTop: 0,
+    marginTop: Platform.OS === "android" ? Constants.statusBarHeight : 0,
     marginBottom: 0,
     marginLeft: "auto",
     marginRight: "auto",
   },
+
+  blockBottomAddQuickly: {},
 });

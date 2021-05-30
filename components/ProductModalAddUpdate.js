@@ -5,14 +5,11 @@ import {
   View,
   StyleSheet,
   TouchableOpacity,
-  Dimensions,
   Modal,
-  SafeAreaView,
-  TouchableHighlight,
   TouchableWithoutFeedback,
 } from "react-native";
-import Constants from "expo-constants";
 import axios from "axios";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 // Components
 import InputProduct from "./ProductInputAddUpdate";
@@ -234,7 +231,7 @@ const ModalProduct = ({
   };
 
   return (
-    <View style={styles.screenModal}>
+    <View style={styles.pageScreen}>
       <Modal
         style={styles.centeredView}
         animationType="fade"
@@ -336,12 +333,11 @@ const ModalProduct = ({
 export default ModalProduct;
 
 const styles = StyleSheet.create({
-  screenModal: { flex: 1 },
+  pageScreen: { flex: 1 },
   centeredView: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    // marginTop: Constants.statusBarHeight,
   },
   centeredViewModal: {
     flex: 1,

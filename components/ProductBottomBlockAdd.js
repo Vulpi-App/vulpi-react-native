@@ -3,9 +3,21 @@ import React from "react";
 import { StyleSheet, View, TextInput } from "react-native";
 import { Ionicons, FontAwesome5 } from "@expo/vector-icons";
 
-const ProductBottomBlockAdd = ({ setModalAddProductVisible }) => {
+const ProductBottomBlockAdd = ({
+  setModalAddProductVisible,
+  valueInputAddQuickly,
+  setValueInputAddQuickly,
+}) => {
   return (
-    <View style={styles.bottomBlockAdd}>
+    <View
+      style={[
+        styles.bottomBlockAdd,
+        {
+          borderTopLeftRadius: valueInputAddQuickly ? 0 : 15,
+          borderTopRightRadius: valueInputAddQuickly ? 0 : 15,
+        },
+      ]}
+    >
       <View style={styles.blockInput}>
         <Ionicons
           name="add"
@@ -20,9 +32,10 @@ const ProductBottomBlockAdd = ({ setModalAddProductVisible }) => {
           placeholder="Ajout rapide"
           placeholderTextColor="#797979"
           autoCapitalize="sentences"
-          //   numberOfLines={1}
-          //   onChangeText={(text) => {
-          //     setValueInput(text);
+          onChangeText={(text) => {
+            setValueInputAddQuickly(text);
+          }}
+          value={valueInputAddQuickly}
         ></TextInput>
       </View>
 
@@ -40,8 +53,6 @@ export default ProductBottomBlockAdd;
 const styles = StyleSheet.create({
   bottomBlockAdd: {
     backgroundColor: "white",
-    borderTopLeftRadius: 15,
-    borderTopRightRadius: 15,
     padding: 15,
     flexDirection: "row",
     justifyContent: "space-between",
