@@ -1,42 +1,7 @@
-// Tools;
-// import React from "react";
-// import { Text, View, Button } from "react-native";
-
-// const AccountScreen = ({ navigation }) => {
-//   return (
-//     <View>
-//       <Text>AccountScreen</Text>
-//       <Button
-//         title="Go to Account Infos Screen"
-//         onPress={() => {
-//           navigation.navigate("AccountInfos");
-//         }}
-//       />
-//       <Button
-//         title="Go to Account Settings Screen"
-//         onPress={() => {
-//           navigation.navigate("SettingsScreen");
-//         }}
-//       />
-//       <Button
-//         title="Go to Account Feedback Screen"
-//         onPress={() => {
-//           navigation.navigate("FeedbackScreen");
-//         }}
-//       />
-//     </View>
-//   );
-// };
-
-// export default AccountScreen;
-
 import React, { useState, useEffect } from "react";
 import {
-  ActivityIndicator,
   Dimensions,
   Image,
-  SafeAreaView,
-  ScrollView,
   StatusBar,
   StyleSheet,
   Text,
@@ -46,17 +11,18 @@ import {
 import axios from "axios";
 import Constants from "expo-constants";
 import * as ImagePicker from "expo-image-picker";
+import { useNavigation } from "@react-navigation/core";
 
 const windowHeight = Dimensions.get("window").height;
 const statusBarHeight = Constants.statusBarHeight;
 const scrollViewHeight = windowHeight - statusBarHeight;
 
 function AccountScreen({ userToken, userId, setToken, setId }) {
-  const [isLoading, setIsLoading] = useState(true);
   const [userName, setUserName] = useState("");
   const [email, setEmail] = useState("");
   const [picture, setPicture] = useState(null);
   const [isPictureModified, setIsPictureModified] = useState(false);
+  const navigation = useNavigation();
 
   useEffect(() => {
     fetchData();
@@ -72,12 +38,10 @@ function AccountScreen({ userToken, userId, setToken, setId }) {
     if (response.data.photo) {
       setPicture(response.data.photo[0].url);
     }
-    setIsLoading(false);
   };
 
   const editInformations = async () => {
     if (isPictureModified) {
-      setIsLoading(true);
       if (isPictureModified) {
         try {
           const uri = picture;
@@ -100,7 +64,7 @@ function AccountScreen({ userToken, userId, setToken, setId }) {
         } catch (error) {}
       }
       isPictureModified && setIsPictureModified(false);
-      setIsLoading(false);
+
       fetchData();
     } else {
     }
@@ -120,214 +84,236 @@ function AccountScreen({ userToken, userId, setToken, setId }) {
   };
 
   return (
-    <SafeAreaView style={styles.safeAreaView}>
+    <View style={styles.container}>
       <StatusBar barStyle="dark-content" />
-      {isLoading ? (
-        <ActivityIndicator
-          color="white"
-          size="large"
-          style={styles.activityIndicator}
-        />
-      ) : (
-        <ScrollView contentContainerStyle={styles.scrollView}>
-          <View style={styles.top}>
-            <View style={styles.container}>
-              <View style={styles.wrap}>
-                <View style={styles.topView}>
-                  <TouchableOpacity
-                    style={styles.picture}
-                    onPress={() => {
-                      uploadPicture();
-                    }}
-                  >
-                    <Image
-                      source={{ uri: picture }}
-                      style={styles.picture}
-                      resizeMode="cover"
-                    />
-                  </TouchableOpacity>
-                  <View style={styles.texts}>
-                    <Text style={{ fontSize: 23, marginBottom: "5%" }}>
-                      {userName}
-                    </Text>
-                    <Text style={{ fontSize: 16, color: "#5F616A" }}>
-                      {email}
-                    </Text>
-                  </View>
-                </View>
-              </View>
-            </View>
-
-            <View style={styles.container}>
-              <View style={styles.wrap}>
-                <View style={styles.whiteWrap}>
-                  <TouchableOpacity style={styles.whiteButton}>
-                    <View
-                      style={styles.btnWhite}
-                      underlayColor="#FFBAC0"
-                      onPress={() => {}}
-                    >
-                      <View style={styles.buttonWrap}>
-                        <Text style={styles.textWhite}>
-                          👋 Mes informations personnelles
-                        </Text>
-                        <Image
-                          source={require("../assets/chevron-black.png")}
-                          style={styles.image}
-                          resizeMode={"contain"}
-                        />
-                      </View>
-                    </View>
-                  </TouchableOpacity>
-                  <TouchableOpacity style={styles.whiteButton}>
-                    <View
-                      style={styles.btnWhite}
-                      underlayColor="#FFBAC0"
-                      onPress={() => {}}
-                    >
-                      <View style={styles.buttonWrap}>
-                        <Text style={styles.textWhite}>🥑 Ma liste</Text>
-                        <Image
-                          source={require("../assets/chevron-black.png")}
-                          style={styles.image}
-                          resizeMode={"contain"}
-                        />
-                      </View>
-                    </View>
-                  </TouchableOpacity>
-                </View>
-              </View>
-            </View>
-            <View style={styles.container}>
-              <View style={styles.wrap}>
-                <TouchableOpacity style={styles.blueButton}>
-                  <View
-                    style={styles.btnBlue}
-                    underlayColor="#FFBAC0"
-                    onPress={() => {}}
-                  >
-                    <View style={styles.buttonWrap}>
-                      <Text style={styles.textBlue}>
-                        🚀 J'ai une suggestion pour Vulpi
-                      </Text>
-                      <Image
-                        source={require("../assets/chevron-white.png")}
-                        style={styles.image}
-                        resizeMode={"contain"}
-                      />
-                    </View>
-                  </View>
-                </TouchableOpacity>
-              </View>
-            </View>
-          </View>
-          <View style={styles.bottom}>
-            <View style={styles.container}>
-              <View style={styles.wrap}>
-                <Image
-                  source={require("../assets/logout.png")}
-                  style={styles.logout}
-                  resizeMode={"contain"}
-                />
+      <View style={styles.wrapper}>
+        <View>
+          <View style={styles.block}>
+            <View style={styles.wrap}>
+              <View style={styles.account}>
                 <TouchableOpacity
-                  style={styles.deleteButton}
-                  underlayColor="#eaeaf2"
                   onPress={() => {
-                    setToken();
-                    setId();
+                    uploadPicture();
                   }}
                 >
-                  <Text style={styles.deleteText}>Déconnexion</Text>
+                  <Image
+                    source={{ uri: picture }}
+                    style={styles.avatar}
+                    resizeMode="cover"
+                  />
                 </TouchableOpacity>
+                <View style={styles.infos}>
+                  <Text style={styles.name}>{userName}</Text>
+                  <Text style={styles.email}>{email}</Text>
+                </View>
               </View>
             </View>
           </View>
-        </ScrollView>
-      )}
-    </SafeAreaView>
+          <View style={styles.block}>
+            <View style={styles.wrap}>
+              <TouchableOpacity
+                style={styles.navigation}
+                onPress={() => {
+                  navigation.navigate("AccountInfosScreen");
+                }}
+              >
+                <View style={styles.whiteButton}>
+                  <Text style={styles.blueText}>
+                    👋{"   "}Mes informations personnelles
+                  </Text>
+                  <Image
+                    source={require("../assets/icon-chevron-right-blue.png")}
+                    style={styles.icon}
+                    resizeMode={"contain"}
+                  />
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.navigation}
+                onPress={() => {
+                  navigation.navigate("Lists");
+                }}
+              >
+                <View style={styles.whiteButton}>
+                  <Text style={styles.blueText}>🥑{"   "}Ma liste</Text>
+                  <Image
+                    source={require("../assets/icon-chevron-right-blue.png")}
+                    resizeMode={"contain"}
+                    style={styles.icon}
+                  />
+                </View>
+              </TouchableOpacity>
+            </View>
+          </View>
+          <View style={styles.block}>
+            <View style={styles.wrap}>
+              <TouchableOpacity
+                style={styles.feedbackButton}
+                onPress={() => {
+                  navigation.navigate("FeedbackScreen");
+                }}
+              >
+                <View style={styles.blueButton}>
+                  <Text style={styles.whiteText}>
+                    🚀{"   "}J'ai une suggestion pour Vulpi
+                  </Text>
+                  <Image
+                    source={require("../assets/icon-chevron-right-white.png")}
+                    resizeMode={"contain"}
+                    style={styles.icon}
+                  />
+                </View>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+        <View style={styles.block}>
+          <View style={styles.wrap}>
+            <Image
+              source={require("../assets/icon-logout.png")}
+              style={styles.logoutImage}
+              resizeMode={"contain"}
+            />
+            <TouchableOpacity
+              style={styles.logoutButton}
+              onPress={() => {
+                setToken();
+                setId();
+              }}
+            >
+              <Text style={styles.logoutText}>Déconnexion</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </View>
+    </View>
   );
 }
+
 export default AccountScreen;
+
 const styles = StyleSheet.create({
-  safeAreaView: {
+  container: {
     backgroundColor: "#F7F7F8",
     width: scrollViewHeight,
     width: "100%",
-    flex: 1,
   },
-  scrollView: {
+
+  wrapper: {
     justifyContent: "space-between",
+    paddingTop: "20%",
     height: "100%",
     width: "100%",
   },
-  top: { paddingTop: "10%" },
-  bottom: { paddingBottom: "5%" },
-  whiteButton: { paddingTop: "10%" },
-  whiteWrap: { marginTop: "15%" },
-  whiteButton: { marginBottom: "3%" },
-  blueButton: { marginTop: "25%" },
-  container: { justifyContent: "center", alignItems: "center" },
-  wrap: { justifyContent: "center", width: "90%" },
-  topView: { marginLeft: "5%", alignItems: "center", flexDirection: "row" },
-  picture: { height: 85, width: 85, borderRadius: 150, marginRight: 30 },
-  image: { width: "5%", height: "100%" },
-  logout: {
-    width: "5%",
-    height: "30%",
-    position: "absolute",
-    marginLeft: "5%",
-    zIndex: 1,
-  },
-  buttonWrap: {
-    width: "90%",
-    flexDirection: "row",
-    justifyContent: "space-between",
+
+  account: {
     alignItems: "center",
+    flexDirection: "row",
+    marginBottom: "10%",
+    marginLeft: "5%",
   },
-  texts: { fontSize: 23, position: "relative" },
-  view: { height: 30 },
-  deleteButton: {
+
+  block: {
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: "5%",
+  },
+
+  wrap: {
+    justifyContent: "center",
+    width: "90%",
+  },
+
+  name: {
+    marginBottom: "5%",
+    fontWeight: "600",
+    color: "#232952",
+    fontSize: 23,
+  },
+
+  email: {
+    color: "#5F616A",
+    fontSize: 16,
+  },
+
+  avatar: {
+    borderRadius: 150,
+    marginRight: 30,
+    height: 85,
+    width: 85,
+  },
+
+  navigation: {
+    marginTop: "3%",
+  },
+
+  whiteButton: {
+    justifyContent: "space-between",
+    backgroundColor: "#FFFFFF",
+    borderColor: "#EEEEEE",
+    alignItems: "center",
+    flexDirection: "row",
+    borderRadius: 10,
+    borderWidth: 1,
+    width: "100%",
+    height: 58,
+  },
+
+  blueText: {
+    fontWeight: "600",
+    marginLeft: "5%",
+    color: "#181725",
+    fontSize: 16,
+  },
+
+  icon: {
+    marginRight: "3%",
+    height: 15,
+    width: 15,
+  },
+
+  feedbackButton: {
+    marginTop: "15%",
+  },
+
+  blueButton: {
+    justifyContent: "space-between",
+    backgroundColor: "#3443B9",
+    borderColor: "#EEEEEE",
+    alignItems: "center",
+    flexDirection: "row",
+    borderRadius: 10,
+    borderWidth: 1,
+    width: "100%",
+    height: 58,
+  },
+
+  whiteText: {
+    fontWeight: "600",
+    marginLeft: "5%",
+    color: "white",
+    fontSize: 16,
+  },
+
+  logoutButton: {
     backgroundColor: "#E3E3EE",
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 19,
     height: 67,
   },
-  deleteText: { fontWeight: "600", color: "#232952", fontSize: 18 },
-  btn: {
-    height: 58,
-    width: "100%",
-    alignItems: "center",
-    justifyContent: "space-between",
-    backgroundColor: "#FFFFFF",
-    borderWidth: 1,
-    borderColor: "#EEEEEE",
-    borderRadius: 10,
-    paddingLeft: "5%",
-    marginBottom: "3%",
-    flexDirection: "row",
+
+  logoutText: {
+    fontWeight: "600",
+    color: "#232952",
+    fontSize: 18,
   },
-  text: { color: "#181725", fontWeight: "600", fontSize: 16 },
-  btnWhite: {
-    height: 58,
-    width: "100%",
-    backgroundColor: "#FFFFFF",
-    borderWidth: 1,
-    borderColor: "#EEEEEE",
-    borderRadius: 10,
-    justifyContent: "center",
-    alignItems: "center",
+
+  logoutImage: {
+    position: "absolute",
+    marginLeft: "5%",
+    height: 20,
+    zIndex: 1,
+    width: 20,
   },
-  textWhite: { color: "#181725", fontWeight: "600", fontSize: 16 },
-  btnBlue: {
-    height: 58,
-    width: "100%",
-    backgroundColor: "#3443B9",
-    borderWidth: 1,
-    borderColor: "#EEEEEE",
-    borderRadius: 10,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  textBlue: { color: "white", fontWeight: "600", fontSize: 16 },
 });
