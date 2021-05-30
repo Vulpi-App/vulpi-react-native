@@ -1,287 +1,418 @@
-// // Tools
-// // import React from "react";
-// // import { Text } from "react-native";
+import React, { useState } from "react";
+import {
+  Dimensions,
+  Image,
+  StatusBar,
+  StyleSheet,
+  Text,
+  TouchableHighlight,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import axios from "axios";
+import Constants from "expo-constants";
+import { LinearGradient } from "expo-linear-gradient";
+import { useNavigation } from "@react-navigation/core";
 
-// // const SignInUpScreen = () => {
-// //   return <Text>SignInUpScreen</Text>;
-// // };
+import SignInput from "../components/SignInput";
 
-// // export default SignInUpScreen;
+const windowHeight = Dimensions.get("window").height;
+const statusBarHeight = Constants.statusBarHeight;
+const scrollViewHeight = windowHeight - statusBarHeight;
 
-// import React, { useState } from "react";
-// import {
-//   Dimensions,
-//   SafeAreaView,
-//   ScrollView,
-//   StatusBar,
-//   Image,
-//   StyleSheet,
-//   TouchableHighlight,
-//   Component,
-//   View,
-//   Text,
-// } from "react-native";
-// import axios from "axios";
-// import Constants from "expo-constants";
-// import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+function SetUpProfilScreen({ setToken, setId }) {
+  const [errorMessage, setErrorMessage] = useState(null);
+  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
+  const navigation = useNavigation();
 
-// import { LinearGradient } from "expo-linear-gradient";
+  const handleSubmit = async () => {
+    if (email && password) {
+      if (errorMessage !== null) {
+        setErrorMessage(null);
+      }
 
-// import Message from "./components/Message";
-// import SignInput from "./components/SignInput";
-// import ModalExample from "./components/Modal";
-// import LostPassword from "./components/LostPassword";
+      try {
+        const response = await axios.post(
+          `https://vulpi-forest.herokuapp.com/user/login`,
+          //   `https://express-airbnb-api.herokuapp.com/user/log_in`
+          {
+            email,
+            password,
+          }
+        );
 
-// const windowHeight = Dimensions.get("window").height;
-// const statusBarHeight = Constants.statusBarHeight;
-// const scrollViewHeight = windowHeight - statusBarHeight;
+        if (response.data.token && response.data.id) {
+          const token = response.data.token;
+          const id = response.data.id;
+          setToken(token);
+          setId(id);
+        } else {
+          setErrorMessage("Une erreur s'est produite");
+        }
+      } catch (error) {
+        if (error.response.status === 401) {
+          setErrorMessage("Identifiants incorrects");
+        } else {
+          setErrorMessage("Une erreur s'est produite");
+        }
+      }
+    } else {
+      setErrorMessage("Merci de compléter tous les champs");
+    }
+  };
 
-// function SignInUpScreen({ setToken, setId }) {
-//   const [email, setEmail] = useState("");
-//   const [password, setPassword] = useState("");
-//   const [errorMessage, setErrorMessage] = useState(null);
+  return (
+    <View>
+      <StatusBar barStyle="light-content" />
+      <LinearGradient colors={["#1E2C79", "#232952"]} style={styles.background}>
+        <View style={styles.container}>
+          <View style={styles.wrapper}>
+            <Image
+              source={require("../assets/logo-vulpi.png")}
+              style={styles.logo}
+              resizeMode={"contain"}
+            />
+            <Text style={styles.brand}>Vulpi</Text>
+            <Text style={styles.title}>Fais tes courses autrement</Text>
+          </View>
 
-//   const handleSubmit = async () => {
-//     if (email && password) {
-//       if (errorMessage !== null) {
-//         setErrorMessage(null);
-//       }
+          <View style={styles.wrapper}>
+            <View style={styles.inputWrap}>
+              <SignInput
+                style={styles.inputText}
+                setFunction={setEmail}
+                keyboardType={"email-address"}
+                placeholder={"Email"}
+              />
+              <View style={{ height: 1, backgroundColor: "#EEEEEE" }} />
+              <SignInput
+                setFunction={setPassword}
+                secureTextEntry={true}
+                placeholder={"Mot de passe"}
+              />
+              <TouchableOpacity
+                style={styles.test}
+                underlayColor="#EEEEEE"
+                onPress={() => {}}
+              >
+                <Image
+                  source={require("../assets/icon-eye.png")}
+                  style={styles.icon}
+                  resizeMode={"contain"}
+                />
+              </TouchableOpacity>
+            </View>
+          </View>
 
-//       try {
-//         const response = await axios.post(
-//           `https://express-airbnb-api.herokuapp.com/user/log_in`,
-//           {
-//             email,
-//             password,
-//           }
-//         );
+          <View style={styles.messageWrap}>
+            <View style={styles.errorWrap}>
+              {errorMessage !== null && (
+                <Text style={styles.errorText}>{errorMessage}</Text>
+              )}
+            </View>
+          </View>
 
-//         if (response.data.token && response.data.id) {
-//           const token = response.data.token;
-//           const id = response.data.id;
-//           setToken(token);
-//           setId(id);
-//         } else {
-//           setErrorMessage("An error occurred");
-//         }
-//       } catch (error) {
-//         if (error.response.status === 401) {
-//           setErrorMessage("Incorrect credentials");
-//         } else {
-//           setErrorMessage("An error occurred");
-//         }
-//       }
-//     } else {
-//       setErrorMessage("Please fill all fields");
-//     }
-//   };
+          <View style={styles.wrapper}>
+            <TouchableHighlight
+              style={styles.buttonSign}
+              underlayColor="#EEEEEE"
+              onPress={() => {
+                handleSubmit();
+              }}
+            >
+              <Text style={styles.textSign}>CONNEXION</Text>
+            </TouchableHighlight>
+          </View>
 
-//   return (
-//     <SafeAreaView style={styles.safeAreaView}>
-//       <StatusBar barStyle="light-content" />
-//       <LinearGradient colors={["#1E2C79", "#232952"]} style={styles.background}>
-//         <KeyboardAwareScrollView>
-//           <ScrollView contentContainerStyle={styles.scrollView}>
-//             <View style={styles.container}>
-//               <View style={styles.wrap}>
-//                 <Image
-//                   source={require("../assets/logo-vulpi.png")}
-//                   style={styles.logo}
-//                   resizeMode={"contain"}
-//                 />
-//                 <Text style={styles.brand}>Vulpi</Text>
-//                 <Text style={styles.subTitle}>Fais tes courses autrement</Text>
-//               </View>
+          <View style={styles.wrapperRight}>
+            <TouchableOpacity onPress={() => {}}>
+              <Text style={styles.textLost}>Mot de passe oublié</Text>
+            </TouchableOpacity>
+          </View>
 
-//               <View style={styles.wrap}>
-//                 <SignInput
-//                   setFunction={setEmail}
-//                   keyboardType={"email-address"}
-//                   placeholder={"email"}
-//                 />
-//                 <SignInput
-//                   setFunction={setPassword}
-//                   secureTextEntry={true}
-//                   placeholder={"password"}
-//                 />
-//                 <Message message={errorMessage} color="error" />
-//               </View>
+          <View style={styles.wrapper}>
+            <View style={styles.lineWrap}>
+              <View style={styles.line} />
+              <View>
+                <Text style={styles.textLine}>ou</Text>
+              </View>
+              <View style={styles.line} />
+            </View>
+          </View>
 
-//               <View style={styles.lost}>
-//                 <LostPassword />
-//               </View>
-//               <View style={styles.wrap}>
-//                 <TouchableHighlight
-//                   style={styles.btnSignIn}
-//                   underlayColor="#EEEEEE"
-//                   onPress={() => {
-//                     handleSubmit();
-//                   }}
-//                 >
-//                   <Text style={styles.textSignIn}>CONNEXION</Text>
-//                 </TouchableHighlight>
-//               </View>
+          <View style={styles.wrapper}>
+            <View style={styles.buttonWrap}>
+              <TouchableHighlight
+                style={styles.buttonTier}
+                underlayColor="#EEEEEE"
+                onPress={() => {}}
+              >
+                <View style={styles.buttonView}>
+                  <Image
+                    source={require("../assets/logo-apple.png")}
+                    style={styles.logos}
+                    resizeMode={"contain"}
+                  />
+                  <Text style={styles.textTier}>Continuer avec Apple</Text>
+                </View>
+              </TouchableHighlight>
+              <TouchableHighlight
+                style={styles.buttonTier}
+                underlayColor="#EEEEEE"
+                onPress={() => {}}
+              >
+                <View style={styles.buttonView}>
+                  <Image
+                    source={require("../assets/logo-google.png")}
+                    style={styles.logos}
+                    resizeMode={"contain"}
+                  />
+                  <Text style={styles.textTier}>Continuer avec Google</Text>
+                </View>
+              </TouchableHighlight>
+              <TouchableHighlight
+                style={styles.buttonTier}
+                underlayColor="#EEEEEE"
+                onPress={() => {}}
+              >
+                <View style={styles.buttonView}>
+                  <Image
+                    source={require("../assets/logo-facebook.png")}
+                    style={styles.logos}
+                    resizeMode={"contain"}
+                  />
+                  <Text style={styles.textTier}>Continuer avec Facebook</Text>
+                </View>
+              </TouchableHighlight>
+            </View>
+          </View>
 
-//               <View style={styles.choose}>
-//                 <View
-//                   style={{
-//                     borderBottomColor: "white",
-//                     borderBottomWidth: 5,
-//                     width: 134,
-//                   }}
-//                 />
-//                 <Text style={styles.text}>OU</Text>
-//                 <View
-//                   style={{
-//                     borderBottomColor: "white",
-//                     borderBottomWidth: 5,
-//                     width: 134,
-//                   }}
-//                 />
-//               </View>
+          <View style={styles.block}>
+            <TouchableOpacity
+              style={styles.signUp}
+              onPress={() => {
+                navigation.navigate("RegisterScreen");
+              }}
+            >
+              <Text style={styles.textSignUp}>Tu n'as pas de compte ? </Text>
+              <Text style={styles.textUnderline}>Crées en un</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </LinearGradient>
+    </View>
+  );
+}
 
-//               <View style={styles.wrap}>
-//                 <View style={styles.buttonWrap}>
-//                   <Image
-//                     source={require("../assets/logo-apple.png")}
-//                     style={styles.logos}
-//                     resizeMode={"contain"}
-//                   />
-//                   <Text style={styles.textTier}>Continuer avec Apple</Text>
-//                 </View>
-//                 <View style={styles.buttonWrap}>
-//                   <Image
-//                     source={require("../assets/logo-google.png")}
-//                     style={styles.logos}
-//                     resizeMode={"contain"}
-//                   />
-//                   <Text style={styles.textTier}>Continuer avec Google</Text>
-//                 </View>
-//                 <View style={styles.buttonWrap}>
-//                   <Image
-//                     source={require("../assets/logo-facebook.png")}
-//                     style={styles.logos}
-//                     resizeMode={"contain"}
-//                   />
-//                   <Text style={styles.textTier}>Continuer avec Facebook</Text>
-//                 </View>
-//                 <View style={styles.modal}>
-//                   <ModalExample />
-//                 </View>
-//               </View>
-//             </View>
-//           </ScrollView>
-//         </KeyboardAwareScrollView>
-//       </LinearGradient>
-//     </SafeAreaView>
-//   );
-// }
+export default SetUpProfilScreen;
 
-// export default SignInUpScreen;
+const styles = StyleSheet.create({
+  container: {
+    height: scrollViewHeight,
+    justifyContent: "flex-start",
+    alignItems: "center",
+  },
 
-// const styles = StyleSheet.create({
-//   safeAreaView: {
-//     backgroundColor: "#1E2C79",
-//     width: scrollViewHeight,
-//     width: "100%",
-//     flex: 1,
-//   },
+  wrapper: {
+    justifyContent: "center",
+    alignItems: "center",
+    width: "90%",
+    // backgroundColor: "red",
+  },
 
-//   scrollView: {
-//     justifyContent: "space-between",
-//     height: scrollViewHeight,
-//     width: "100%",
-//   },
+  wrapperRight: {
+    justifyContent: "center",
+    alignItems: "flex-end",
+    width: "90%",
+  },
 
-//   container: {
-//     justifyContent: "center",
-//     alignItems: "center",
-//     height: scrollViewHeight,
-//   },
+  logo: {
+    marginTop: "25%",
+    height: 32.4,
+  },
 
-//   wrap: {
-//     justifyContent: "center",
-//     alignItems: "center",
+  brand: {
+    fontWeight: "600",
+    color: "white",
+    fontSize: 35,
+    marginTop: "3%",
+  },
 
-//     width: "90%",
-//   },
+  title: {
+    fontWeight: "600",
+    color: "white",
+    fontSize: 15,
+    marginTop: "1%",
+  },
 
-//   text: {
-//     color: "white",
-//   },
-//   brand: {
-//     color: "white",
-//     fontWeight: "600",
-//     fontSize: 35,
-//     marginBottom: 30,
-//   },
-//   choose: {
-//     alignItems: "center",
-//     justifyContent: "space-between",
-//     display: "flex",
-//     flexDirection: "row",
-//     padding: "5%",
-//   },
-//   modal: {
-//     backgroundColor: "white",
-//     marginTop: "10%",
-//     width: "100%",
-//     height: "8%",
-//     borderTopLeftRadius: 8,
-//     borderTopRightRadius: 8,
-//     justifyContent: "center",
-//     flexDirection: "row",
-//   },
+  messageWrap: {
+    justifyContent: "center",
+    backgroundColor: "green",
+    alignItems: "center",
+    height: "5%",
+  },
 
-//   btnSignIn: {
-//     height: 49,
-//     width: "90%",
-//     alignItems: "center",
-//     justifyContent: "center",
-//     borderColor: "white",
-//     backgroundColor: "white",
-//     borderWidth: 3,
-//     borderRadius: 8,
-//     marginTop: 20,
-//   },
+  errorWrap: {
+    position: "absolute",
+    marginBottom: 20,
+  },
 
-//   textSignIn: {
-//     color: "black",
-//     fontWeight: "500",
-//     fontSize: 18,
-//   },
-//   logo: {
-//     height: 32.4,
-//   },
-//   buttonWrap: {
-//     height: 49,
-//     width: "90%",
-//     alignItems: "center",
-//     justifyContent: "center",
-//     borderColor: "white",
-//     backgroundColor: "white",
-//     borderWidth: 3,
-//     borderRadius: 8,
-//     display: "flex",
-//     flexDirection: "row",
-//     marginBottom: 10,
-//   },
+  icon: {
+    width: 15,
+  },
 
-//   textTier: {
-//     color: "black",
-//     fontWeight: "500",
-//     fontSize: 18,
-//     position: "relative",
-//   },
-//   logos: {
-//     width: 20,
-//     position: "relative",
-//     marginRight: 10,
-//   },
-//   subTitle: {
-//     color: "white",
-//     fontWeight: "600",
-//     fontSize: 15,
-//     marginBottom: 30,
-//   },
-// });
+  test: {
+    position: "absolute",
+    marginTop: 40,
+    marginLeft: 340,
+  },
+
+  errorText: {
+    color: "#CA2121",
+  },
+
+  inputText: {
+    color: "#CA2121",
+  },
+
+  inputWrap: {
+    width: "100%",
+    backgroundColor: "white",
+    marginTop: "15%",
+    borderTopLeftRadius: 8,
+    borderTopRightRadius: 8,
+    borderBottomLeftRadius: 8,
+    borderBottomRightRadius: 8,
+  },
+
+  buttonSign: {
+    height: 49,
+    width: "100%",
+    alignItems: "center",
+    justifyContent: "center",
+    borderColor: "white",
+    backgroundColor: "white",
+    borderWidth: 3,
+    borderRadius: 8,
+  },
+
+  textSign: {
+    color: "#0C166D",
+    fontWeight: "bold",
+    fontSize: 16,
+  },
+
+  textLost: {
+    color: "white",
+    fontWeight: "500",
+    fontSize: 14,
+    textDecorationLine: "underline",
+    marginTop: "2%",
+  },
+
+  textSignUp: {
+    color: "#232952",
+    fontWeight: "500",
+    fontSize: 14,
+  },
+
+  textUnderline: {
+    color: "#232952",
+    fontWeight: "500",
+    fontSize: 14,
+    textDecorationLine: "underline",
+  },
+
+  lineWrap: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginTop: "5%",
+  },
+
+  signUp: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+
+  line: {
+    flex: 1,
+    height: 2,
+    backgroundColor: "white",
+  },
+
+  textLine: {
+    width: 100,
+    textAlign: "center",
+    color: "white",
+    fontSize: 20,
+    fontWeight: "600",
+  },
+
+  buttonWrap: {
+    justifyContent: "center",
+    alignItems: "center",
+    width: "100%",
+    marginTop: "5%",
+  },
+
+  choose: {
+    alignItems: "center",
+    justifyContent: "space-between",
+
+    flexDirection: "row",
+  },
+  modal: {
+    backgroundColor: "white",
+    marginTop: "10%",
+    width: "100%",
+    height: "8%",
+    borderTopLeftRadius: 8,
+    borderTopRightRadius: 8,
+    justifyContent: "center",
+    flexDirection: "row",
+  },
+
+  buttonTier: {
+    height: 49,
+    width: "100%",
+    alignItems: "center",
+    justifyContent: "center",
+    borderColor: "white",
+    backgroundColor: "white",
+    borderWidth: 3,
+    borderRadius: 8,
+    display: "flex",
+    flexDirection: "row",
+    marginTop: "2%",
+  },
+
+  buttonView: {
+    flexDirection: "row",
+  },
+
+  textTier: {
+    color: "black",
+    fontWeight: "600",
+    fontSize: 18,
+    position: "relative",
+  },
+  logos: {
+    width: 20,
+    position: "relative",
+    marginRight: 10,
+  },
+
+  block: {
+    height: 100,
+    width: "100%",
+    justifyContent: "center",
+    alignItems: "flex-start",
+    backgroundColor: "white",
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    flexDirection: "row",
+    marginTop: "20%",
+    paddingTop: "5%",
+  },
+});
