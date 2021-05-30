@@ -57,6 +57,8 @@ const ListsScreen = ({ navigation }) => {
   // console.log("userToken ", userToken);
   // console.log("userId ", userId);
 
+  const [dataProductsDisplay, setDataProductsDisplay] = useState([]);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -117,32 +119,34 @@ const ListsScreen = ({ navigation }) => {
                 }}
               />
             </View>
-            <View style={styles.blockBottomAddQuickly}>
-              {valueInputAddQuickly ? (
+            <View style={styles.blockBottomAddQuicklyAutocomplete}>
+              {valueInputAddQuickly && dataProductsDisplay.length > 0 ? (
                 <ProductLineAutoComplete
                   firstLine={true}
-                  valueInputAddQuickly={valueInputAddQuickly}
                   setValueInputAddQuickly={setValueInputAddQuickly}
+                  valueAutocomplete={dataProductsDisplay[0].name}
+                />
+              ) : null}
+              {valueInputAddQuickly && dataProductsDisplay.length > 1 ? (
+                <ProductLineAutoComplete
+                  firstLine={false}
+                  setValueInputAddQuickly={setValueInputAddQuickly}
+                  valueAutocomplete={dataProductsDisplay[1].name}
                 />
               ) : null}
               {valueInputAddQuickly ? (
                 <ProductLineAutoComplete
-                  firstLine={false}
-                  valueInputAddQuickly={valueInputAddQuickly}
+                  firstLine={dataProductsDisplay.length > 0 ? false : true}
                   setValueInputAddQuickly={setValueInputAddQuickly}
-                />
-              ) : null}
-              {valueInputAddQuickly ? (
-                <ProductLineAutoComplete
-                  firstLine={false}
-                  valueInputAddQuickly={valueInputAddQuickly}
-                  setValueInputAddQuickly={setValueInputAddQuickly}
+                  valueAutocomplete={valueInputAddQuickly}
                 />
               ) : null}
               <ProductBottomBlockAdd
                 setModalAddProductVisible={setModalAddProductVisible}
                 valueInputAddQuickly={valueInputAddQuickly}
                 setValueInputAddQuickly={setValueInputAddQuickly}
+                dataProducts={data.user.products}
+                setDataProductsDisplay={setDataProductsDisplay}
               />
             </View>
           </View>
@@ -199,5 +203,5 @@ const styles = StyleSheet.create({
     marginRight: "auto",
   },
 
-  blockBottomAddQuickly: {},
+  blockBottomAddQuicklyAutocomplete: {},
 });

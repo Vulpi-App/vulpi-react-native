@@ -7,7 +7,25 @@ const ProductBottomBlockAdd = ({
   setModalAddProductVisible,
   valueInputAddQuickly,
   setValueInputAddQuickly,
+  dataProducts,
+  setDataProductsDisplay,
 }) => {
+  // Autocomplete dataProducts
+  const handleSearchProductsInDB = (text) => {
+    const newDataProducts = [];
+    for (let i of dataProducts) {
+      if (i.name.indexOf(text.toLowerCase()) !== -1) {
+        if (newDataProducts.length <= 2) {
+          newDataProducts.push(i);
+        } else {
+          break;
+        }
+      }
+    }
+    setDataProductsDisplay(newDataProducts);
+    setValueInputAddQuickly(text);
+  };
+
   return (
     <View
       style={[
@@ -32,9 +50,10 @@ const ProductBottomBlockAdd = ({
           placeholder="Ajout rapide"
           placeholderTextColor="#797979"
           autoCapitalize="sentences"
-          onChangeText={(text) => {
-            setValueInputAddQuickly(text);
-          }}
+          // onChangeText={(text) => {
+          //   setValueInputAddQuickly(text);
+          // }}
+          onChangeText={handleSearchProductsInDB}
           value={valueInputAddQuickly}
         ></TextInput>
       </View>

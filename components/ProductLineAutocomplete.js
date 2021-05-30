@@ -13,8 +13,8 @@ const userToken = "cccc";
 
 const ProductLineAutoComplete = ({
   firstLine,
-  valueInputAddQuickly,
   setValueInputAddQuickly,
+  valueAutocomplete,
 }) => {
   const addProduct = async () => {
     try {
@@ -22,10 +22,10 @@ const ProductLineAutoComplete = ({
       // ----------- ADD PRODUCT ------------ //
       // ------------------------------------ //
 
-      if (valueInputAddQuickly) {
-        if (valueInputAddQuickly.length <= 30) {
+      if (valueAutocomplete) {
+        if (valueAutocomplete.length <= 30) {
           const formData = new FormData();
-          formData.append("nameProduct", valueInputAddQuickly);
+          formData.append("nameProduct", valueAutocomplete);
 
           // Request API
           const response = await axios.post(
@@ -67,7 +67,7 @@ const ProductLineAutoComplete = ({
         },
       ]}
     >
-      <Text style={styles.textAdd}>{valueInputAddQuickly}</Text>
+      <Text style={styles.textAdd}>{valueAutocomplete}</Text>
       <View style={styles.blockButtonAdd}>
         <AntDesign
           name="arrowup"
