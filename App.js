@@ -16,23 +16,25 @@ import AccountInfosScreen from "./containers/AccountInfosScreen";
 import SettingsScreen from "./containers/SettingsScreen";
 import FeedbackScreen from "./containers/FeedbackScreen";
 import ListScreen from "./containers/ListScreen";
+import axios from "axios";
 import RegisterScreen from "./containers/RegisterScreen";
 
+
 // Useful variables
-const serverURL = "";
-// Local server : "http://localhost:3001"
-// Heroku server : "A compléter"
+const serverURL = "http://localhost:3310";
+// Local server : "http://localhost:3310"
+// Heroku server : "https://vulpi-forest.herokuapp.com"
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
 export default function App() {
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   // Création d'un state temporaire/fictif à revoir par la suite
   const [userToken, setUserToken] = useState(
-    "2uBKteBLqM7Ni01EXYAOdYLzbcUBIDYvA3tUUe5STQ70NJ56WGpCGAXCW6iGFQqc"
+    "aY6F1blbUpsGS5GmjDKUd6ryKdL8KEwgJvaZRr3DSiEScSQpooJReSf7z4PrRJax"
   );
-  const [userId, setUserId] = useState("60af8eeab4a37e118de05b61");
+  const [userId, setUserId] = useState("60ae2381a338aa0f23126a89");
   // State pour gérer l'affichage du Onboarding
   const [firstConnection, setFirstConnection] = useState(false);
 
@@ -51,20 +53,44 @@ export default function App() {
     setUserId(id);
   };
 
-  useEffect(() => {
-    // Fetch the token from storage then navigate to our appropriate place
-    const bootstrapAsync = async () => {
-      // We should also handle error for production apps
-      const userToken = await AsyncStorage.getItem("userToken");
-      const userId = await AsyncStorage.getItem("userId");
-      // This will switch to the App screen or Auth screen and this loading
-      // screen will be unmounted and thrown away.
-      setIsLoading(false);
-      setUserToken(userToken);
-    };
 
-    bootstrapAsync();
-  }, []);
+  const setOnBoardingDone = async () => {
+    try {
+      setFirstConnection = false;
+      // Save in Local Storage the fact that the user has seen the onBoarding
+      await AsyncStorage.setItem("onBoarding", "done");
+
+      // Save in DB the fact that it is not the user's 1st connection
+      const FormData = new FormData();
+      formData.append("firstConnection", false);
+      const response = await axios.put(
+        `${serverUrl}/user/update/userId`,
+        FormData,
+        {
+          headers: { authorization: `Bearer ${userToken}` },
+        }
+      );
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
+  // useEffect(() => {
+  //   // Fetch the token from storage then navigate to our appropriate place
+  //   const bootstrapAsync = async () => {
+  //     // We should also handle error for production apps
+  //     const userToken = await AsyncStorage.getItem("userToken");
+  //     // const userId = await AsyncStorage.getItem("userId");
+  //     // This will switch to the App screen or Auth screen and this loading
+  //     // screen will be unmounted and thrown away.
+  //     setIsLoading(false);
+  //     setUserToken(userToken);
+  //   };
+
+  //   bootstrapAsync();
+  // }, []);
+
+
 
   return (
     <NavigationContainer>
