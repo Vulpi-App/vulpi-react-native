@@ -1,6 +1,6 @@
 // React & React Native - Imports
 import React from "react";
-import { View, Image, StyleSheet } from "react-native";
+import { Image, TouchableOpacity, StyleSheet } from "react-native";
 
 // Colors - import
 import colors from "../assets/colors";
@@ -9,7 +9,7 @@ const { orangeNotifications, mainBlueText } = colors;
 // Ce-dessous en props: {color, source, resizeMode}
 const ListIconCircle = ({ color, source, resizeMode }) => {
   return (
-    <View
+    <TouchableOpacity
       // Orange icon still possible in new design? In case, keep it here
       style={
         (color === "orange" && [styles.circleIcon, styles.circleIconOrange]) ||
@@ -17,7 +17,7 @@ const ListIconCircle = ({ color, source, resizeMode }) => {
       }
     >
       <Image style={styles.icon} source={source} resizeMode={resizeMode} />
-    </View>
+    </TouchableOpacity>
   );
 };
 

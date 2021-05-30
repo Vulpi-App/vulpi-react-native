@@ -25,10 +25,6 @@ const ListFull = ({ data, idListActive }) => {
             return <ListFullInput item={item} idListActive={idListActive} />;
           }}
         />
-
-        {/*       
-        <ListFullInput name="Bananes" price="2.80" custom={false} />
-        <ListFullInput name="Bonbons" price="4.10" custom={true} /> */}
       </View>
     </View>
   );

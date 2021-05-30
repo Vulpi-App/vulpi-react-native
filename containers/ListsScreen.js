@@ -48,11 +48,16 @@ const ListsScreen = ({ navigation }) => {
   // State for new list
   const [newListCreated, setNewListCreated] = useState("");
 
+  // State for fold or unfold list of lists
+  const [foldedNav, setFoldedNav] = useState(true);
+
   // TEST EN DUR
   const userToken =
-    "0rrwD83Xi4K2VJMbEhQy1XMdjo9mNmejYrYm9AY745At9r1E3HcJGOW7f4EBuZmx";
-  const userId = "60af5e6d8e67798590ac5ed2";
-  const listId = "60af5e6d8e67798590ac5ed3";
+    "KSpUkFnIaPDmIYfzmc24iaWzzlsISjQ2m3mPkdfK8jhshqBUx4ApsLNIMEivqut0";
+  const userId = "60b34cdb27fe1e80df064679";
+  const listId = "60b34d3127fe1e80df06467c";
+
+  console.log(idListActive);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -69,6 +74,7 @@ const ListsScreen = ({ navigation }) => {
 
         setData(response.data);
         setLoading(false);
+        setIdListActive(response.data.lists[0]._id);
       } catch (error) {
         console.log(error.message);
       }
@@ -78,6 +84,10 @@ const ListsScreen = ({ navigation }) => {
 
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
+  };
+
+  const foldOrUnfoldLists = () => {
+    setFoldedNav(!foldedNav);
   };
 
   return loading ? (
@@ -91,21 +101,31 @@ const ListsScreen = ({ navigation }) => {
           <StatusBar style="light" />
 
           <View style={styles.wrapper}>
-            {/* ----- Header ✅ 
-            🚨 Gérer le toggle dépliant 
-            🚨 Gérer les onPress "notifications" + "partager"*/}
-            <ListHeader data={data} idListActive={idListActive} />
+            {/* ----- Header 
+            ✅  Gérer le toggle dépliant 
+            🚨 Gérer les onPress "notifications" + "partager" - vers quelles screen ça renvoit ?*/}
+            <ListHeader
+              data={data}
+              idListActive={idListActive}
+              foldedNav={foldedNav}
+              setFoldedNav={setFoldedNav}
+              foldOrUnfoldLists={foldOrUnfoldLists}
+            />
 
             {/* ----- Navigation scrollbar horizontal ✅ 
             🚨 Gérer l'ajout de la nouvelle liste au DEBUT et non à la suite des listes existantes */}
-            <ListButtonChoice
-              toggleModal={toggleModal}
-              data={data}
-              idListActive={idListActive}
-              setIdListActive={setIdListActive}
-            />
+            {foldedNav ? null : (
+              <ListButtonChoice
+                toggleModal={toggleModal}
+                data={data}
+                idListActive={idListActive}
+                setIdListActive={setIdListActive}
+              />
+            )}
+
             {/* ----- List(s) ✅ 
-             🚨 Problème de récupération du nom du produit (route back listcontent/:listId ne fonctionne pas) */}
+             🚨 Problème de récupération du nom du produit (route back listcontent/:listId ne fonctionne pas) 
+             🚨 Gérer le screen au clic sur les 3 points */}
             <ListFull data={data} idListActive={idListActive} />
 
             <Button

@@ -14,12 +14,20 @@ const {
 } = colors;
 
 const ListFullHeader = ({ item, idListActive }) => {
+  const totalPrice = [];
   return (
     item._id === idListActive && (
       <View style={styles.listTitle}>
         <View>
           <Text style={styles.h2}>{item.title}</Text>
         </View>
+
+        {/* {item.products.map((el, index) => {
+          totalPrice.push(el.price);
+          console.log(totalPrice);
+          totalPrice.reduce((acc, item) => acc + item);
+          return <Text>{totalPrice}</Text>;
+        })} */}
 
         <View style={styles.headerDetailsWrap}>
           {item.products.length > 0 ? (

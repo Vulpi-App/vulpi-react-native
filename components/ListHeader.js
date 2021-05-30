@@ -7,7 +7,13 @@ import ListMainTitle from "./ListMainTitle";
 import ListToggle from "./ListToggle";
 import ListIconCircle from "./ListIconCircle";
 
-const ListHeader = ({ data, idListActive }) => {
+const ListHeader = ({
+  data,
+  idListActive,
+  foldOrUnfoldLists,
+  foldedNav,
+  setFoldedNav,
+}) => {
   return (
     <View style={[styles.wrapper, styles.headerWrap]}>
       <View>
@@ -16,7 +22,15 @@ const ListHeader = ({ data, idListActive }) => {
           data={data.lists}
           keyExtractor={(item) => item._id}
           renderItem={({ item }) => {
-            return <ListToggle item={item} idListActive={idListActive} />;
+            return (
+              <ListToggle
+                item={item}
+                idListActive={idListActive}
+                foldedNav={foldedNav}
+                setFoldedNav={setFoldedNav}
+                foldOrUnfoldLists={foldOrUnfoldLists}
+              />
+            );
           }}
         />
       </View>
@@ -26,13 +40,11 @@ const ListHeader = ({ data, idListActive }) => {
           color="blue"
           source={require("../assets/icon-bell.png")}
           resizeMode="contain"
-          onPress={() => console.log("press")} // TO DO
         />
         <ListIconCircle
           color="blue"
           source={require("../assets/icon-share.png")}
           resizeMode="contain"
-          onPress={() => console.log("press")} // TO DO
         />
       </View>
     </View>
