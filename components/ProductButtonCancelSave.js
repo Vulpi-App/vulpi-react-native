@@ -2,18 +2,12 @@
 import React from "react";
 import { Text, View, StyleSheet, TouchableHighlight } from "react-native";
 
-const ProductButtonCancelSave = ({
-  modalAddProductVisible,
-  setModalAddProductVisible,
-  submitInfosProduct,
-}) => {
+const ProductButtonCancelSave = ({ closeModalProduct, submitInfosProduct }) => {
   return (
     <View style={styles.blockButtonsCancelSave}>
       <TouchableHighlight
         style={[styles.button, styles.buttonCancel]}
-        onPress={() => {
-          setModalAddProductVisible(!modalAddProductVisible);
-        }}
+        onPress={closeModalProduct}
       >
         <Text style={styles.textCancel}>Annuler</Text>
       </TouchableHighlight>

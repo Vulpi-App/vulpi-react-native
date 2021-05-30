@@ -10,7 +10,6 @@ import {
   SafeAreaView,
   ActivityIndicator,
   StyleSheet,
-  Dimensions,
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import Constants from "expo-constants";
@@ -27,6 +26,7 @@ import ListFull from "../components/ListFull";
 import ListModalNewList from "../components/ListModalNewList";
 import ProductBottomBlockAdd from "../components/ProductBottomBlockAdd";
 import ModalProduct from "../components/ProductModalAddUpdate";
+import ProductLineAutoComplete from "../components/ProductLineAutocomplete";
 
 // Colors - import
 import colors from "../assets/colors";
@@ -38,9 +38,11 @@ const ListsScreen = ({ navigation }) => {
   // States for modals
   const [isModalVisible, setModalVisible] = useState(false);
   const [modalAddProductVisible, setModalAddProductVisible] = useState(false);
+  const [valueInputAddQuickly, setValueInputAddQuickly] = useState();
 
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState();
+
 
   // State for active lists (scrollbar horizontal)
   const [idListActive, setIdListActive] = useState();
@@ -61,20 +63,26 @@ const ListsScreen = ({ navigation }) => {
   const userId = "60b34cdb27fe1e80df064679";
   const listId = "60b34d3127fe1e80df06467c";
 
+
   console.log(idListActive);
+
+  const [dataProductsDisplay, setDataProductsDisplay] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:3310/lists/${userId}`,
+          `http://192.168.0.20:3310/lists/${userId}`,
           {
             headers: {
               Authorization: `Bearer ${userToken}`,
             },
           }
         );
-        // console.log("response.data ", response.data);
+
+
+        // console.log("response.data", response.data);
+        // console.log("response.data.lists", response.data.lists);
 
         setData(response.data);
         setLoading(false);
@@ -84,27 +92,36 @@ const ListsScreen = ({ navigation }) => {
       }
     };
     fetchData();
+
   }, [newListCreated, updateList, deleteList]);
+
 
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
   };
 
+
   const foldOrUnfoldLists = () => {
     setFoldedNav(!foldedNav);
   };
+
 
   return loading ? (
     <View style={styles.loading}>
       <ActivityIndicator size="large" color={white} />
     </View>
   ) : (
-    <KeyboardAwareScrollView style={styles.pageScreen}>
-      <SafeAreaView style={styles.screen}>
-        <ScrollView style={styles.scrollView}>
-          <StatusBar style="light" />
 
-          <View style={styles.wrapper}>
+    <View style={styles.screen}>
+      <KeyboardAwareScrollView
+        contentContainerStyle={{ height: "100%", margin: 0 }}
+        viewIsInsideTabBar={false}
+      >
+        <StatusBar style="light" />
+        <SafeAreaView style={styles.pageScreen}>
+          <View style={styles.globalContainer}>
+            
+<View style={styles.wrapper}>
             {/* ----- Header 
             ✅  Gérer le toggle dépliant 
             🚨 Gérer les onPress "notifications" + "partager" - vers quelles screen ça renvoit ?*/}
@@ -139,12 +156,49 @@ const ListsScreen = ({ navigation }) => {
               }}
             />
           </View>
-        </ScrollView>
-        <ProductBottomBlockAdd
-          setModalAddProductVisible={setModalAddProductVisible}
-        />
 
-        {/* Modal "+ New list" */}
+            <View style={styles.blockBottomAddQuicklyAutocomplete}>
+              {valueInputAddQuickly && dataProductsDisplay.length > 0 ? (
+                <ProductLineAutoComplete
+                  firstLine={true}
+                  setValueInputAddQuickly={setValueInputAddQuickly}
+                  valueAutocomplete={dataProductsDisplay[0].name}
+                />
+              ) : null}
+              {valueInputAddQuickly && dataProductsDisplay.length > 1 ? (
+                <ProductLineAutoComplete
+                  firstLine={false}
+                  setValueInputAddQuickly={setValueInputAddQuickly}
+                  valueAutocomplete={dataProductsDisplay[1].name}
+                />
+              ) : null}
+              {valueInputAddQuickly ? (
+                <ProductLineAutoComplete
+                  firstLine={dataProductsDisplay.length > 0 ? false : true}
+                  setValueInputAddQuickly={setValueInputAddQuickly}
+                  valueAutocomplete={valueInputAddQuickly}
+                />
+              ) : null}
+              <ProductBottomBlockAdd
+                setModalAddProductVisible={setModalAddProductVisible}
+                valueInputAddQuickly={valueInputAddQuickly}
+                setValueInputAddQuickly={setValueInputAddQuickly}
+                dataProducts={data.user.products}
+                setDataProductsDisplay={setDataProductsDisplay}
+              />
+            </View>
+          </View>
+          {/* Modal "+ Nouvelle liste" */}
+          <ListModalNewList
+            isModalVisible={isModalVisible}
+            setModalVisible={setModalVisible}
+          />
+
+        
+        </SafeAreaView>
+      </KeyboardAwareScrollView>
+
+ {/* Modal "+ New list" */}
         <ListModalNewList
           isModalVisible={isModalVisible}
           setModalVisible={setModalVisible}
@@ -166,41 +220,49 @@ const ListsScreen = ({ navigation }) => {
           setDeleteList={setDeleteList}
         />
 
-        {/* Modal "Add or Update Product" */}
-        <ModalProduct
-          modalAddProductVisible={modalAddProductVisible}
-          setModalAddProductVisible={setModalAddProductVisible}
-          typeModalProduct="update product"
-        />
-      </SafeAreaView>
-    </KeyboardAwareScrollView>
+      {/* Modal "Add or Update Product" */}
+      <ModalProduct
+        modalAddProductVisible={modalAddProductVisible}
+        setModalAddProductVisible={setModalAddProductVisible}
+        typeModalProduct="update product"
+      />
+    </View>
   );
 };
 
 export default ListsScreen;
 
 const styles = StyleSheet.create({
-  pageScreen: {
-    flex: 1,
-  },
+
   loading: {
     flex: 1,
     justifyContent: "center",
   },
-  screen: {
+
+  screen: { flex: 1 },
+
+  pageScreen: {
+
     backgroundColor: buttonDarkBlue,
     flex: 1,
+    // height: "100%",
+  },
+
+
+  globalContainer: {
+    height: "100%",
     justifyContent: "space-between",
+
   },
-  scrollView: {
-    marginTop: Platform.OS === "android" ? Constants.statusBarHeight : 0,
-    paddingTop: 20,
-  },
+
   wrapper: {
+    paddingTop: 20,
     width: "96%",
-    marginTop: 0,
+    marginTop: Platform.OS === "android" ? Constants.statusBarHeight : 0,
     marginBottom: 0,
     marginLeft: "auto",
     marginRight: "auto",
   },
+
+  blockBottomAddQuicklyAutocomplete: {},
 });

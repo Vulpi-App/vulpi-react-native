@@ -54,6 +54,7 @@ export default function App() {
   };
 
 
+
   const setOnBoardingDone = async () => {
     try {
       setFirstConnection = false;
@@ -89,6 +90,7 @@ export default function App() {
 
   //   bootstrapAsync();
   // }, []);
+
 
 
 
