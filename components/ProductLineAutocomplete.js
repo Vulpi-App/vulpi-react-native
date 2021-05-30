@@ -5,7 +5,7 @@ import { AntDesign } from "@expo/vector-icons";
 import axios from "axios";
 
 // URL request
-const localURLAdd = "http://192.168.0.20:3310/lists/add-product/";
+const localURLAdd = "http://localhost:3310/lists/add-product/";
 
 // Variables test -> A modifier avec les vrais valeurs quand Manon aura finalisé
 const idList = "60abd473ebe4f06ebef9375b";

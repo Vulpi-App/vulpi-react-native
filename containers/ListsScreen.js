@@ -24,6 +24,7 @@ import ListHeader from "../components/ListHeader";
 import ListButtonChoice from "../components/ListButtonChoice";
 import ListFull from "../components/ListFull";
 import ListModalNewList from "../components/ListModalNewList";
+import ListModalRenameList from "../components/ListModalRenameList";
 import ProductBottomBlockAdd from "../components/ProductBottomBlockAdd";
 import ModalProduct from "../components/ProductModalAddUpdate";
 import ProductLineAutoComplete from "../components/ProductLineAutocomplete";
@@ -43,7 +44,6 @@ const ListsScreen = ({ navigation }) => {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState();
 
-
   // State for active lists (scrollbar horizontal)
   const [idListActive, setIdListActive] = useState();
 
@@ -58,11 +58,9 @@ const ListsScreen = ({ navigation }) => {
   const [foldedNav, setFoldedNav] = useState(true);
 
   // TEST EN DUR
-  const userToken =
-    "KSpUkFnIaPDmIYfzmc24iaWzzlsISjQ2m3mPkdfK8jhshqBUx4ApsLNIMEivqut0";
-  const userId = "60b34cdb27fe1e80df064679";
-  const listId = "60b34d3127fe1e80df06467c";
-
+  const userToken = "cccc";
+  const userId = "60abcb97ac82f76c79939767";
+  const listId = "60abd473ebe4f06ebef9375b";
 
   console.log(idListActive);
 
@@ -72,14 +70,13 @@ const ListsScreen = ({ navigation }) => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `http://192.168.0.20:3310/lists/${userId}`,
+          `http://localhost:3310/lists/${userId}`,
           {
             headers: {
               Authorization: `Bearer ${userToken}`,
             },
           }
         );
-
 
         // console.log("response.data", response.data);
         // console.log("response.data.lists", response.data.lists);
@@ -92,26 +89,21 @@ const ListsScreen = ({ navigation }) => {
       }
     };
     fetchData();
-
   }, [newListCreated, updateList, deleteList]);
-
 
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
   };
 
-
   const foldOrUnfoldLists = () => {
     setFoldedNav(!foldedNav);
   };
-
 
   return loading ? (
     <View style={styles.loading}>
       <ActivityIndicator size="large" color={white} />
     </View>
   ) : (
-
     <View style={styles.screen}>
       <KeyboardAwareScrollView
         contentContainerStyle={{ height: "100%", margin: 0 }}
@@ -120,42 +112,41 @@ const ListsScreen = ({ navigation }) => {
         <StatusBar style="light" />
         <SafeAreaView style={styles.pageScreen}>
           <View style={styles.globalContainer}>
-            
-<View style={styles.wrapper}>
-            {/* ----- Header 
+            <View style={styles.wrapper}>
+              {/* ----- Header 
             ✅  Gérer le toggle dépliant 
             🚨 Gérer les onPress "notifications" + "partager" - vers quelles screen ça renvoit ?*/}
-            <ListHeader
-              data={data}
-              idListActive={idListActive}
-              foldedNav={foldedNav}
-              setFoldedNav={setFoldedNav}
-              foldOrUnfoldLists={foldOrUnfoldLists}
-            />
-
-            {/* ----- Navigation scrollbar horizontal ✅ 
-            🚨 Gérer l'ajout de la nouvelle liste au DEBUT et non à la suite des listes existantes */}
-            {foldedNav ? null : (
-              <ListButtonChoice
-                toggleModal={toggleModal}
+              <ListHeader
                 data={data}
                 idListActive={idListActive}
-                setIdListActive={setIdListActive}
+                foldedNav={foldedNav}
+                setFoldedNav={setFoldedNav}
+                foldOrUnfoldLists={foldOrUnfoldLists}
               />
-            )}
 
-            {/* ----- List(s) ✅ 
+              {/* ----- Navigation scrollbar horizontal ✅ 
+            🚨 Gérer l'ajout de la nouvelle liste au DEBUT et non à la suite des listes existantes */}
+              {foldedNav ? null : (
+                <ListButtonChoice
+                  toggleModal={toggleModal}
+                  data={data}
+                  idListActive={idListActive}
+                  setIdListActive={setIdListActive}
+                />
+              )}
+
+              {/* ----- List(s) ✅ 
              🚨 Problème de récupération du nom du produit (route back listcontent/:listId ne fonctionne pas) 
              🚨 Gérer le screen au clic sur les 3 points */}
-            <ListFull data={data} idListActive={idListActive} />
+              <ListFull data={data} idListActive={idListActive} />
 
-            <Button
-              title="Ma liste maison"
-              onPress={() => {
-                navigation.navigate("ListScreen");
-              }}
-            />
-          </View>
+              <Button
+                title="Ma liste maison"
+                onPress={() => {
+                  navigation.navigate("ListScreen");
+                }}
+              />
+            </View>
 
             <View style={styles.blockBottomAddQuicklyAutocomplete}>
               {valueInputAddQuickly && dataProductsDisplay.length > 0 ? (
@@ -193,32 +184,30 @@ const ListsScreen = ({ navigation }) => {
             isModalVisible={isModalVisible}
             setModalVisible={setModalVisible}
           />
-
-        
         </SafeAreaView>
       </KeyboardAwareScrollView>
 
- {/* Modal "+ New list" */}
-        <ListModalNewList
-          isModalVisible={isModalVisible}
-          setModalVisible={setModalVisible}
-          userToken={userToken}
-          listId={listId}
-          setNewListCreated={setNewListCreated}
-          newListCreated={newListCreated}
-        />
+      {/* Modal "+ New list" */}
+      <ListModalNewList
+        isModalVisible={isModalVisible}
+        setModalVisible={setModalVisible}
+        userToken={userToken}
+        listId={listId}
+        setNewListCreated={setNewListCreated}
+        newListCreated={newListCreated}
+      />
 
-        {/* Modal "update or delete a list" */}
-        <ListModalRenameList
-          isModalVisible={isModalVisible}
-          setModalVisible={setModalVisible}
-          userToken={userToken}
-          listId={listId}
-          updateList={updateList}
-          setUpdateList={setUpdateList}
-          deleteList={deleteList}
-          setDeleteList={setDeleteList}
-        />
+      {/* Modal "update or delete a list" */}
+      {/* <ListModalRenameList
+        isModalVisible={isModalVisible}
+        setModalVisible={setModalVisible}
+        userToken={userToken}
+        listId={listId}
+        updateList={updateList}
+        setUpdateList={setUpdateList}
+        deleteList={deleteList}
+        setDeleteList={setDeleteList}
+      /> */}
 
       {/* Modal "Add or Update Product" */}
       <ModalProduct
@@ -233,7 +222,6 @@ const ListsScreen = ({ navigation }) => {
 export default ListsScreen;
 
 const styles = StyleSheet.create({
-
   loading: {
     flex: 1,
     justifyContent: "center",
@@ -242,17 +230,14 @@ const styles = StyleSheet.create({
   screen: { flex: 1 },
 
   pageScreen: {
-
     backgroundColor: buttonDarkBlue,
     flex: 1,
     // height: "100%",
   },
 
-
   globalContainer: {
     height: "100%",
     justifyContent: "space-between",
-
   },
 
   wrapper: {

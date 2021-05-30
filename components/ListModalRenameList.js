@@ -1,6 +1,6 @@
 // React & React Native - Imports
-import React from "react";
-import { View, StyleSheet } from "react-native";
+import React, { useState } from "react";
+import { View, StyleSheet, Text } from "react-native";
 import { Dimensions } from "react-native";
 import Modal from "react-native-modal";
 import axios from "axios";
@@ -8,6 +8,10 @@ import axios from "axios";
 // Components - import
 import ListModalTitle from "./ListModalTitle";
 import ListModalInput from "./ListModalInput";
+
+// Colors - import
+import colors from "../assets/colors";
+const { buttonFlashBlue, white, deleteRed, midGreyText, darkGreyText } = colors;
 
 const ListModalRenameList = ({
   isModalVisible,
@@ -64,7 +68,7 @@ const ListModalRenameList = ({
   };
 
   // Function for delete a list
-  const deleteList = async () => {
+  const deleteListFunc = async () => {
     try {
       const response = await axios.delete(
         `http://localhost:3310/lists/delete/${listId}`,
@@ -133,7 +137,7 @@ const ListModalRenameList = ({
             <Text
               style={styles.btnTextDelete}
               onPress={async () => {
-                deleteList();
+                deleteListFunc();
               }}
             >
               Supprimer la liste
