@@ -6,11 +6,19 @@ import { Text, TextInput, View, StyleSheet } from "react-native";
 import colors from "../assets/colors";
 const { inputBg } = colors;
 
-const ListModalInput = ({ placeholder }) => {
+const ListModalInput = ({ placeholder, setFunction, value, title, length }) => {
   return (
     <View>
-      <Text style={styles.modalText}>Nom de la liste</Text>
-      <TextInput placeholder={placeholder} style={styles.modalInput} />
+      <Text style={styles.modalText}>{title}</Text>
+      <TextInput
+        maxLength={length}
+        placeholder={placeholder}
+        style={styles.modalInput}
+        value={value}
+        onChangeText={(text) => {
+          setFunction(text);
+        }}
+      />
     </View>
   );
 };

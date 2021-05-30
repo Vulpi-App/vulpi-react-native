@@ -17,6 +17,8 @@ import SettingsScreen from "./containers/SettingsScreen";
 import FeedbackScreen from "./containers/FeedbackScreen";
 import ListScreen from "./containers/ListScreen";
 import axios from "axios";
+import RegisterScreen from "./containers/RegisterScreen";
+
 
 // Useful variables
 const serverURL = "http://localhost:3310";
@@ -50,6 +52,7 @@ export default function App() {
     setUserToken(token);
     setUserId(id);
   };
+
 
   const setOnBoardingDone = async () => {
     try {
@@ -87,6 +90,8 @@ export default function App() {
   //   bootstrapAsync();
   // }, []);
 
+
+
   return (
     <NavigationContainer>
       {isLoading ? (
@@ -94,8 +99,23 @@ export default function App() {
       ) : userToken === null ? ( // We haven't finished checking for the token yet
         // No token found, user isn't signed in
         <Stack.Navigator>
-          <Stack.Screen name="SignInUpScreen">
-            {(props) => <SignInUpScreen {...props} />}
+          <Stack.Screen name="SignUp" options={{ headerShown: false }}>
+            {() => (
+              <SignInUpScreen
+                userToken={userToken}
+                userId={userId}
+                setToken={setToken}
+              />
+            )}
+          </Stack.Screen>
+          <Stack.Screen name="RegisterScreen" options={{ headerShown: false }}>
+            {() => (
+              <RegisterScreen
+                userToken={userToken}
+                userId={userId}
+                setToken={setToken}
+              />
+            )}
           </Stack.Screen>
         </Stack.Navigator>
       ) : firstConnection ? (
@@ -125,7 +145,7 @@ export default function App() {
                   }}
                 >
                   {() => (
-                    <Stack.Navigator>
+                    <Stack.Navigator screenOptions={{ headerShown: false }}>
                       <Stack.Screen
                         name="ExploreScreen"
                         options={{
@@ -134,7 +154,13 @@ export default function App() {
                           headerTitleStyle: { color: "white" },
                         }}
                       >
-                        {(props) => <ExploreScreen {...props} />}
+                        {(props) => (
+                          <ExploreScreen
+                            {...props}
+                            userToken={userToken}
+                            userId={userId}
+                          />
+                        )}
                       </Stack.Screen>
                     </Stack.Navigator>
                   )}
@@ -206,18 +232,27 @@ export default function App() {
                   }}
                 >
                   {() => (
-                    <Stack.Navigator>
-                      <Stack.Screen
-                        name="AccountScreen"
-                        options={{ title: "Mon compte" }}
-                      >
-                        {(props) => <AccountScreen {...props} />}
+                    <Stack.Navigator screenOptions={{ headerShown: false }}>
+                      <Stack.Screen name="AccountScreen">
+                        {(props) => (
+                          <AccountScreen
+                            {...props}
+                            userToken={userToken}
+                            userId={userId}
+                          />
+                        )}
                       </Stack.Screen>
                       <Stack.Screen
-                        name="AccountInfos"
-                        options={{ title: "Mes informations personnelles" }}
+                        name="AccountInfosScreen"
+                        options={{ headerShown: false }}
                       >
-                        {(props) => <AccountInfosScreen {...props} />}
+                        {(props) => (
+                          <AccountInfosScreen
+                            {...props}
+                            userToken={userToken}
+                            userId={userId}
+                          />
+                        )}
                       </Stack.Screen>
                       <Stack.Screen
                         name="SettingsScreen"

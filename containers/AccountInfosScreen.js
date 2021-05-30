@@ -1,44 +1,34 @@
-// Tools;
-// import React from "react";
-// import { Text } from "react-native";
-
-// const AccountInfosScreen = () => {
-//   return <Text>AccountInfosScreen</Text>;
-// };
-
-// export default AccountInfosScreen;
-
 import React, { useEffect, useState } from "react";
 import {
-  ActivityIndicator,
   Dimensions,
   Image,
-  SafeAreaView,
-  ScrollView,
   StatusBar,
   StyleSheet,
   Text,
   TextInput,
-  TouchableHighlight,
+  TouchableOpacity,
   View,
 } from "react-native";
 import axios from "axios";
 import Constants from "expo-constants";
+import { useNavigation } from "@react-navigation/core";
 
 const windowHeight = Dimensions.get("window").height;
 const statusBarHeight = Constants.statusBarHeight;
 const scrollViewHeight = windowHeight - statusBarHeight;
 
 function AccountInfosScreen({ userToken, userId }) {
-  const [isLoading, setIsLoading] = useState(true);
   const [displayMessage, setDisplayMessage] = useState(null);
   const [userName, setUserName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState(null);
   const [isInfosModified, setIsInfosModified] = useState(false);
+  const navigation = useNavigation();
+
   useEffect(() => {
     fetchData();
   }, []);
+
   const fetchData = async () => {
     try {
       const response = await axios.get(
@@ -48,15 +38,14 @@ function AccountInfosScreen({ userToken, userId }) {
       setUserName(response.data.username);
       setEmail(response.data.email);
       setPassword(response.data.password);
-      setIsLoading(false);
     } catch (error) {
       setDisplayMessage({ message: "Une erreur s'est produite" });
     }
   };
+
   const editInformations = async () => {
     setDisplayMessage(false);
     if (isInfosModified) {
-      setIsLoading(true);
       if (isInfosModified) {
         try {
           const obj = {};
@@ -78,188 +67,161 @@ function AccountInfosScreen({ userToken, userId }) {
           setDisplayMessage({ message: error.response.data.error });
         }
       }
+
       isInfosModified && setIsInfosModified(false);
-      setIsLoading(false);
+
       fetchData();
     } else {
       setDisplayMessage({ message: "Modifier au moins une information" });
     }
   };
-  return (
-    <SafeAreaView style={styles.safeAreaView}>
-      <StatusBar barStyle="dark-content" />
-      {isLoading ? (
-        <ActivityIndicator size="large" style={styles.activityIndicator} />
-      ) : (
-        <ScrollView contentContainerStyle={styles.scrollView}>
-          <View style={styles.top}>
-            <View style={styles.container}>
-              <View style={styles.wrap}>
-                <View style={styles.buttonWrap}>
-                  <View
-                    style={styles.backButton}
-                    underlayColor="#0C166D"
-                    onPress={() => {}}
-                  >
-                    <Image
-                      source={require("../assets/icon-chevron.png")}
-                      style={styles.image}
-                      resizeMode={"contain"}
-                    />
-                    <Text style={styles.backText}>
-                      Mes informations personnelles
-                    </Text>
-                  </View>
-                </View>
-              </View>
-            </View>
 
-            <Text style={styles.title}>Prénom</Text>
-            <View style={styles.container}>
-              <View style={styles.wrap}>
-                <TextInput
-                  style={styles.textInput}
-                  autoCapitalize="none"
-                  textContentType="none"
-                  value={userName}
-                  onChangeText={(text) => {
-                    setUserName(text);
-                    if (setDisplayMessage) {
-                      setDisplayMessage(false);
-                    }
-                    if (setIsInfosModified) {
-                      setIsInfosModified(true);
-                    }
-                  }}
+  return (
+    <View style={styles.container}>
+      <StatusBar barStyle="dark-content" />
+      <View style={styles.wrapper}>
+        <View>
+          <View style={styles.block}>
+            <TouchableOpacity
+              style={styles.navigation}
+              onPress={() => {
+                navigation.navigate("AccountScreen");
+              }}
+            >
+              <View style={styles.backButton}>
+                <Image
+                  source={require("../assets/icon-chevron-left-blue.png")}
+                  style={styles.image}
+                  resizeMode={"contain"}
                 />
+                <Text style={styles.backText}>
+                  Mes informations personnelles
+                </Text>
               </View>
-            </View>
-            <Text style={styles.title}>Adresse e-mail</Text>
-            <View style={styles.container}>
-              <View style={styles.wrap}>
-                <View style={styles.inputWrap}>
-                  <TextInput
-                    style={styles.textInput}
-                    autoCapitalize="none"
-                    textContentType="none"
-                    value={email}
-                    onChangeText={(text) => {
-                      setEmail(text);
-                      if (setDisplayMessage) {
-                        setDisplayMessage(false);
-                      }
-                      if (setIsInfosModified) {
-                        setIsInfosModified(true);
-                      }
-                    }}
-                  />
-                  <TouchableHighlight
-                    style={styles.buttonInput}
-                    underlayColor="#5f6cd2"
-                    onPress={() => {
-                      editInformations();
-                    }}
-                  >
-                    <Text style={styles.buttonText}>modifier</Text>
-                  </TouchableHighlight>
-                </View>
-              </View>
-            </View>
-            <Text style={styles.title}>Mot de passe</Text>
-            <View style={styles.container}>
-              <View style={styles.wrap}>
-                <View style={styles.inputWrap}>
-                  <TextInput
-                    style={styles.textInput}
-                    placeholder="***************"
-                    autoCapitalize="none"
-                    textContentType="none"
-                    value={password}
-                    onChangeText={(text) => {
-                      setPassword(text);
-                      if (setDisplayMessage) {
-                        setDisplayMessage(false);
-                      }
-                      if (setIsInfosModified) {
-                        setIsInfosModified(true);
-                      }
-                    }}
-                  />
-                  <TouchableHighlight
-                    style={styles.buttonInput}
-                    underlayColor="#5f6cd2"
-                    onPress={() => {
-                      editInformations();
-                    }}
-                  >
-                    <Text style={styles.buttonText}>modifier</Text>
-                  </TouchableHighlight>
-                </View>
-                <View style={styles.messageWrap}>
-                  {displayMessage && (
-                    <Text style={styles.messageText}>
-                      {displayMessage.message}
-                    </Text>
-                  )}
-                </View>
-              </View>
+            </TouchableOpacity>
+          </View>
+          <Text style={styles.title}>Prénom</Text>
+          <View style={styles.block}>
+            <TextInput
+              style={styles.inputText}
+              autoCapitalize="none"
+              textContentType="none"
+              value={userName}
+              onChangeText={(text) => {
+                setUserName(text);
+                if (setDisplayMessage) {
+                  setDisplayMessage(false);
+                }
+                if (setIsInfosModified) {
+                  setIsInfosModified(true);
+                }
+              }}
+            />
+          </View>
+          <Text style={styles.title}>Adresse e-mail</Text>
+          <View style={styles.block}>
+            <View style={styles.inputWrap}>
+              <TextInput
+                style={styles.textInputButton}
+                autoCapitalize="none"
+                textContentType="none"
+                value={email}
+                onChangeText={(text) => {
+                  setEmail(text);
+                  if (setDisplayMessage) {
+                    setDisplayMessage(false);
+                  }
+                  if (setIsInfosModified) {
+                    setIsInfosModified(true);
+                  }
+                }}
+              />
+              <TouchableOpacity
+                style={styles.buttonInput}
+                onPress={() => {
+                  editInformations();
+                }}
+              >
+                <Text style={styles.buttonText}>modifier</Text>
+              </TouchableOpacity>
             </View>
           </View>
-          <View style={styles.bottom}>
-            <View style={styles.container}>
-              <View style={styles.wrap}>
-                <TouchableHighlight
-                  style={styles.deleteButton}
-                  underlayColor="#e24d4d"
-                  onPress={() => {}}
-                >
-                  <Text style={styles.deleteText}>Supprimer mon compte</Text>
-                </TouchableHighlight>
-              </View>
+          <Text style={styles.title}>Mot de passe</Text>
+          <View style={styles.block}>
+            <View style={styles.inputWrap}>
+              <TextInput
+                style={styles.textInputButton}
+                placeholder="••••••••••"
+                secureTextEntry="true"
+                autoCapitalize="none"
+                textContentType="none"
+                value={password}
+                onChangeText={(text) => {
+                  setPassword(text);
+                  if (setDisplayMessage) {
+                    setDisplayMessage(false);
+                  }
+                  if (setIsInfosModified) {
+                    setIsInfosModified(true);
+                  }
+                }}
+              />
+              <TouchableOpacity
+                style={styles.buttonInput}
+                onPress={() => {
+                  editInformations();
+                }}
+              >
+                <Text style={styles.buttonText}>modifier</Text>
+              </TouchableOpacity>
+            </View>
+            <View style={styles.messageWrap}>
+              {displayMessage && (
+                <Text style={styles.messageText}>{displayMessage.message}</Text>
+              )}
             </View>
           </View>
-        </ScrollView>
-      )}
-    </SafeAreaView>
+        </View>
+        <View style={styles.delete}>
+          <View style={styles.block}>
+            <TouchableOpacity
+              style={styles.deleteButton}
+              underlayColor="#e24d4d"
+              onPress={() => {}}
+            >
+              <Text style={styles.deleteText}>Supprimer mon compte</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </View>
+    </View>
   );
 }
+
 export default AccountInfosScreen;
 
 const styles = StyleSheet.create({
-  safeAreaView: {
+  container: {
     backgroundColor: "#F7F7F8",
     width: scrollViewHeight,
     width: "100%",
-    flex: 1,
   },
 
-  scrollView: {
+  wrapper: {
     justifyContent: "space-between",
+    paddingTop: "20%",
     height: "100%",
     width: "100%",
   },
 
-  top: {
-    paddingTop: "10%",
-  },
-
-  bottom: {
-    paddingBottom: "5%",
-  },
-
-  container: {
+  block: {
     justifyContent: "center",
     alignItems: "center",
+    width: "100%",
   },
 
-  wrap: {
-    justifyContent: "center",
-    width: "90%",
-  },
-
-  buttonWrap: {
-    flexDirection: "row",
-    paddingBottom: "5%",
+  navigation: {
+    marginBottom: "10%",
   },
 
   backButton: {
@@ -278,7 +240,7 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     color: "#232952",
     fontSize: 23,
-    width: "50%",
+    width: "75%",
   },
 
   title: {
@@ -289,11 +251,28 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
 
-  inputWrap: {
-    alignItems: "flex-end",
+  inputText: {
+    borderBottomRightRadius: 8,
+    borderBottomLeftRadius: 8,
+    backgroundColor: "white",
+    borderTopRightRadius: 8,
+    borderColor: "#EEEEEE",
+    borderTopLeftRadius: 8,
+    fontWeight: "600",
+    color: "#9A9A9A",
+    paddingLeft: 15,
+    borderWidth: 1,
+    width: "90%",
+    fontSize: 16,
+    height: 53,
   },
 
-  textInput: {
+  inputWrap: {
+    alignItems: "flex-end",
+    width: "90%",
+  },
+
+  textInputButton: {
     borderBottomRightRadius: 8,
     borderBottomLeftRadius: 8,
     backgroundColor: "white",
@@ -335,8 +314,11 @@ const styles = StyleSheet.create({
   },
 
   messageText: {
-    color: "#3443B9",
-    fontSize: 12,
+    color: "#CA2121",
+  },
+
+  delete: {
+    paddingBottom: "5%",
   },
 
   deleteButton: {
@@ -345,6 +327,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderRadius: 19,
     height: 67,
+    width: "90%",
   },
 
   deleteText: {

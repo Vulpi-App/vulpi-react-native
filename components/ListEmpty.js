@@ -1,15 +1,21 @@
 // React & React Native - Imports
 import React from "react";
-import { View, StyleSheet } from "react-native";
+import { View, FlatList, StyleSheet } from "react-native";
 
 // Components - import
 import ListEmptyHeader from "./ListEmptyHeader";
 import ListEmptyContent from "./ListEmptyContent";
 
-const ListEmpty = () => {
+const ListEmpty = ({ data, idListActive }) => {
   return (
     <View style={styles.list}>
-      <ListEmptyHeader />
+      <FlatList
+        data={data.lists}
+        keyExtractor={(item) => item._id}
+        renderItem={({ item }) => {
+          return <ListEmptyHeader item={item} idListActive={idListActive} />;
+        }}
+      />
       <ListEmptyContent />
     </View>
   );
