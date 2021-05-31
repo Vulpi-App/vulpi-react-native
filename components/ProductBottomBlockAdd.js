@@ -49,7 +49,7 @@ const ProductBottomBlockAdd = ({
           style={styles.inputAddQuickly}
           placeholder="Ajout rapide"
           placeholderTextColor="#797979"
-          autoCapitalize="sentences"
+          // autoCapitalize="sentences"
           // onChangeText={(text) => {
           //   setValueInputAddQuickly(text);
           // }}

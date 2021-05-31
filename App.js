@@ -31,9 +31,11 @@ export default function App() {
   const [isLoading, setIsLoading] = useState(false);
   // Création d'un state temporaire/fictif à revoir par la suite
   const [userToken, setUserToken] = useState(
-    "pnzBLfGjNFYTc74oXYRWhAlydAaZlqiKPyVjlpN0dyc9rzDRwH3JrsXXIa5MopVd"
+
+    "KSpUkFnIaPDmIYfzmc24iaWzzlsISjQ2m3mPkdfK8jhshqBUx4ApsLNIMEivqut0"
   );
-  const [userId, setUserId] = useState("60af956fd08f0b00154bc9de");
+  const [userId, setUserId] = useState("60b34cdb27fe1e80df064679");
+
   // State pour gérer l'affichage du Onboarding
   const [firstConnection, setFirstConnection] = useState(true);
   const [firstName, setFirstName] = useState("Lhaoucine");
@@ -49,8 +51,8 @@ export default function App() {
       await AsyncStorage.removeItem("userToken");
       await AsyncStorage.removeItem("userId");
     }
-    setUserToken(token);
-    setUserId(id);
+    // setUserToken(token);
+    // setUserId(id);
   };
 
   const setOnBoardingDone = async () => {
