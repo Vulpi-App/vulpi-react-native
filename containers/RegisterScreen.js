@@ -11,13 +11,59 @@ import {
   ImageBackground,
 } from "react-native";
 import Constants from "expo-constants";
+import axios from "axios";
 
 const windowHeight = Dimensions.get("window").height;
 const statusBarHeight = Constants.statusBarHeight;
 const scrollViewHeight = windowHeight - statusBarHeight;
 
-export default function RegisterScreen() {
+function RegisterScreen({ setToken, serverURL }) {
+  const [errorMessage, setErrorMessage] = useState(null);
   const [step, setStep] = useState(1);
+  const [email, setEmail] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleSubmit = async () => {
+    console.log("test");
+    if (email && firstName && password) {
+      if (errorMessage !== null) {
+        setErrorMessage(null);
+      }
+
+      try {
+        const formData = new FormData();
+        formData.append("email", email);
+        formData.append("password", password);
+        formData.append("firstName", password);
+
+        console.log(formData);
+        const response = await axios.post(`${serverURL}/user/signup`, formData);
+        formData;
+
+        if (response.data.token && response.data._id) {
+          const token = response.data.token;
+          const id = response.data._id;
+          setToken(token, id);
+        } else {
+          setErrorMessage("An error occurred");
+        }
+      } catch (error) {
+        console.log(error.message);
+        const errorMessage = error.response.data.error;
+        if (
+          errorMessage === "This email already has an account." ||
+          errorMessage === "This username already has an account."
+        ) {
+          setErrorMessage(errorMessage);
+        } else {
+          setErrorMessage("An error occurred");
+        }
+      }
+    } else {
+      setErrorMessage("Please fill all fields");
+    }
+  };
 
   const handleSteps = () => {
     if (step <= 4) {
@@ -64,7 +110,14 @@ export default function RegisterScreen() {
               <View style={styles.block}>
                 <View style={styles.inputWrap}>
                   <View style={styles.onBoard}>
-                    <TextInput style={styles.input} placeholder="Prénom" />
+                    <TextInput
+                      style={styles.input}
+                      placeholder="Prénom"
+                      onChangeText={(text) => {
+                        setFirstName(text);
+                      }}
+                      value={firstName}
+                    />
                   </View>
                 </View>
               </View>
@@ -128,6 +181,10 @@ export default function RegisterScreen() {
                     <TextInput
                       style={styles.input}
                       placeholder="Adresse e-mail"
+                      onChangeText={(text) => {
+                        setEmail(text);
+                      }}
+                      value={email}
                     />
                   </View>
                 </View>
@@ -208,6 +265,10 @@ export default function RegisterScreen() {
                     <TextInput
                       style={styles.input}
                       placeholder="Mot de passe"
+                      onChangeText={(text) => {
+                        setPassword(text);
+                      }}
+                      value={password}
                     />
                   </View>
                 </View>
@@ -235,7 +296,10 @@ export default function RegisterScreen() {
                     {step < 4 ? (
                       <TouchableOpacity
                         style={styles.validateButton}
-                        onPress={handleSteps}
+                        onPress={() => {
+                          handleSubmit();
+                          handleSteps();
+                        }}
                       >
                         <View style={styles.validateWrap}>
                           <Text style={styles.validateText}>
@@ -274,6 +338,8 @@ export default function RegisterScreen() {
     </>
   );
 }
+
+export default RegisterScreen;
 
 const styles = StyleSheet.create({
   ImageBackground: {

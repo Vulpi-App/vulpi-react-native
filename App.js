@@ -30,11 +30,13 @@ const Stack = createStackNavigator();
 export default function App() {
   const [isLoading, setIsLoading] = useState(false);
   // Création d'un state temporaire/fictif à revoir par la suite
+
   const [userToken, setUserToken] = useState(
 
     "pDwF8Hzeu4M6thn9BOzrf32dBy0vUlLD1J0lOSbxnPxIAkgzw9Q0MkaJ0dC8ELa6"
   );
   const [userId, setUserId] = useState("60b4ac5f48c552347cc545c3");
+
 
   // State pour gérer l'affichage du Onboarding
   const [firstConnection, setFirstConnection] = useState(true);
@@ -78,6 +80,7 @@ export default function App() {
     }
   };
 
+
   // useEffect(() => {
   //   // Fetch the token from storage then navigate to our appropriate place
   //   const bootstrapAsync = async () => {
@@ -96,6 +99,7 @@ export default function App() {
   //   bootstrapAsync();
   // }, []);
 
+
   return (
     <NavigationContainer>
       {isLoading ? (
@@ -109,6 +113,7 @@ export default function App() {
                 userToken={userToken}
                 userId={userId}
                 setToken={setToken}
+                serverURL={serverURL}
               />
             )}
           </Stack.Screen>
@@ -118,6 +123,7 @@ export default function App() {
                 userToken={userToken}
                 userId={userId}
                 setToken={setToken}
+                serverURL={serverURL}
               />
             )}
           </Stack.Screen>
@@ -241,11 +247,12 @@ export default function App() {
                   {() => (
                     <Stack.Navigator screenOptions={{ headerShown: false }}>
                       <Stack.Screen name="AccountScreen">
-                        {(props) => (
+                        {() => (
                           <AccountScreen
-                            {...props}
                             userToken={userToken}
                             userId={userId}
+                            setToken={setToken}
+                            serverURL={serverURL}
                           />
                         )}
                       </Stack.Screen>
@@ -253,11 +260,12 @@ export default function App() {
                         name="AccountInfosScreen"
                         options={{ headerShown: false }}
                       >
-                        {(props) => (
+                        {() => (
                           <AccountInfosScreen
-                            {...props}
                             userToken={userToken}
                             userId={userId}
+                            setToken={setToken}
+                            serverURL={serverURL}
                           />
                         )}
                       </Stack.Screen>

@@ -17,9 +17,11 @@ const windowHeight = Dimensions.get("window").height;
 const statusBarHeight = Constants.statusBarHeight;
 const scrollViewHeight = windowHeight - statusBarHeight;
 
-function AccountScreen({ userToken, userId, setToken, setId }) {
-  const [userName, setUserName] = useState("");
+function AccountScreen({ userToken, userId, setToken, serverURL }) {
+  const [isLoading, setIsLoading] = useState(true);
+  const [displayMessage, setDisplayMessage] = useState(null);
   const [email, setEmail] = useState("");
+  const [firstName, setFirstName] = useState("");
   const [picture, setPicture] = useState(null);
   const [isPictureModified, setIsPictureModified] = useState(false);
   const navigation = useNavigation();
@@ -29,14 +31,31 @@ function AccountScreen({ userToken, userId, setToken, setId }) {
   }, []);
 
   const fetchData = async () => {
-    const response = await axios.get(
-      `https://express-airbnb-api.herokuapp.com/user/${userId}`,
-      { headers: { Authorization: "Bearer " + userToken } }
-    );
-    setUserName(response.data.username);
-    setEmail(response.data.email);
-    if (response.data.photo) {
-      setPicture(response.data.photo[0].url);
+    try {
+      const response = await axios.get(
+        // `http://localhost:3000/user/${userId}`,
+        `${serverURL}/user/${userId}`,
+        {
+          headers: {
+            Authorization: "Bearer " + userToken,
+          },
+        }
+      );
+
+      console.log(response.data);
+      setFirstName(response.data.account.firstName);
+      setEmail(response.data.email);
+
+      if (response.data.photo) {
+        setPicture(response.data.photo[0].url);
+      }
+
+      setIsLoading(false);
+    } catch (error) {
+      setDisplayMessage({
+        message: "An error occurred",
+        color: "error",
+      });
     }
   };
 
@@ -54,7 +73,7 @@ function AccountScreen({ userToken, userId, setToken, setId }) {
             type: `image/${fileType}`,
           });
           const response = await axios.put(
-            `https://express-airbnb-api.herokuapp.com/user/upload_picture`,
+            `http://localhost:3310/lists/${userId}`,
             formData,
             { headers: { Authorization: "Bearer " + userToken } }
           );
@@ -103,7 +122,7 @@ function AccountScreen({ userToken, userId, setToken, setId }) {
                   />
                 </TouchableOpacity>
                 <View style={styles.infos}>
-                  <Text style={styles.name}>{userName}</Text>
+                  <Text style={styles.name}>{firstName}</Text>
                   <Text style={styles.email}>{email}</Text>
                 </View>
               </View>
@@ -177,8 +196,7 @@ function AccountScreen({ userToken, userId, setToken, setId }) {
             <TouchableOpacity
               style={styles.logoutButton}
               onPress={() => {
-                setToken();
-                setId();
+                setToken(null, null);
               }}
             >
               <Text style={styles.logoutText}>Déconnexion</Text>
