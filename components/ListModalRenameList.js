@@ -1,6 +1,6 @@
 // React & React Native - Imports
 import React, { useState } from "react";
-import { View, StyleSheet, Text } from "react-native";
+import { View, StyleSheet, TouchableOpacity, Text } from "react-native";
 import { Dimensions } from "react-native";
 import Modal from "react-native-modal";
 import axios from "axios";
@@ -14,23 +14,21 @@ import colors from "../assets/colors";
 const { buttonFlashBlue, white, deleteRed, midGreyText, darkGreyText } = colors;
 
 const ListModalRenameList = ({
-  isModalVisible,
-  setModalVisible,
+  isModalUpdateVisible,
+  setModalUpdateVisible,
   userToken,
   listId,
-  deleteList,
   setDeleteList,
-  updateList,
   setUpdateList,
 }) => {
   // State for rename list
-  const [newTitle, setNewTitle] = useState("");
+  const [title, setTitle] = useState("");
   const [disabled, setDisabled] = useState(true);
 
   // State for errors
   const [errorMessage, setErrorMessage] = useState("");
 
-  // Function for update the title of a list
+  // Function for update the title of a list ✅
   const handleSubmit = async () => {
     try {
       if (title) {
@@ -50,7 +48,7 @@ const ListModalRenameList = ({
           console.log(response.status);
 
           if (response.status === 200) {
-            setModalVisible(false);
+            setModalUpdateVisible(false);
             setTitle("");
             setUpdateList();
           } else {
@@ -67,7 +65,7 @@ const ListModalRenameList = ({
     }
   };
 
-  // Function for delete a list
+  // Function for delete a list ✅
   const deleteListFunc = async () => {
     try {
       const response = await axios.delete(
@@ -80,7 +78,7 @@ const ListModalRenameList = ({
       console.log(response.data);
 
       if (response.status === 200) {
-        setModalVisible(false);
+        setModalUpdateVisible(false);
         setDeleteList();
       }
     } catch (error) {
@@ -90,12 +88,13 @@ const ListModalRenameList = ({
 
   return (
     <Modal
+      avoidKeyboard
       style={styles.modal}
-      isVisible={isModalVisible}
+      isVisible={isModalUpdateVisible}
       onBackdropPress={() => {
         setErrorMessage("");
-        setNewTitle("");
-        setModalVisible(false);
+        setTitle("");
+        setModalUpdateVisible(false);
       }}
     >
       <View style={styles.modalWrap}>
@@ -105,8 +104,8 @@ const ListModalRenameList = ({
           <ListModalInput
             title="Nom de la liste"
             placeholder="Barbecue"
-            setFunction={setNewTitle}
-            value={newTitle}
+            setFunction={setTitle}
+            value={title}
             length={30}
           />
 
@@ -124,12 +123,14 @@ const ListModalRenameList = ({
           ) : (
             <TouchableOpacity
               disabled={disabled}
-              style={styles.btnDisabled}
+              style={[styles.btnBlue, styles.btnDisabled]}
               onPress={async () => {
                 handleSubmit();
               }}
             >
-              <Text style={styles.btnDisabledText}>Renommer ma liste</Text>
+              <Text style={[styles.btnTextBlue, styles.btnDisabledText]}>
+                Renommer ma liste
+              </Text>
             </TouchableOpacity>
           )}
 
@@ -140,7 +141,7 @@ const ListModalRenameList = ({
                 deleteListFunc();
               }}
             >
-              Supprimer la liste
+              Supprimer ma liste
             </Text>
           </TouchableOpacity>
         </View>

@@ -35,9 +35,10 @@ const { buttonDarkBlue, white } = colors;
 
 // ======================================
 
-const ListsScreen = ({ navigation }) => {
+const ListsScreen = ({ navigation, userToken, userId }) => {
   // States for modals
   const [isModalVisible, setModalVisible] = useState(false);
+  const [isModalUpdateVisible, setModalUpdateVisible] = useState(false);
   const [modalAddProductVisible, setModalAddProductVisible] = useState(false);
   const [valueInputAddQuickly, setValueInputAddQuickly] = useState();
 
@@ -50,21 +51,24 @@ const ListsScreen = ({ navigation }) => {
   // State for new list
   const [newListCreated, setNewListCreated] = useState("");
 
-  // State for delete or update a list
+  // State for delete or update a list (modal)
   const [updateList, setUpdateList] = useState("");
   const [deleteList, setDeleteList] = useState("");
 
   // State for fold or unfold list of lists
   const [foldedNav, setFoldedNav] = useState(true);
 
-  // TEST EN DUR
-  const userToken = "cccc";
-  const userId = "60abcb97ac82f76c79939767";
-  const listId = "60abd473ebe4f06ebef9375b";
-
-  console.log(idListActive);
-
+  // State for autocomplete
   const [dataProductsDisplay, setDataProductsDisplay] = useState([]);
+
+  // State for refresh products list
+  const [addProductList, setAddProductList] = useState(false);
+
+  // State for product actif
+  const [idProductActif, setIdProductActif] = useState();
+
+  // console.log(idListActive);
+  // console.log(idProductActif);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -78,7 +82,7 @@ const ListsScreen = ({ navigation }) => {
           }
         );
 
-        // console.log("response.data", response.data);
+        console.log("response.data", response.data);
         // console.log("response.data.lists", response.data.lists);
 
         setData(response.data);
@@ -89,10 +93,14 @@ const ListsScreen = ({ navigation }) => {
       }
     };
     fetchData();
-  }, [newListCreated, updateList, deleteList]);
+  }, [newListCreated, addProductList, updateList, deleteList]);
 
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
+  };
+
+  const toggleModalUpdate = () => {
+    setModalUpdateVisible(!isModalUpdateVisible);
   };
 
   const foldOrUnfoldLists = () => {
@@ -101,7 +109,7 @@ const ListsScreen = ({ navigation }) => {
 
   return loading ? (
     <View style={styles.loading}>
-      <ActivityIndicator size="large" color={white} />
+      <ActivityIndicator size="large" color={buttonDarkBlue} />
     </View>
   ) : (
     <View style={styles.screen}>
@@ -138,7 +146,15 @@ const ListsScreen = ({ navigation }) => {
               {/* ----- List(s) ✅ 
              🚨 Problème de récupération du nom du produit (route back listcontent/:listId ne fonctionne pas) 
              🚨 Gérer le screen au clic sur les 3 points */}
-              <ListFull data={data} idListActive={idListActive} />
+              <ListFull
+                data={data}
+                userToken={userToken}
+                idListActive={idListActive}
+                toggleModalUpdate={toggleModalUpdate}
+                setIdProductActif={setIdProductActif}
+                setModalAddProductVisible={setModalAddProductVisible}
+                addProductList={addProductList}
+              />
 
               <Button
                 title="Ma liste maison"
@@ -154,6 +170,10 @@ const ListsScreen = ({ navigation }) => {
                   firstLine={true}
                   setValueInputAddQuickly={setValueInputAddQuickly}
                   valueAutocomplete={dataProductsDisplay[0].name}
+                  idList={idListActive}
+                  userToken={userToken}
+                  addProductList={addProductList}
+                  setAddProductList={setAddProductList}
                 />
               ) : null}
               {valueInputAddQuickly && dataProductsDisplay.length > 1 ? (
@@ -161,6 +181,10 @@ const ListsScreen = ({ navigation }) => {
                   firstLine={false}
                   setValueInputAddQuickly={setValueInputAddQuickly}
                   valueAutocomplete={dataProductsDisplay[1].name}
+                  idList={idListActive}
+                  userToken={userToken}
+                  addProductList={addProductList}
+                  setAddProductList={setAddProductList}
                 />
               ) : null}
               {valueInputAddQuickly ? (
@@ -168,6 +192,10 @@ const ListsScreen = ({ navigation }) => {
                   firstLine={dataProductsDisplay.length > 0 ? false : true}
                   setValueInputAddQuickly={setValueInputAddQuickly}
                   valueAutocomplete={valueInputAddQuickly}
+                  idList={idListActive}
+                  userToken={userToken}
+                  addProductList={addProductList}
+                  setAddProductList={setAddProductList}
                 />
               ) : null}
               <ProductBottomBlockAdd
@@ -179,41 +207,39 @@ const ListsScreen = ({ navigation }) => {
               />
             </View>
           </View>
-          {/* Modal "+ Nouvelle liste" */}
-          <ListModalNewList
-            isModalVisible={isModalVisible}
-            setModalVisible={setModalVisible}
-          />
         </SafeAreaView>
       </KeyboardAwareScrollView>
 
-      {/* Modal "+ New list" */}
+      {/* Modal "+ New list" ✅ 
+      🚨 Gérer le keyboardAwareAreaView */}
       <ListModalNewList
         isModalVisible={isModalVisible}
         setModalVisible={setModalVisible}
         userToken={userToken}
-        listId={listId}
         setNewListCreated={setNewListCreated}
         newListCreated={newListCreated}
       />
 
-      {/* Modal "update or delete a list" */}
-      {/* <ListModalRenameList
-        isModalVisible={isModalVisible}
-        setModalVisible={setModalVisible}
+      {/* Modal "update or delete a list" ✅ */}
+      <ListModalRenameList
+        isModalUpdateVisible={isModalUpdateVisible}
+        setModalUpdateVisible={setModalUpdateVisible}
         userToken={userToken}
-        listId={listId}
-        updateList={updateList}
+        listId={idListActive}
         setUpdateList={setUpdateList}
-        deleteList={deleteList}
         setDeleteList={setDeleteList}
-      /> */}
+      />
 
       {/* Modal "Add or Update Product" */}
       <ModalProduct
         modalAddProductVisible={modalAddProductVisible}
         setModalAddProductVisible={setModalAddProductVisible}
-        typeModalProduct="update product"
+        typeModalProduct={idProductActif ? "update product" : "new product"}
+        idList={idListActive}
+        userToken={userToken}
+        addProductList={addProductList}
+        setAddProductList={setAddProductList}
+        idProduct={idProductActif}
       />
     </View>
   );

@@ -13,7 +13,7 @@ const {
   buttonFlashBlue,
 } = colors;
 
-const ListFullHeader = ({ item, idListActive }) => {
+const ListFullHeader = ({ item, idListActive, toggleModalUpdate }) => {
   const totalPrice = [];
   return (
     item._id === idListActive && (
@@ -39,18 +39,18 @@ const ListFullHeader = ({ item, idListActive }) => {
             </View>
           ) : null}
 
-          <TouchableOpacity>
+          <TouchableOpacity onPress={toggleModalUpdate}>
             <View style={styles.blueDot}></View>
             <View style={[styles.blueDot, styles.marginDot]}></View>
             <View style={styles.blueDot}></View>
           </TouchableOpacity>
         </View>
         {/* <View>
-                <Text style={styles.nbArticles}>2 articles</Text>
-                <View style={styles.totalPrice}>
-                  <Text style={styles.priceText}>6 €</Text>
-                </View>
-              </View> */}
+          <Text style={styles.nbArticles}>2 articles</Text>
+          <View style={styles.totalPrice}>
+            <Text style={styles.priceText}>6 €</Text>
+          </View>
+        </View> */}
       </View>
     )
   );
@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
   },
   h2: {
     color: mainBlueText,
-    fontSize: 24,
+    fontSize: 22,
     // add semi-bold
   },
   headerDetailsWrap: {
@@ -77,17 +77,19 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   nbArticles: {
-    fontSize: 14,
+    fontSize: 12,
     color: darkGreyText,
-    marginHorizontal: 20,
+    marginLeft: 10,
+    marginRight: 15,
   },
   totalPrice: {
     backgroundColor: orangeTotalPrice,
     paddingVertical: 3,
-    paddingHorizontal: 10,
+    paddingHorizontal: 5,
     borderRadius: 4,
   },
   priceText: {
+    fontSize: 12,
     color: white,
   },
   blueDot: {

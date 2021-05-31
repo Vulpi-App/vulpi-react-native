@@ -26,14 +26,19 @@ const localURLUpdate = "http://localhost:3310/lists/update-product/";
 const localURLDelete = "http://localhost:3310/lists/delete-product/";
 
 // Variables test -> A modifier avec les vrais valeurs quand Manon aura finalisé
-const idList = "60abd473ebe4f06ebef9375b";
-const userToken = "cccc";
-const idProduct = "60b089ea10479b048010688b";
+// const idList = "60abd473ebe4f06ebef9375b";
+// const userToken = "cccc";
+// const idProduct = "60b089ea10479b048010688b";
 
 const ModalProduct = ({
   modalAddProductVisible,
   setModalAddProductVisible,
   typeModalProduct,
+  idList,
+  userToken,
+  idProduct,
+  addProductList,
+  setAddProductList,
 }) => {
   const [nameProduct, setNameProduct] = useState();
   const [quantityProduct, setQuantityProduct] = useState();
@@ -64,13 +69,15 @@ const ModalProduct = ({
             priceProduct && formData.append("price", priceProduct);
 
             // Photo
-            const tabPicture = pictureProduct.split(".");
-            pictureProduct &&
-              formData.append("picture", {
-                uri: pictureProduct,
-                name: `picture-product.${tabPicture[tabPicture.length - 1]}`,
-                type: `image/${tabPicture[tabPicture.length - 1]}`,
-              });
+            if (pictureProduct) {
+              const tabPicture = pictureProduct.split(".");
+              pictureProduct &&
+                formData.append("picture", {
+                  uri: pictureProduct,
+                  name: `picture-product.${tabPicture[tabPicture.length - 1]}`,
+                  type: `image/${tabPicture[tabPicture.length - 1]}`,
+                });
+            }
 
             const response = await axios.post(
               `${localURLAdd}${idList}`,
@@ -86,6 +93,7 @@ const ModalProduct = ({
               setQuantityProduct();
               setBrandProduct();
               setShopProduct();
+              setAddProductList(!addProductList);
               setPriceProduct();
               setPictureProduct();
               setMessageErrorAfterSubmit();
@@ -112,13 +120,15 @@ const ModalProduct = ({
         priceProduct && formData.append("price", priceProduct);
 
         // Photo
-        const tabPicture = pictureProduct.split(".");
-        pictureProduct &&
-          formData.append("picture", {
-            uri: pictureProduct,
-            name: `picture-product.${tabPicture[tabPicture.length - 1]}`,
-            type: `image/${tabPicture[tabPicture.length - 1]}`,
-          });
+        if (pictureProduct) {
+          const tabPicture = pictureProduct.split(".");
+          pictureProduct &&
+            formData.append("picture", {
+              uri: pictureProduct,
+              name: `picture-product.${tabPicture[tabPicture.length - 1]}`,
+              type: `image/${tabPicture[tabPicture.length - 1]}`,
+            });
+        }
 
         const response = await axios.put(
           `${localURLUpdate}${idList}?idProduct=${idProduct}`,
@@ -133,6 +143,7 @@ const ModalProduct = ({
           setNameProduct();
           setQuantityProduct();
           setBrandProduct();
+          setAddProductList(!addProductList);
           setShopProduct();
           setPriceProduct();
           setPictureProduct();
