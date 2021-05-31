@@ -25,15 +25,16 @@ const localURLAdd = "http://localhost:3310/lists/add-product/";
 const localURLUpdate = "http://localhost:3310/lists/update-product/";
 const localURLDelete = "http://localhost:3310/lists/delete-product/";
 
-// Variables test -> A modifier avec les vrais valeurs quand Manon aura finalisé
-const idList = "60abd473ebe4f06ebef9375b";
-const userToken = "cccc";
-const idProduct = "60b089ea10479b048010688b";
-
 const ModalProduct = ({
   modalAddProductVisible,
   setModalAddProductVisible,
   typeModalProduct,
+  idList,
+  userToken,
+  idProduct,
+  addProductList,
+  setAddProductList,
+  infosProductToUpdate,
 }) => {
   const [nameProduct, setNameProduct] = useState();
   const [quantityProduct, setQuantityProduct] = useState();
@@ -64,13 +65,15 @@ const ModalProduct = ({
             priceProduct && formData.append("price", priceProduct);
 
             // Photo
-            const tabPicture = pictureProduct.split(".");
-            pictureProduct &&
-              formData.append("picture", {
-                uri: pictureProduct,
-                name: `picture-product.${tabPicture[tabPicture.length - 1]}`,
-                type: `image/${tabPicture[tabPicture.length - 1]}`,
-              });
+            if (pictureProduct) {
+              const tabPicture = pictureProduct.split(".");
+              pictureProduct &&
+                formData.append("picture", {
+                  uri: pictureProduct,
+                  name: `picture-product.${tabPicture[tabPicture.length - 1]}`,
+                  type: `image/${tabPicture[tabPicture.length - 1]}`,
+                });
+            }
 
             const response = await axios.post(
               `${localURLAdd}${idList}`,
@@ -90,6 +93,7 @@ const ModalProduct = ({
               setPictureProduct();
               setMessageErrorAfterSubmit();
               setModalAddProductVisible(false);
+              setAddProductList(!addProductList);
               alert("Produt added successfully !");
             }
           } else {
@@ -112,13 +116,15 @@ const ModalProduct = ({
         priceProduct && formData.append("price", priceProduct);
 
         // Photo
-        const tabPicture = pictureProduct.split(".");
-        pictureProduct &&
-          formData.append("picture", {
-            uri: pictureProduct,
-            name: `picture-product.${tabPicture[tabPicture.length - 1]}`,
-            type: `image/${tabPicture[tabPicture.length - 1]}`,
-          });
+        if (pictureProduct) {
+          const tabPicture = pictureProduct.split(".");
+          pictureProduct &&
+            formData.append("picture", {
+              uri: pictureProduct,
+              name: `picture-product.${tabPicture[tabPicture.length - 1]}`,
+              type: `image/${tabPicture[tabPicture.length - 1]}`,
+            });
+        }
 
         const response = await axios.put(
           `${localURLUpdate}${idList}?idProduct=${idProduct}`,
@@ -138,6 +144,7 @@ const ModalProduct = ({
           setPictureProduct();
           setMessageErrorAfterSubmit();
           setModalAddProductVisible(false);
+          setAddProductList(!addProductList);
           alert("Produt updated successfully !");
         }
       }
@@ -263,22 +270,38 @@ const ModalProduct = ({
 
                 <InputProduct
                   nameInput="quantity"
-                  valueInput={quantityProduct}
+                  valueInput={
+                    infosProductToUpdate
+                      ? infosProductToUpdate.quantity
+                      : quantityProduct
+                  }
                   setValueInput={setQuantityProduct}
                 />
                 <InputProduct
                   nameInput="brand"
-                  valueInput={brandProduct}
+                  valueInput={
+                    infosProductToUpdate
+                      ? infosProductToUpdate.brand
+                      : brandProduct
+                  }
                   setValueInput={setBrandProduct}
                 />
                 <InputProduct
                   nameInput="shop"
-                  valueInput={shopProduct}
+                  valueInput={
+                    infosProductToUpdate
+                      ? infosProductToUpdate.shop
+                      : shopProduct
+                  }
                   setValueInput={setShopProduct}
                 />
                 <InputProduct
                   nameInput="price"
-                  valueInput={priceProduct}
+                  valueInput={
+                    infosProductToUpdate
+                      ? infosProductToUpdate.price
+                      : priceProduct
+                  }
                   setValueInput={setPriceProduct}
                 />
               </View>

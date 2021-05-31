@@ -19,7 +19,6 @@ import ListScreen from "./containers/ListScreen";
 import axios from "axios";
 import RegisterScreen from "./containers/RegisterScreen";
 
-
 // Useful variables
 const serverURL = "http://localhost:3310";
 // Local server : "http://localhost:3310"
@@ -32,9 +31,9 @@ export default function App() {
   const [isLoading, setIsLoading] = useState(false);
   // Création d'un state temporaire/fictif à revoir par la suite
   const [userToken, setUserToken] = useState(
-    "aY6F1blbUpsGS5GmjDKUd6ryKdL8KEwgJvaZRr3DSiEScSQpooJReSf7z4PrRJax"
+    "pDwF8Hzeu4M6thn9BOzrf32dBy0vUlLD1J0lOSbxnPxIAkgzw9Q0MkaJ0dC8ELa6"
   );
-  const [userId, setUserId] = useState("60ae2381a338aa0f23126a89");
+  const [userId, setUserId] = useState("60b4ac5f48c552347cc545c3");
   // State pour gérer l'affichage du Onboarding
   const [firstConnection, setFirstConnection] = useState(false);
 
@@ -52,8 +51,6 @@ export default function App() {
     setUserToken(token);
     setUserId(id);
   };
-
-
 
   const setOnBoardingDone = async () => {
     try {
@@ -90,9 +87,6 @@ export default function App() {
 
   //   bootstrapAsync();
   // }, []);
-
-
-
 
   return (
     <NavigationContainer>

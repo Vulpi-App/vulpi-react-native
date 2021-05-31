@@ -10,7 +10,13 @@ import colors from "../assets/colors";
 const { radioBg, mainBlueText, productDetails, radioBorder, midGreyText } =
   colors;
 
-const ListFullInput = ({ item, idListActive }) => {
+const ListFullInput = ({
+  item,
+  idListActive,
+  setIdProductActif,
+  setModalAddProductVisible,
+  setInfosProductToUpdate,
+}) => {
   return (
     item._id === idListActive &&
     (item.products.length > 0 ? (
@@ -22,7 +28,13 @@ const ListFullInput = ({ item, idListActive }) => {
                 <View style={styles.listRadioButton}></View>
               </TouchableOpacity>
 
-              <View>
+              <TouchableOpacity
+                onPress={() => {
+                  setIdProductActif(el._id);
+                  setInfosProductToUpdate(el);
+                  setModalAddProductVisible(true);
+                }}
+              >
                 <Text style={styles.listProductText}>{el.reference}</Text>
 
                 {el.quantity || el.brand || el.shop ? (
@@ -34,7 +46,7 @@ const ListFullInput = ({ item, idListActive }) => {
                     Toucher pour personnaliser
                   </Text>
                 )}
-              </View>
+              </TouchableOpacity>
 
               {el.price ? <Text style={styles.price}>{el.price} €</Text> : null}
             </View>

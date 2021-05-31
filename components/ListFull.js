@@ -1,12 +1,51 @@
 // React & React Native - Imports
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, FlatList, StyleSheet } from "react-native";
+
+// Axios - import
+import axios from "axios";
 
 // Components - import
 import ListFullHeader from "./ListFullHeader";
 import ListFullInput from "./ListFullInput";
 
-const ListFull = ({ data, idListActive }) => {
+const ListFull = ({
+  data,
+  idListActive,
+  setIdProductActif,
+  setInfosProductToUpdate,
+  setModalAddProductVisible,
+  userToken,
+  addProductList,
+}) => {
+  const [result, setResult] = useState();
+
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const response = await axios.get(
+  //         `http://localhost:3310/listcontent/${idListActive}`,
+  //         {
+  //           headers: {
+  //             Authorization: `Bearer ${userToken}`,
+  //           },
+  //         }
+  //       );
+
+  //       // console.log("response.data", response.data);
+  //       // console.log("response.data.lists", response.data.lists);
+
+  //       setResult(response.data);
+  //       console.log(response.data);
+  //       // setLoading(false);
+  //       // setIdListActive(response.data.lists[0]._id);
+  //     } catch (error) {
+  //       console.log(error.message);
+  //     }
+  //   };
+  //   fetchData();
+  // }, []);
+
   return (
     <View style={styles.list}>
       <FlatList
@@ -22,7 +61,15 @@ const ListFull = ({ data, idListActive }) => {
           data={data.lists}
           keyExtractor={(item) => item._id}
           renderItem={({ item }) => {
-            return <ListFullInput item={item} idListActive={idListActive} />;
+            return (
+              <ListFullInput
+                item={item}
+                idListActive={idListActive}
+                setIdProductActif={setIdProductActif}
+                setInfosProductToUpdate={setInfosProductToUpdate}
+                setModalAddProductVisible={setModalAddProductVisible}
+              />
+            );
           }}
         />
       </View>
