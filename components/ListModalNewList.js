@@ -9,7 +9,6 @@ import axios from "axios";
 // Components - import
 import ListModalTitle from "./ListModalTitle";
 import ListModalInput from "./ListModalInput";
-import ListModalButton from "./ListModalButton";
 
 // Colors - import
 import colors from "../assets/colors";
@@ -70,6 +69,7 @@ const ListModalNewList = ({
 
   return (
     <Modal
+      avoidKeyboard
       style={styles.modal}
       isVisible={isModalVisible}
       onBackdropPress={() => {
@@ -131,11 +131,11 @@ export default ListModalNewList;
 
 const styles = StyleSheet.create({
   modal: {
+    marginTop: -20,
     alignItems: "center",
     flex: 1,
   },
   modalWrap: {
-    marginTop: -200,
     width: Dimensions.get("window").width,
     alignItems: "center",
     maxHeight: "50%",
@@ -145,9 +145,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     padding: 30,
     borderRadius: 10,
-  },
-  modalHeader: {
-    marginBottom: 30,
   },
   // =========
   btnBlue: {
@@ -159,7 +156,7 @@ const styles = StyleSheet.create({
   btnTextBlue: {
     color: white,
     textAlign: "center",
-    // add bold
+    fontWeight: "bold",
   },
   btnDisabled: {
     backgroundColor: midGreyText,

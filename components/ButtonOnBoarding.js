@@ -2,7 +2,12 @@ import React from "react";
 import { TouchableOpacity, Text, StyleSheet } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 
-const ButtonOnBoarding = ({ side, screenNumber, setScreenNumber }) => {
+const ButtonOnBoarding = ({
+  side,
+  screenNumber,
+  setScreenNumber,
+  setOnBoardingDone,
+}) => {
   let iconName;
   if (side === "left") {
     iconName = "arrowleft";
@@ -16,8 +21,7 @@ const ButtonOnBoarding = ({ side, screenNumber, setScreenNumber }) => {
     } else if (side === "right" && screenNumber < 3) {
       setScreenNumber(screenNumber + 1);
     } else if (side === "right" && screenNumber === 3) {
-      // Set in local storage onBoarding has been seen
-      // Change in DB firstConnection to false
+      setOnBoardingDone();
     }
   };
 

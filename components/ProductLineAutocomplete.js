@@ -7,14 +7,17 @@ import axios from "axios";
 // URL request
 const localURLAdd = "http://localhost:3310/lists/add-product/";
 
-// Variables test -> A modifier avec les vrais valeurs quand Manon aura finalisé
-const idList = "60abd473ebe4f06ebef9375b";
-const userToken = "cccc";
 
 const ProductLineAutoComplete = ({
   firstLine,
   setValueInputAddQuickly,
   valueAutocomplete,
+  idList,
+  userToken,
+
+  addProductList,
+  setAddProductList,
+
 }) => {
   const addProduct = async () => {
     try {
@@ -38,6 +41,7 @@ const ProductLineAutoComplete = ({
 
           if (response.status === 200) {
             setValueInputAddQuickly(null);
+            setAddProductList(!addProductList);
             alert("Produt added successfully !");
           }
         } else {

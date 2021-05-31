@@ -5,21 +5,15 @@ import { useNavigation } from "@react-navigation/native";
 import colors from "../assets/colors";
 const { buttonFlashBlue } = colors;
 
-// const handlePress = () => {
-//   if (buttonTitle === "Retour au compte") {
-//   } else {
-//     setFeedbackSent(true);
-//   }
-// };
-
 const ButtonFeedback = ({ buttonTitle, setFeedbackSent, object, message }) => {
   const navigation = useNavigation();
 
   const handlePress = () => {
     if (buttonTitle === "Retour au compte") {
+      setFeedbackSent(false);
       navigation.navigate("AccountScreen");
     } else {
-      // Add request to DB to save message in DB
+      // Add request to save message in DB
       setFeedbackSent(true);
     }
   };
@@ -45,7 +39,6 @@ const styles = StyleSheet.create({
   viewButton: {
     position: "absolute",
     bottom: 130,
-    right: 30,
     alignItems: "center",
     width: "100%",
   },
@@ -60,7 +53,7 @@ const styles = StyleSheet.create({
     color: "white",
   },
   center: {
-    marginHorizontal: "auto",
+    left: 30,
   },
 });
 
