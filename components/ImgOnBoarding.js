@@ -8,7 +8,7 @@ const ImgOnBoarding = ({ screenNumber }) => {
     if (value === 0) {
       return (
         <Image
-          style={styles.illuList}
+          style={[styles.allIllu, styles.illuList]}
           resizeMode="contain"
           source={require("../assets/illustrations/illu_onboarding_list.png")}
         />
@@ -16,7 +16,7 @@ const ImgOnBoarding = ({ screenNumber }) => {
     } else if (value === 1) {
       return (
         <Image
-          style={styles.illuSquare}
+          style={[styles.allIllu, styles.illuSquare]}
           resizeMode="contain"
           source={require("../assets/illustrations/illu_onboarding_partage.png")}
         />
@@ -24,7 +24,7 @@ const ImgOnBoarding = ({ screenNumber }) => {
     } else if (value === 2) {
       return (
         <Image
-          style={styles.illuSquare}
+          style={[styles.illuSquare, styles.allIllu]}
           resizeMode="contain"
           source={require("../assets/illustrations/illu_onboarding_pers.png")}
         />
@@ -32,7 +32,7 @@ const ImgOnBoarding = ({ screenNumber }) => {
     } else if (value === 3) {
       return (
         <Image
-          style={styles.illuPromo}
+          style={[styles.illuPromo, styles.allIllu]}
           resizeMode="contain"
           source={require("../assets/illustrations/illu_onboarding_promos.png")}
         />
@@ -46,17 +46,21 @@ const styles = StyleSheet.create({
   illuList: {
     width: 200,
     height: 250,
+    marginVertical: 70,
   },
 
   illuSquare: {
     width: screenWidth - 30,
     height: screenWidth - 30,
+    marginTop: 10,
+    marginBottom: 30,
   },
 
   illuPromo: {
     width: screenWidth - 70,
     height: screenWidth - 70,
-    marginTop: 20,
+    marginTop: 90,
+    marginBottom: 20,
   },
 });
 

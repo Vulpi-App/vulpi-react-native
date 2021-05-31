@@ -11,7 +11,7 @@ const FeedbackScreen = () => {
   return !feedbackSent ? (
     <FormFeedback setFeedbackSent={setFeedbackSent} />
   ) : (
-    <FeedbackSent />
+    <FeedbackSent setFeedbackSent={setFeedbackSent} />
   );
 };
 
