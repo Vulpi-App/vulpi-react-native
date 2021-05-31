@@ -14,13 +14,15 @@ import Constants from "expo-constants";
 import { LinearGradient } from "expo-linear-gradient";
 import { useNavigation } from "@react-navigation/core";
 
+import * as AppleAuthentication from "expo-apple-authentication";
+
 import SignInput from "../components/SignInput";
 
 const windowHeight = Dimensions.get("window").height;
 const statusBarHeight = Constants.statusBarHeight;
 const scrollViewHeight = windowHeight - statusBarHeight;
 
-function SetUpProfilScreen({ setToken, setId }) {
+function SetUpProfilScreen({ userToken, setToken, userId, serverURL }) {
   const [errorMessage, setErrorMessage] = useState(null);
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
@@ -33,20 +35,19 @@ function SetUpProfilScreen({ setToken, setId }) {
       }
 
       try {
-        const response = await axios.post(
-          `https://vulpi-forest.herokuapp.com/user/login`,
-          //   `https://express-airbnb-api.herokuapp.com/user/log_in`
-          {
-            email,
-            password,
-          }
-        );
+        const formData = new FormData();
+        formData.append("email", email);
+        formData.append("password", password);
 
-        if (response.data.token && response.data.id) {
+        console.log(formData);
+        const response = await axios.post(`${serverURL}/user/login`, formData);
+
+        if (response.data.token && response.data._id) {
           const token = response.data.token;
-          const id = response.data.id;
-          setToken(token);
-          setId(id);
+          const id = response.data._id;
+          console.log(id);
+          console.log(token);
+          setToken(token, id);
         } else {
           setErrorMessage("Une erreur s'est produite");
         }
@@ -143,20 +144,43 @@ function SetUpProfilScreen({ setToken, setId }) {
 
           <View style={styles.wrapper}>
             <View style={styles.buttonWrap}>
-              <TouchableHighlight
-                style={styles.buttonTier}
-                underlayColor="#EEEEEE"
-                onPress={() => {}}
-              >
-                <View style={styles.buttonView}>
-                  <Image
-                    source={require("../assets/logo-apple.png")}
-                    style={styles.logos}
-                    resizeMode={"contain"}
-                  />
-                  <Text style={styles.textTier}>Continuer avec Apple</Text>
-                </View>
-              </TouchableHighlight>
+              <AppleAuthentication.AppleAuthenticationButton
+                buttonType={
+                  AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN
+                }
+                buttonStyle={
+                  AppleAuthentication.AppleAuthenticationButtonStyle.BLACK
+                }
+                cornerRadius={5}
+                style={{ width: "100%", height: 49 }}
+                onPress={async () => {
+                  try {
+                    const credential = await AppleAuthentication.signInAsync({
+                      requestedScopes: [
+                        AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
+                        AppleAuthentication.AppleAuthenticationScope.EMAIL,
+                      ],
+                    });
+                    const formData = new FormData();
+                    formData.append("appleId", credential.user);
+                    formData.append("email", credential.email);
+                    formData.append("firstName", credential.fullName.givenName);
+                    formData.append("lastName", credential.fullName.familyName);
+
+                    const response = await axios.post(
+                      `${serverURL}/user/appleauth`,
+                      formData
+                    );
+                  } catch (e) {
+                    if (e.code === "ERR_CANCELED") {
+                      // handle that the user canceled the sign-in flow
+                    } else {
+                      // handle other errors
+                    }
+                  }
+                }}
+              />
+
               <TouchableHighlight
                 style={styles.buttonTier}
                 underlayColor="#EEEEEE"
@@ -265,7 +289,7 @@ const styles = StyleSheet.create({
   test: {
     position: "absolute",
     marginTop: 40,
-    marginLeft: 340,
+    marginLeft: 310,
   },
 
   errorText: {
@@ -412,7 +436,7 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     flexDirection: "row",
-    marginTop: "20%",
+    marginTop: "10%",
     paddingTop: "5%",
   },
 });

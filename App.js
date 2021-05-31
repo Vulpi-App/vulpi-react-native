@@ -19,9 +19,8 @@ import ListScreen from "./containers/ListScreen";
 import axios from "axios";
 import RegisterScreen from "./containers/RegisterScreen";
 
-
 // Useful variables
-const serverURL = "http://localhost:3310";
+const serverURL = "https://vulpi-forest.herokuapp.com";
 // Local server : "http://localhost:3310"
 // Heroku server : "https://vulpi-forest.herokuapp.com"
 
@@ -31,10 +30,8 @@ const Stack = createStackNavigator();
 export default function App() {
   const [isLoading, setIsLoading] = useState(false);
   // Création d'un state temporaire/fictif à revoir par la suite
-  const [userToken, setUserToken] = useState(
-    "aY6F1blbUpsGS5GmjDKUd6ryKdL8KEwgJvaZRr3DSiEScSQpooJReSf7z4PrRJax"
-  );
-  const [userId, setUserId] = useState("60ae2381a338aa0f23126a89");
+  const [userToken, setUserToken] = useState(null);
+  const [userId, setUserId] = useState(null);
   // State pour gérer l'affichage du Onboarding
   const [firstConnection, setFirstConnection] = useState(false);
 
@@ -52,8 +49,6 @@ export default function App() {
     setUserToken(token);
     setUserId(id);
   };
-
-
 
   const setOnBoardingDone = async () => {
     try {
@@ -76,23 +71,21 @@ export default function App() {
     }
   };
 
-  // useEffect(() => {
-  //   // Fetch the token from storage then navigate to our appropriate place
-  //   const bootstrapAsync = async () => {
-  //     // We should also handle error for production apps
-  //     const userToken = await AsyncStorage.getItem("userToken");
-  //     // const userId = await AsyncStorage.getItem("userId");
-  //     // This will switch to the App screen or Auth screen and this loading
-  //     // screen will be unmounted and thrown away.
-  //     setIsLoading(false);
-  //     setUserToken(userToken);
-  //   };
+  useEffect(() => {
+    // Fetch the token from storage then navigate to our appropriate place
+    const bootstrapAsync = async () => {
+      // We should also handle error for production apps
+      const userToken = await AsyncStorage.getItem("userToken");
+      const userId = await AsyncStorage.getItem("userId");
+      // This will switch to the App screen or Auth screen and this loading
+      // screen will be unmounted and thrown away.
+      setIsLoading(false);
+      setUserToken(userToken);
+      setUserId(setUserId);
+    };
 
-  //   bootstrapAsync();
-  // }, []);
-
-
-
+    bootstrapAsync();
+  }, []);
 
   return (
     <NavigationContainer>
@@ -107,6 +100,7 @@ export default function App() {
                 userToken={userToken}
                 userId={userId}
                 setToken={setToken}
+                serverURL={serverURL}
               />
             )}
           </Stack.Screen>
@@ -116,6 +110,7 @@ export default function App() {
                 userToken={userToken}
                 userId={userId}
                 setToken={setToken}
+                serverURL={serverURL}
               />
             )}
           </Stack.Screen>
@@ -236,11 +231,12 @@ export default function App() {
                   {() => (
                     <Stack.Navigator screenOptions={{ headerShown: false }}>
                       <Stack.Screen name="AccountScreen">
-                        {(props) => (
+                        {() => (
                           <AccountScreen
-                            {...props}
                             userToken={userToken}
                             userId={userId}
+                            setToken={setToken}
+                            serverURL={serverURL}
                           />
                         )}
                       </Stack.Screen>
@@ -248,11 +244,12 @@ export default function App() {
                         name="AccountInfosScreen"
                         options={{ headerShown: false }}
                       >
-                        {(props) => (
+                        {() => (
                           <AccountInfosScreen
-                            {...props}
                             userToken={userToken}
                             userId={userId}
+                            setToken={setToken}
+                            serverURL={serverURL}
                           />
                         )}
                       </Stack.Screen>
