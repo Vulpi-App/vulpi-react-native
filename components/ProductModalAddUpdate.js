@@ -25,6 +25,7 @@ const localURLAdd = "http://localhost:3310/lists/add-product/";
 const localURLUpdate = "http://localhost:3310/lists/update-product/";
 const localURLDelete = "http://localhost:3310/lists/delete-product/";
 
+
 const ModalProduct = ({
   modalAddProductVisible,
   setModalAddProductVisible,
@@ -34,7 +35,9 @@ const ModalProduct = ({
   idProduct,
   addProductList,
   setAddProductList,
+
   infosProductToUpdate,
+
 }) => {
   const [nameProduct, setNameProduct] = useState();
   const [quantityProduct, setQuantityProduct] = useState();
@@ -89,6 +92,7 @@ const ModalProduct = ({
               setQuantityProduct();
               setBrandProduct();
               setShopProduct();
+              setAddProductList(!addProductList);
               setPriceProduct();
               setPictureProduct();
               setMessageErrorAfterSubmit();
@@ -139,6 +143,7 @@ const ModalProduct = ({
           setNameProduct();
           setQuantityProduct();
           setBrandProduct();
+          setAddProductList(!addProductList);
           setShopProduct();
           setPriceProduct();
           setPictureProduct();

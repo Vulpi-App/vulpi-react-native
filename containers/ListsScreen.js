@@ -38,6 +38,7 @@ const { buttonDarkBlue, white } = colors;
 const ListsScreen = ({ navigation, userToken, userId }) => {
   // States for modals
   const [isModalVisible, setModalVisible] = useState(false);
+  const [isModalUpdateVisible, setModalUpdateVisible] = useState(false);
   const [modalAddProductVisible, setModalAddProductVisible] = useState(false);
   const [valueInputAddQuickly, setValueInputAddQuickly] = useState();
 
@@ -50,7 +51,7 @@ const ListsScreen = ({ navigation, userToken, userId }) => {
   // State for new list
   const [newListCreated, setNewListCreated] = useState("");
 
-  // State for delete or update a list
+  // State for delete or update a list (modal)
   const [updateList, setUpdateList] = useState("");
   const [deleteList, setDeleteList] = useState("");
 
@@ -66,8 +67,13 @@ const ListsScreen = ({ navigation, userToken, userId }) => {
   // State for product actif
   const [idProductActif, setIdProductActif] = useState();
 
+
   // State for display element in modal update product
   const [infosProductToUpdate, setInfosProductToUpdate] = useState();
+
+  // console.log(idListActive);
+  // console.log(idProductActif);
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -92,10 +98,16 @@ const ListsScreen = ({ navigation, userToken, userId }) => {
       }
     };
     fetchData();
-  }, [newListCreated, addProductList]); // updateList, deleteList
+
+  }, [newListCreated, addProductList, updateList, deleteList]);
+
 
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
+  };
+
+  const toggleModalUpdate = () => {
+    setModalUpdateVisible(!isModalUpdateVisible);
   };
 
   const foldOrUnfoldLists = () => {
@@ -104,7 +116,7 @@ const ListsScreen = ({ navigation, userToken, userId }) => {
 
   return loading ? (
     <View style={styles.loading}>
-      <ActivityIndicator size="large" color={white} />
+      <ActivityIndicator size="large" color={buttonDarkBlue} />
     </View>
   ) : (
     <View style={styles.screen}>
@@ -143,11 +155,13 @@ const ListsScreen = ({ navigation, userToken, userId }) => {
              🚨 Gérer le screen au clic sur les 3 points */}
               <ListFull
                 data={data}
+
                 idListActive={idListActive}
                 setIdProductActif={setIdProductActif}
                 setInfosProductToUpdate={setInfosProductToUpdate}
                 setModalAddProductVisible={setModalAddProductVisible}
                 userToken={userToken}
+                toggleModalUpdate={toggleModalUpdate}
                 addProductList={addProductList}
               />
 
@@ -205,7 +219,8 @@ const ListsScreen = ({ navigation, userToken, userId }) => {
         </SafeAreaView>
       </KeyboardAwareScrollView>
 
-      {/* Modal "+ New list" */}
+      {/* Modal "+ New list" ✅ 
+      🚨 Gérer le keyboardAwareAreaView */}
       <ListModalNewList
         isModalVisible={isModalVisible}
         setModalVisible={setModalVisible}
@@ -214,17 +229,16 @@ const ListsScreen = ({ navigation, userToken, userId }) => {
         newListCreated={newListCreated}
       />
 
-      {/* Modal "update or delete a list" */}
-      {/* <ListModalRenameList
-        isModalVisible={isModalVisible}
-        setModalVisible={setModalVisible}
+      {/* Modal "update or delete a list" ✅ */}
+      <ListModalRenameList
+        isModalUpdateVisible={isModalUpdateVisible}
+        setModalUpdateVisible={setModalUpdateVisible}
         userToken={userToken}
         listId={idListActive}
         updateList={updateList}
         setUpdateList={setUpdateList}
-        deleteList={deleteList}
         setDeleteList={setDeleteList}
-      /> */}
+      />
 
       {/* Modal "Add or Update Product" */}
       <ModalProduct
@@ -233,10 +247,12 @@ const ListsScreen = ({ navigation, userToken, userId }) => {
         typeModalProduct={idProductActif ? "update product" : "new product"}
         idList={idListActive}
         userToken={userToken}
+
         idProduct={idProductActif}
         infosProductToUpdate={infosProductToUpdate}
         addProductList={addProductList}
         setAddProductList={setAddProductList}
+
       />
     </View>
   );

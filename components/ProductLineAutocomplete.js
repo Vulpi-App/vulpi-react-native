@@ -7,14 +7,17 @@ import axios from "axios";
 // URL request
 const localURLAdd = "http://localhost:3310/lists/add-product/";
 
+
 const ProductLineAutoComplete = ({
   firstLine,
   setValueInputAddQuickly,
   valueAutocomplete,
   idList,
   userToken,
+
   addProductList,
   setAddProductList,
+
 }) => {
   const addProduct = async () => {
     try {

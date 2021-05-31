@@ -13,9 +13,11 @@ const { radioBg, mainBlueText, productDetails, radioBorder, midGreyText } =
 const ListFullInput = ({
   item,
   idListActive,
+
   setIdProductActif,
   setModalAddProductVisible,
   setInfosProductToUpdate,
+
 }) => {
   return (
     item._id === idListActive &&
@@ -31,7 +33,9 @@ const ListFullInput = ({
               <TouchableOpacity
                 onPress={() => {
                   setIdProductActif(el._id);
+
                   setInfosProductToUpdate(el);
+
                   setModalAddProductVisible(true);
                 }}
               >

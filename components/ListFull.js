@@ -1,6 +1,9 @@
 // React & React Native - Imports
+
 import React, { useState, useEffect } from "react";
+
 import { View, Text, FlatList, StyleSheet } from "react-native";
+import axios from "axios";
 
 // Axios - import
 import axios from "axios";
@@ -12,10 +15,14 @@ import ListFullInput from "./ListFullInput";
 const ListFull = ({
   data,
   idListActive,
+
   setIdProductActif,
   setInfosProductToUpdate,
   setModalAddProductVisible,
   userToken,
+
+  toggleModalUpdate,
+
   addProductList,
 }) => {
   const [result, setResult] = useState();
@@ -32,19 +39,21 @@ const ListFull = ({
   //         }
   //       );
 
-  //       // console.log("response.data", response.data);
+
+  //       console.log("response.data HEREEEEEEE ", response.data);
   //       // console.log("response.data.lists", response.data.lists);
 
   //       setResult(response.data);
-  //       console.log(response.data);
-  //       // setLoading(false);
-  //       // setIdListActive(response.data.lists[0]._id);
+  //       setLoading(false);
+
   //     } catch (error) {
   //       console.log(error.message);
   //     }
   //   };
   //   fetchData();
+
   // }, []);
+
 
   return (
     <View style={styles.list}>
@@ -52,7 +61,13 @@ const ListFull = ({
         data={data.lists}
         keyExtractor={(item) => item._id}
         renderItem={({ item }) => {
-          return <ListFullHeader item={item} idListActive={idListActive} />;
+          return (
+            <ListFullHeader
+              item={item}
+              idListActive={idListActive}
+              toggleModalUpdate={toggleModalUpdate}
+            />
+          );
         }}
       />
 
@@ -68,6 +83,7 @@ const ListFull = ({
                 setIdProductActif={setIdProductActif}
                 setInfosProductToUpdate={setInfosProductToUpdate}
                 setModalAddProductVisible={setModalAddProductVisible}
+
               />
             );
           }}

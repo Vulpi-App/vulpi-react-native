@@ -42,9 +42,9 @@ const {
   dark,
 } = colors;
 
-const OnboardingScreen = () => {
+const OnboardingScreen = ({ setOnBoardingDone, firstName }) => {
   const [screenNumber, setScreenNumber] = useState(0);
-  const [firstName, setFirstName] = useState("Lhaoucine");
+
   return (
     <SafeAreaView style={styles.safeAreaView}>
       <StatusBar barStyle="light-content" />
@@ -73,6 +73,7 @@ const OnboardingScreen = () => {
           screenNumber={screenNumber}
           setScreenNumber={setScreenNumber}
           side="right"
+          setOnBoardingDone={setOnBoardingDone}
         />
       </View>
     </SafeAreaView>
@@ -85,7 +86,6 @@ const styles = StyleSheet.create({
     backgroundColor: buttonDarkBlue,
     marginTop: Platform.OS === "android" ? Constants.statusBarHeight : 0,
     alignItems: "center",
-    justifyContent: "space-between",
   },
   mainTitle: {
     color: "white",
@@ -98,6 +98,8 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     paddingHorizontal: 30,
     width: "100%",
+    position: "absolute",
+    bottom: 25,
   },
 
   flexEnd: {
