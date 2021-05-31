@@ -33,6 +33,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     marginHorizontal: 45,
     textAlign: "center",
+    marginTop: 10,
   },
 
   noMargin: {

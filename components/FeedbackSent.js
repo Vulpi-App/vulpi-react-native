@@ -6,7 +6,7 @@ const { buttonDarkBlue, bgLightText } = colors;
 // Components
 import ButtonFeedback from "../components/ButtonFeedback";
 
-const FeedbackSent = () => {
+const FeedbackSent = ({ setFeedbackSent }) => {
   return (
     <View style={styles.mainView}>
       <View style={styles.imgView}>
@@ -19,7 +19,10 @@ const FeedbackSent = () => {
       <Text style={[styles.message, styles.color]}>
         Merci pour ton aide, on va étudier à 100% ta demande !
       </Text>
-      <ButtonFeedback buttonTitle={"Retour au compte"} />
+      <ButtonFeedback
+        buttonTitle={"Retour au compte"}
+        setFeedbackSent={setFeedbackSent}
+      />
     </View>
   );
 };

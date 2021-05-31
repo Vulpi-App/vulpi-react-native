@@ -12,15 +12,22 @@ const FormFeedback = ({ setFeedbackSent }) => {
   return (
     <View style={styles.mainView}>
       <Text style={styles.title}>C'est à quel sujet ?</Text>
-      <TextInput
+      {/* <TextInput
         value={object}
         style={styles.textInput}
         onChangeText={(text) => {
           setObject(text);
         }}
         placeholder="Bug technique"
+      /> */}
+      <TextInput
+        placeholder="Bug Technique"
+        style={styles.textInput}
+        value={object}
+        onChangeText={(text) => {
+          setObject(text);
+        }}
       />
-
       <Text style={styles.title}>On t'écoutes, dis-nous tout :</Text>
       <TextInput
         value={message}
@@ -44,7 +51,7 @@ const FormFeedback = ({ setFeedbackSent }) => {
 
 const styles = StyleSheet.create({
   mainView: {
-    //alignItems: "center",
+    marginTop: 80,
     position: "relative",
     flex: 1,
     paddingHorizontal: 30,
@@ -52,13 +59,12 @@ const styles = StyleSheet.create({
 
   textInput: {
     width: "100%",
-    height: 40,
     backgroundColor: "white",
     borderRadius: 8,
     borderWidth: 1,
     borderColor: bgLightText,
     paddingHorizontal: 15,
-    paddingVertical: 20,
+    paddingVertical: 15,
   },
 
   multiline: {

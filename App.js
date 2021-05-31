@@ -20,7 +20,7 @@ import axios from "axios";
 import RegisterScreen from "./containers/RegisterScreen";
 
 // Useful variables
-const serverURL = "http://localhost:3310";
+const serverURL = "https://vulpi-forest.herokuapp.com";
 // Local server : "http://localhost:3310"
 // Heroku server : "https://vulpi-forest.herokuapp.com"
 
@@ -31,11 +31,14 @@ export default function App() {
   const [isLoading, setIsLoading] = useState(false);
   // Création d'un state temporaire/fictif à revoir par la suite
   const [userToken, setUserToken] = useState(
+
     "KSpUkFnIaPDmIYfzmc24iaWzzlsISjQ2m3mPkdfK8jhshqBUx4ApsLNIMEivqut0"
   );
   const [userId, setUserId] = useState("60b34cdb27fe1e80df064679");
+
   // State pour gérer l'affichage du Onboarding
-  const [firstConnection, setFirstConnection] = useState(false);
+  const [firstConnection, setFirstConnection] = useState(true);
+  const [firstName, setFirstName] = useState("Lhaoucine");
 
   // console.log(1, userId);
   // console.log(2, userToken);
@@ -54,20 +57,22 @@ export default function App() {
 
   const setOnBoardingDone = async () => {
     try {
-      setFirstConnection = false;
+      // Set the state firstConnection to false so the onBoarding screen will disappear
+      setFirstConnection(false);
       // Save in Local Storage the fact that the user has seen the onBoarding
       await AsyncStorage.setItem("onBoarding", "done");
 
       // Save in DB the fact that it is not the user's 1st connection
-      const FormData = new FormData();
+      const formData = new FormData();
       formData.append("firstConnection", false);
       const response = await axios.put(
-        `${serverUrl}/user/update/userId`,
-        FormData,
+        `${serverURL}/user/update/${userId}`,
+        formData,
         {
           headers: { authorization: `Bearer ${userToken}` },
         }
       );
+      console.log("réponse requête modif 1st connection" + response.data);
     } catch (error) {
       console.log(error.message);
     }
@@ -78,11 +83,14 @@ export default function App() {
   //   const bootstrapAsync = async () => {
   //     // We should also handle error for production apps
   //     const userToken = await AsyncStorage.getItem("userToken");
-  //     // const userId = await AsyncStorage.getItem("userId");
+  //     const userId = await AsyncStorage.getItem("userId");
+  //     const firstConnection = await AsyncStorage.getItem("firstConnection");
   //     // This will switch to the App screen or Auth screen and this loading
   //     // screen will be unmounted and thrown away.
-  //     setIsLoading(false);
   //     setUserToken(userToken);
+  //     setUserId(userId);
+  //     setFirstConnection(firstConnection);
+  //     setIsLoading(false);
   //   };
 
   //   bootstrapAsync();
@@ -115,7 +123,10 @@ export default function App() {
           </Stack.Screen>
         </Stack.Navigator>
       ) : firstConnection ? (
-        <OnboardingScreen />
+        <OnboardingScreen
+          setOnBoardingDone={setOnBoardingDone}
+          firstName={firstName}
+        />
       ) : (
         // User is signed in
         <Stack.Navigator>
