@@ -1,6 +1,11 @@
 // React & React Native - Imports
-import React, { useEffect, useState } from "react";
+
+import React, { useState, useEffect } from "react";
+
 import { View, Text, FlatList, StyleSheet } from "react-native";
+import axios from "axios";
+
+// Axios - import
 import axios from "axios";
 
 // Components - import
@@ -10,10 +15,14 @@ import ListFullInput from "./ListFullInput";
 const ListFull = ({
   data,
   idListActive,
-  toggleModalUpdate,
-  userToken,
-  setModalAddProductVisible,
+
   setIdProductActif,
+  setInfosProductToUpdate,
+  setModalAddProductVisible,
+  userToken,
+
+  toggleModalUpdate,
+
   addProductList,
 }) => {
   const [result, setResult] = useState();
@@ -30,17 +39,21 @@ const ListFull = ({
   //         }
   //       );
 
+
   //       console.log("response.data HEREEEEEEE ", response.data);
   //       // console.log("response.data.lists", response.data.lists);
 
   //       setResult(response.data);
   //       setLoading(false);
+
   //     } catch (error) {
   //       console.log(error.message);
   //     }
   //   };
   //   fetchData();
-  // }, [addProductList]);
+
+  // }, []);
+
 
   return (
     <View style={styles.list}>
@@ -67,8 +80,10 @@ const ListFull = ({
               <ListFullInput
                 item={item}
                 idListActive={idListActive}
-                setModalAddProductVisible={setModalAddProductVisible}
                 setIdProductActif={setIdProductActif}
+                setInfosProductToUpdate={setInfosProductToUpdate}
+                setModalAddProductVisible={setModalAddProductVisible}
+
               />
             );
           }}

@@ -32,9 +32,9 @@ export default function App() {
   // Création d'un state temporaire/fictif à revoir par la suite
   const [userToken, setUserToken] = useState(
 
-    "KSpUkFnIaPDmIYfzmc24iaWzzlsISjQ2m3mPkdfK8jhshqBUx4ApsLNIMEivqut0"
+    "pDwF8Hzeu4M6thn9BOzrf32dBy0vUlLD1J0lOSbxnPxIAkgzw9Q0MkaJ0dC8ELa6"
   );
-  const [userId, setUserId] = useState("60b34cdb27fe1e80df064679");
+  const [userId, setUserId] = useState("60b4ac5f48c552347cc545c3");
 
   // State pour gérer l'affichage du Onboarding
   const [firstConnection, setFirstConnection] = useState(true);
