@@ -1,5 +1,5 @@
 // Tools
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Text,
   View,
@@ -25,7 +25,6 @@ const localURLAdd = "http://localhost:3310/lists/add-product/";
 const localURLUpdate = "http://localhost:3310/lists/update-product/";
 const localURLDelete = "http://localhost:3310/lists/delete-product/";
 
-
 const ModalProduct = ({
   modalAddProductVisible,
   setModalAddProductVisible,
@@ -35,9 +34,6 @@ const ModalProduct = ({
   idProduct,
   addProductList,
   setAddProductList,
-
-  infosProductToUpdate,
-
 }) => {
   const [nameProduct, setNameProduct] = useState();
   const [quantityProduct, setQuantityProduct] = useState();
@@ -201,6 +197,7 @@ const ModalProduct = ({
           setMessageErrorAfterSubmit();
           setModalAddProductVisible(false);
           setModalDeleteProductVisible(false);
+          setAddProductList(!addProductList); // Pour rafraichir après suppression
           alert("Produt deleted successfully !");
         }
       } else {
@@ -246,7 +243,7 @@ const ModalProduct = ({
     <View style={styles.pageScreen}>
       <Modal
         style={styles.centeredView}
-        animationType="fade"
+        animationType="none"
         transparent={true}
         visible={modalAddProductVisible}
       >
@@ -275,38 +272,22 @@ const ModalProduct = ({
 
                 <InputProduct
                   nameInput="quantity"
-                  valueInput={
-                    infosProductToUpdate
-                      ? infosProductToUpdate.quantity
-                      : quantityProduct
-                  }
+                  valueInput={quantityProduct}
                   setValueInput={setQuantityProduct}
                 />
                 <InputProduct
                   nameInput="brand"
-                  valueInput={
-                    infosProductToUpdate
-                      ? infosProductToUpdate.brand
-                      : brandProduct
-                  }
+                  valueInput={brandProduct}
                   setValueInput={setBrandProduct}
                 />
                 <InputProduct
                   nameInput="shop"
-                  valueInput={
-                    infosProductToUpdate
-                      ? infosProductToUpdate.shop
-                      : shopProduct
-                  }
+                  valueInput={shopProduct}
                   setValueInput={setShopProduct}
                 />
                 <InputProduct
                   nameInput="price"
-                  valueInput={
-                    infosProductToUpdate
-                      ? infosProductToUpdate.price
-                      : priceProduct
-                  }
+                  valueInput={priceProduct}
                   setValueInput={setPriceProduct}
                 />
               </View>

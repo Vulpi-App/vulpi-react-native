@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
   centeredViewModalVisible: { backgroundColor: "rgba(0,0,0,0.7)" },
   modalView: {
     width: "90%",
-    height: "35%",
+    height: "36%",
     backgroundColor: "white",
     borderRadius: 20,
     paddingHorizontal: 20,

@@ -67,13 +67,11 @@ const ListsScreen = ({ navigation, userToken, userId }) => {
   // State for product actif
   const [idProductActif, setIdProductActif] = useState();
 
-
   // State for display element in modal update product
   const [infosProductToUpdate, setInfosProductToUpdate] = useState();
 
   // console.log(idListActive);
   // console.log(idProductActif);
-
 
   useEffect(() => {
     const fetchData = async () => {
@@ -87,7 +85,7 @@ const ListsScreen = ({ navigation, userToken, userId }) => {
           }
         );
 
-        console.log("response.data", response.data);
+        // console.log("response.data", response.data);
         // console.log("response.data.lists", response.data.lists);
 
         setData(response.data);
@@ -98,9 +96,7 @@ const ListsScreen = ({ navigation, userToken, userId }) => {
       }
     };
     fetchData();
-
   }, [newListCreated, addProductList, updateList, deleteList]);
-
 
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
@@ -122,7 +118,7 @@ const ListsScreen = ({ navigation, userToken, userId }) => {
     <View style={styles.screen}>
       <KeyboardAwareScrollView
         contentContainerStyle={{ height: "100%", margin: 0 }}
-        viewIsInsideTabBar={false}
+        viewIsInsideTabBar={true}
       >
         <StatusBar style="light" />
         <SafeAreaView style={styles.pageScreen}>
@@ -155,7 +151,6 @@ const ListsScreen = ({ navigation, userToken, userId }) => {
              🚨 Gérer le screen au clic sur les 3 points */}
               <ListFull
                 data={data}
-
                 idListActive={idListActive}
                 setIdProductActif={setIdProductActif}
                 setInfosProductToUpdate={setInfosProductToUpdate}
@@ -244,15 +239,12 @@ const ListsScreen = ({ navigation, userToken, userId }) => {
       <ModalProduct
         modalAddProductVisible={modalAddProductVisible}
         setModalAddProductVisible={setModalAddProductVisible}
-        typeModalProduct={idProductActif ? "update product" : "new product"}
+        typeModalProduct={"new product"}
         idList={idListActive}
         userToken={userToken}
-
-        idProduct={idProductActif}
-        infosProductToUpdate={infosProductToUpdate}
+        idProduct={idProductActif} // A changer avec le bon produit // A supprimer dans le lists screen
         addProductList={addProductList}
         setAddProductList={setAddProductList}
-
       />
     </View>
   );

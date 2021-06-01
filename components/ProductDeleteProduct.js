@@ -26,7 +26,7 @@ export default ProductDeleteProduct;
 const styles = StyleSheet.create({
   buttonDeleteProduct: {
     paddingHorizontal: 20,
-    paddingVertical: 15,
+    paddingVertical: 10,
     width: "100%",
     justifyContent: "center",
     alignItems: "center",

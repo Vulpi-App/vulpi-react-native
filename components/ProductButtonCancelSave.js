@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-evenly",
   },
   button: {
-    marginVertical: 15,
+    marginTop: 5,
     paddingHorizontal: 10,
     paddingVertical: 15,
     width: "45%",

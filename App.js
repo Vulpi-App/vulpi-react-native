@@ -32,14 +32,12 @@ export default function App() {
   // Création d'un state temporaire/fictif à revoir par la suite
 
   const [userToken, setUserToken] = useState(
-
     "pDwF8Hzeu4M6thn9BOzrf32dBy0vUlLD1J0lOSbxnPxIAkgzw9Q0MkaJ0dC8ELa6"
   );
   const [userId, setUserId] = useState("60b4ac5f48c552347cc545c3");
 
-
   // State pour gérer l'affichage du Onboarding
-  const [firstConnection, setFirstConnection] = useState(true);
+  const [firstConnection, setFirstConnection] = useState(false);
   const [firstName, setFirstName] = useState("Lhaoucine");
 
   // console.log(1, userId);
@@ -80,7 +78,6 @@ export default function App() {
     }
   };
 
-
   // useEffect(() => {
   //   // Fetch the token from storage then navigate to our appropriate place
   //   const bootstrapAsync = async () => {
@@ -98,7 +95,6 @@ export default function App() {
 
   //   bootstrapAsync();
   // }, []);
-
 
   return (
     <NavigationContainer>

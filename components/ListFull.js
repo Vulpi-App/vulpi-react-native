@@ -3,7 +3,6 @@
 import React, { useState, useEffect } from "react";
 
 import { View, Text, FlatList, StyleSheet } from "react-native";
-import axios from "axios";
 
 // Axios - import
 import axios from "axios";
@@ -39,7 +38,6 @@ const ListFull = ({
   //         }
   //       );
 
-
   //       console.log("response.data HEREEEEEEE ", response.data);
   //       // console.log("response.data.lists", response.data.lists);
 
@@ -53,7 +51,6 @@ const ListFull = ({
   //   fetchData();
 
   // }, []);
-
 
   return (
     <View style={styles.list}>
@@ -83,7 +80,6 @@ const ListFull = ({
                 setIdProductActif={setIdProductActif}
                 setInfosProductToUpdate={setInfosProductToUpdate}
                 setModalAddProductVisible={setModalAddProductVisible}
-
               />
             );
           }}
