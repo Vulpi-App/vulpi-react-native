@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   Dimensions,
   Image,
@@ -18,67 +18,23 @@ const windowHeight = Dimensions.get("window").height;
 const statusBarHeight = Constants.statusBarHeight;
 const scrollViewHeight = windowHeight - statusBarHeight;
 
-function AccountInfosScreen({ userToken, userId, serverURL, setToken }) {
-  const [displayMessage, setDisplayMessage] = useState(null);
-  const [userName, setUserName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState(null);
+function AccountInfosScreen({
+  userToken,
+  userId,
+  serverURL,
+  setToken,
+  email,
+  setEmail,
+  firstName,
+  setFirstName,
+  password,
+  setPassword,
+  displayMessage,
+  setDisplayMessage,
+  editInformation,
+}) {
   const [isInfosModified, setIsInfosModified] = useState(false);
   const navigation = useNavigation();
-
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  const fetchData = async () => {
-    try {
-      const response = await axios.get(`${serverURL}/user/${userId}`, {
-        headers: { Authorization: "Bearer " + userToken },
-      });
-      setUserName(response.data.account.firstName);
-      setEmail(response.data.email);
-      setPassword(response.data.password);
-    } catch (error) {
-      setDisplayMessage({ message: "Une erreur s'est produite" });
-    }
-  };
-
-  const editInformations = async (data) => {
-    setDisplayMessage(false);
-    if (isInfosModified) {
-      try {
-        const formData = new FormData();
-        if (data === "email") {
-          formData.append("email", email);
-        } else if (data === "password") {
-          formData.append("password", password);
-        } else if (data === "userName") {
-          formData.append("firstName", userName);
-        }
-
-        const response = await axios.put(
-          `${serverURL}/user/update/${userId}`,
-          formData,
-          { headers: { Authorization: "Bearer " + userToken } }
-        );
-        if (response.data) {
-          setUserName(response.data.username);
-          setEmail(response.data.email);
-          setDisplayMessage({ message: "Votre profil a été mis a jour." });
-        } else {
-          setDisplayMessage({ message: "Une erreur s'est produite" });
-        }
-      } catch (error) {
-        setDisplayMessage({ message: error.response.data.error });
-      }
-
-      isInfosModified && setIsInfosModified(false);
-
-      fetchData();
-    } else {
-      setDisplayMessage({ message: "Modifier au moins une information" });
-    }
-  };
 
   const handleDeleteAccount = async () => {
     try {
@@ -121,20 +77,20 @@ function AccountInfosScreen({ userToken, userId, serverURL, setToken }) {
             <View style={styles.inputWrap}>
               <TextInput
                 style={styles.textInputButton}
-                value={userName}
+                value={firstName}
                 onChangeText={(text) => {
-                  setUserName(text);
+                  setFirstName(text);
                   if (setDisplayMessage) {
-                    setDisplayMessage(false);
+                    setDisplayMessage({ message: null });
                   }
-
                   setIsInfosModified(true);
                 }}
               />
               <TouchableOpacity
                 style={styles.buttonInput}
                 onPress={() => {
-                  editInformations("userName");
+                  editInformation("firstName", isInfosModified);
+                  setIsInfosModified(false);
                 }}
               >
                 <Text style={styles.buttonText}>modifier</Text>
@@ -152,7 +108,7 @@ function AccountInfosScreen({ userToken, userId, serverURL, setToken }) {
                 onChangeText={(text) => {
                   setEmail(text);
                   if (setDisplayMessage) {
-                    setDisplayMessage(false);
+                    setDisplayMessage({ message: null });
                   }
 
                   setIsInfosModified(true);
@@ -161,7 +117,8 @@ function AccountInfosScreen({ userToken, userId, serverURL, setToken }) {
               <TouchableOpacity
                 style={styles.buttonInput}
                 onPress={() => {
-                  editInformations("email");
+                  editInformation("email", isInfosModified);
+                  setIsInfosModified(false);
                 }}
               >
                 <Text style={styles.buttonText}>modifier</Text>
@@ -181,7 +138,7 @@ function AccountInfosScreen({ userToken, userId, serverURL, setToken }) {
                 onChangeText={(text) => {
                   setPassword(text);
                   if (setDisplayMessage) {
-                    setDisplayMessage(false);
+                    setDisplayMessage({ message: null });
                   }
                   setIsInfosModified(true);
                 }}
@@ -189,16 +146,15 @@ function AccountInfosScreen({ userToken, userId, serverURL, setToken }) {
               <TouchableOpacity
                 style={styles.buttonInput}
                 onPress={() => {
-                  editInformations("password");
+                  editInformation("password", isInfosModified);
+                  setIsInfosModified(false);
                 }}
               >
                 <Text style={styles.buttonText}>modifier</Text>
               </TouchableOpacity>
             </View>
             <View style={styles.messageWrap}>
-              {displayMessage && (
-                <Text style={styles.messageText}>{displayMessage.message}</Text>
-              )}
+              <Text>{displayMessage.message}</Text>
             </View>
           </View>
         </View>

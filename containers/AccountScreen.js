@@ -7,13 +7,16 @@ import {
   Text,
   TouchableOpacity,
   View,
+  ActivityIndicator,
+  FlatList,
 } from "react-native";
-import axios from "axios";
 import Constants from "expo-constants";
 import * as ImagePicker from "expo-image-picker";
 import { useNavigation } from "@react-navigation/core";
+import { AntDesign } from "@expo/vector-icons";
 
 import colors from "../assets/colors";
+import axios from "axios";
 const {
   buttonFlashBlue,
   bgLight,
@@ -28,87 +31,50 @@ const windowHeight = Dimensions.get("window").height;
 const statusBarHeight = Constants.statusBarHeight;
 const scrollViewHeight = windowHeight - statusBarHeight;
 
-function AccountScreen({ userToken, userId, setToken, serverURL }) {
-  const [isLoading, setIsLoading] = useState(true);
-  const [displayMessage, setDisplayMessage] = useState(null);
-  const [email, setEmail] = useState("");
-  const [firstName, setFirstName] = useState("");
-  const [picture, setPicture] = useState(null);
+function AccountScreen({
+  setToken,
+  email,
+  firstName,
+  avatar,
+  setAvatar,
+  displayMessage,
+  setDisplayMessage,
+  editInformation,
+  serverURL,
+  userToken,
+  userId,
+}) {
   const [isPictureModified, setIsPictureModified] = useState(false);
+  const [userLists, setUserLists] = useState([]);
+  const [userListsVisible, setUserListsVisible] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const navigation = useNavigation();
 
   useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`${serverURL}/lists/${userId}`, {
+          headers: { Authorization: "Bearer " + userToken },
+        });
+        setUserLists(response.data);
+        console.log(response.data);
+        setIsLoading(false);
+      } catch (error) {
+        console.log(error.message);
+      }
+    };
     fetchData();
   }, []);
-
-  const fetchData = async () => {
-    try {
-      const response = await axios.get(`${serverURL}/user/${userId}`, {
-        headers: {
-          Authorization: "Bearer " + userToken,
-        },
-      });
-
-      setFirstName(response.data.account.firstName);
-      setEmail(response.data.email);
-
-      if (response.data.account.avatar.secure_url) {
-        setPicture(response.data.account.avatar.secure_url);
-      }
-
-      setIsLoading(false);
-    } catch (error) {
-      setDisplayMessage({
-        message: "An error occurred",
-        color: "error",
-      });
-    }
-  };
-
-  const editInformations = async () => {
-    if (isPictureModified) {
-      if (isPictureModified) {
-        try {
-          const uri = picture;
-          const uriParts = uri.split(".");
-          const fileType = uriParts[1];
-          const formData = new FormData();
-          formData.append("photo", {
-            uri,
-            name: `userPicture`,
-            type: `image/${fileType}`,
-          });
-          const response = await axios.put(
-            `http://localhost:3310/lists/${userId}`,
-            formData,
-            { headers: { Authorization: "Bearer " + userToken } }
-          );
-          if (response.data) {
-            setPicture(response.data.photo[0].url);
-          }
-        } catch (error) {}
-      }
-      isPictureModified && setIsPictureModified(false);
-
-      fetchData();
-    } else {
-    }
-  };
 
   const uploadPicture = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (status === "granted") {
       const result = await ImagePicker.launchImageLibraryAsync();
       if (!result.cancelled) {
-        setPicture(result.uri);
-        const formData = new FormData();
-        formData.append("avatar", result.uri);
-        const response = await axios.put(
-          `${serverURL}/user/update/${userId}`,
-          formData,
-          { headers: { Authorization: "Bearer " + userToken } }
-        );
-        console.log(response.message);
+        setIsPictureModified(true);
+        setAvatar(result.uri);
+
+        editInformation("avatar", isPictureModified);
       }
     }
   };
@@ -126,10 +92,10 @@ function AccountScreen({ userToken, userId, setToken, serverURL }) {
                     uploadPicture();
                   }}
                 >
-                  {picture ? (
+                  {avatar ? (
                     <Image
                       source={{
-                        uri: picture,
+                        uri: avatar,
                       }}
                       style={styles.avatar}
                       resizeMode="cover"
@@ -152,6 +118,7 @@ function AccountScreen({ userToken, userId, setToken, serverURL }) {
               <TouchableOpacity
                 style={styles.navigation}
                 onPress={() => {
+                  setDisplayMessage({ message: null });
                   navigation.navigate("AccountInfosScreen");
                 }}
               >
@@ -169,18 +136,52 @@ function AccountScreen({ userToken, userId, setToken, serverURL }) {
               <TouchableOpacity
                 style={styles.navigation}
                 onPress={() => {
-                  navigation.navigate("Lists");
+                  //navigation.navigate("Lists");
+                  setUserListsVisible(!userListsVisible);
                 }}
               >
                 <View style={styles.whiteButton}>
-                  <Text style={styles.blueText}>🥑{"   "}Mes listes</Text>
-                  <Image
-                    source={require("../assets/icon-chevron-right-blue.png")}
-                    resizeMode={"contain"}
-                    style={styles.icon}
-                  />
+                  <Text style={styles.blueText}>🗒{"   "}Mes listes</Text>
+                  {isLoading ? (
+                    <ActivityIndicator />
+                  ) : !userListsVisible ? (
+                    <Image
+                      source={require("../assets/icon-chevron-right-blue.png")}
+                      resizeMode={"contain"}
+                      style={styles.icon}
+                    />
+                  ) : (
+                    <AntDesign
+                      name="down"
+                      size={18}
+                      color={mainBlueText}
+                      style={styles.icon}
+                    />
+                  )}
                 </View>
               </TouchableOpacity>
+              {userListsVisible && (
+                <View style={styles.flatListView}>
+                  <FlatList
+                    data={userLists.lists}
+                    keyExtractor={(item) => String(item._id)}
+                    renderItem={({ item }) => (
+                      <TouchableOpacity
+                        style={[styles.whiteButton, styles.listView]}
+                      >
+                        <Text style={styles.blueText}>
+                          {item.emoji} {item.title}
+                        </Text>
+                        <Image
+                          source={require("../assets/icon-chevron-right-blue.png")}
+                          resizeMode={"contain"}
+                          style={styles.listIcon}
+                        />
+                      </TouchableOpacity>
+                    )}
+                  />
+                </View>
+              )}
             </View>
           </View>
           <View style={styles.block}>
@@ -232,7 +233,7 @@ export default AccountScreen;
 const styles = StyleSheet.create({
   container: {
     backgroundColor: bgLight,
-    width: scrollViewHeight,
+    height: "100%",
     width: "100%",
   },
 
@@ -301,6 +302,16 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     width: "100%",
     height: 58,
+    paddingRight: "3%",
+  },
+
+  flatListView: {
+    maxHeight: 130,
+  },
+
+  listView: {
+    width: "90%",
+    height: 50,
   },
 
   blueText: {
@@ -312,9 +323,13 @@ const styles = StyleSheet.create({
   },
 
   icon: {
-    marginRight: "3%",
     height: 15,
     width: 15,
+  },
+
+  listIcon: {
+    height: 10,
+    width: 10,
   },
 
   feedbackButton: {
@@ -331,6 +346,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     width: "100%",
     height: 58,
+    paddingRight: "3%",
   },
 
   whiteText: {

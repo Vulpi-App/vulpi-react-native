@@ -2,6 +2,7 @@ const colors = {
   bgLight: "#F7F7F8",
   mainLightGrey: "rgba(24, 23, 37, 0.31)",
   mainBlueText: "#181725",
+  inactiveTabBar: "rgba(9,9,15,0.4)",
   bgLightText: "#E5E5E5",
   midGreyText: "rgba(144, 145, 154, 0.69)",
   darkGreyText: "#545560",
