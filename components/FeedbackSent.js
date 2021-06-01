@@ -1,7 +1,7 @@
 import React from "react";
 import { TouchableOpacity, Text, StyleSheet, View, Image } from "react-native";
 import colors from "../assets/colors";
-const { buttonDarkBlue, bgLightText } = colors;
+const { buttonDarkBlue, bgLight } = colors;
 
 // Components
 import ButtonFeedback from "../components/ButtonFeedback";
@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     position: "relative",
     flex: 1,
-    backgroundColor: bgLightText,
+    backgroundColor: bgLight,
   },
 
   imgView: {
@@ -52,6 +52,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 23,
     marginBottom: 10,
+    fontFamily: "GilroySemiBold",
   },
 
   message: {
@@ -59,6 +60,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontSize: 16,
     lineHeight: 18.75,
+    fontFamily: "GilroyMedium",
   },
 });
 

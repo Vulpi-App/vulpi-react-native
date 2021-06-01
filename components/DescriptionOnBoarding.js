@@ -40,6 +40,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 15,
     lineHeight: 19,
     fontSize: 17,
+    fontFamily: "GilroySemiBold",
   },
   marginTop: {
     marginTop: 20,

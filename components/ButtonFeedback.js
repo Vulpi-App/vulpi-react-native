@@ -38,7 +38,7 @@ const ButtonFeedback = ({ buttonTitle, setFeedbackSent, object, message }) => {
 const styles = StyleSheet.create({
   viewButton: {
     position: "absolute",
-    bottom: 130,
+    bottom: 100,
     alignItems: "center",
     width: "100%",
   },

@@ -25,7 +25,6 @@ const localURLAdd = "http://localhost:3310/lists/add-product/";
 const localURLUpdate = "http://localhost:3310/lists/update-product/";
 const localURLDelete = "http://localhost:3310/lists/delete-product/";
 
-
 const ModalProduct = ({
   modalAddProductVisible,
   setModalAddProductVisible,
@@ -37,7 +36,6 @@ const ModalProduct = ({
   setAddProductList,
 
   infosProductToUpdate,
-
 }) => {
   const [nameProduct, setNameProduct] = useState();
   const [quantityProduct, setQuantityProduct] = useState();
@@ -276,36 +274,40 @@ const ModalProduct = ({
                 <InputProduct
                   nameInput="quantity"
                   valueInput={
-                    infosProductToUpdate
-                      ? infosProductToUpdate.quantity
-                      : quantityProduct
+                    // infosProductToUpdate
+                    //   ? infosProductToUpdate.quantity
+                    //   : quantityProduct
+                    quantityProduct
                   }
                   setValueInput={setQuantityProduct}
                 />
                 <InputProduct
                   nameInput="brand"
                   valueInput={
-                    infosProductToUpdate
-                      ? infosProductToUpdate.brand
-                      : brandProduct
+                    // infosProductToUpdate
+                    //   ? infosProductToUpdate.brand
+                    //   : brandProduct
+                    brandProduct
                   }
                   setValueInput={setBrandProduct}
                 />
                 <InputProduct
                   nameInput="shop"
                   valueInput={
-                    infosProductToUpdate
-                      ? infosProductToUpdate.shop
-                      : shopProduct
+                    // infosProductToUpdate
+                    //   ? infosProductToUpdate.shop
+                    //   : shopProduct
+                    shopProduct
                   }
                   setValueInput={setShopProduct}
                 />
                 <InputProduct
                   nameInput="price"
                   valueInput={
-                    infosProductToUpdate
-                      ? infosProductToUpdate.price
-                      : priceProduct
+                    // infosProductToUpdate
+                    //   ? infosProductToUpdate.price
+                    //   : priceProduct
+                    priceProduct
                   }
                   setValueInput={setPriceProduct}
                 />

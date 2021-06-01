@@ -92,6 +92,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontSize: 24,
     marginTop: 10,
+    fontFamily: "GilroyBold",
   },
   buttonView: {
     flexDirection: "row",

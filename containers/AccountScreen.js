@@ -13,6 +13,17 @@ import Constants from "expo-constants";
 import * as ImagePicker from "expo-image-picker";
 import { useNavigation } from "@react-navigation/core";
 
+import colors from "../assets/colors";
+const {
+  buttonFlashBlue,
+  bgLight,
+  buttonDarkBlue,
+  buttonDisconnect,
+  midGreyText,
+  mainBlueText,
+  bgLightText,
+} = colors;
+
 const windowHeight = Dimensions.get("window").height;
 const statusBarHeight = Constants.statusBarHeight;
 const scrollViewHeight = windowHeight - statusBarHeight;
@@ -32,22 +43,17 @@ function AccountScreen({ userToken, userId, setToken, serverURL }) {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get(
-        // `http://localhost:3000/user/${userId}`,
-        `${serverURL}/user/${userId}`,
-        {
-          headers: {
-            Authorization: "Bearer " + userToken,
-          },
-        }
-      );
+      const response = await axios.get(`${serverURL}/user/${userId}`, {
+        headers: {
+          Authorization: "Bearer " + userToken,
+        },
+      });
 
-      console.log(response.data);
       setFirstName(response.data.account.firstName);
       setEmail(response.data.email);
 
-      if (response.data.photo) {
-        setPicture(response.data.photo[0].url);
+      if (response.data.account.avatar.secure_url) {
+        setPicture(response.data.account.avatar.secure_url);
       }
 
       setIsLoading(false);
@@ -95,9 +101,14 @@ function AccountScreen({ userToken, userId, setToken, serverURL }) {
       const result = await ImagePicker.launchImageLibraryAsync();
       if (!result.cancelled) {
         setPicture(result.uri);
-        if (!isPictureModified) {
-          setIsPictureModified(true);
-        }
+        const formData = new FormData();
+        formData.append("avatar", result.uri);
+        const response = await axios.put(
+          `${serverURL}/user/update/${userId}`,
+          formData,
+          { headers: { Authorization: "Bearer " + userToken } }
+        );
+        console.log(response.message);
       }
     }
   };
@@ -115,15 +126,23 @@ function AccountScreen({ userToken, userId, setToken, serverURL }) {
                     uploadPicture();
                   }}
                 >
-                  <Image
-                    source={{ uri: picture }}
-                    style={styles.avatar}
-                    resizeMode="cover"
-                  />
+                  {picture ? (
+                    <Image
+                      source={{
+                        uri: picture,
+                      }}
+                      style={styles.avatar}
+                      resizeMode="cover"
+                    />
+                  ) : (
+                    <View style={[styles.avatar, styles.viewAvatar]} />
+                  )}
                 </TouchableOpacity>
                 <View style={styles.infos}>
                   <Text style={styles.name}>{firstName}</Text>
-                  <Text style={styles.email}>{email}</Text>
+                  <Text style={styles.email} numberOfLines={1}>
+                    {email}
+                  </Text>
                 </View>
               </View>
             </View>
@@ -138,7 +157,7 @@ function AccountScreen({ userToken, userId, setToken, serverURL }) {
               >
                 <View style={styles.whiteButton}>
                   <Text style={styles.blueText}>
-                    👋{"   "}Mes informations personnelles
+                    👋 Mes informations personnelles
                   </Text>
                   <Image
                     source={require("../assets/icon-chevron-right-blue.png")}
@@ -154,7 +173,7 @@ function AccountScreen({ userToken, userId, setToken, serverURL }) {
                 }}
               >
                 <View style={styles.whiteButton}>
-                  <Text style={styles.blueText}>🥑{"   "}Ma liste</Text>
+                  <Text style={styles.blueText}>🥑{"   "}Mes listes</Text>
                   <Image
                     source={require("../assets/icon-chevron-right-blue.png")}
                     resizeMode={"contain"}
@@ -212,7 +231,7 @@ export default AccountScreen;
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#F7F7F8",
+    backgroundColor: bgLight,
     width: scrollViewHeight,
     width: "100%",
   },
@@ -245,13 +264,16 @@ const styles = StyleSheet.create({
   name: {
     marginBottom: "5%",
     fontWeight: "600",
-    color: "#232952",
+    color: buttonDarkBlue,
     fontSize: 23,
+    fontFamily: "GilroySemiBold",
   },
 
   email: {
-    color: "#5F616A",
+    color: midGreyText,
     fontSize: 16,
+    width: 200,
+    fontFamily: "GilroyRegular",
   },
 
   avatar: {
@@ -261,6 +283,10 @@ const styles = StyleSheet.create({
     width: 85,
   },
 
+  viewAvatar: {
+    backgroundColor: buttonFlashBlue,
+  },
+
   navigation: {
     marginTop: "3%",
   },
@@ -268,7 +294,7 @@ const styles = StyleSheet.create({
   whiteButton: {
     justifyContent: "space-between",
     backgroundColor: "#FFFFFF",
-    borderColor: "#EEEEEE",
+    borderColor: bgLightText,
     alignItems: "center",
     flexDirection: "row",
     borderRadius: 10,
@@ -280,8 +306,9 @@ const styles = StyleSheet.create({
   blueText: {
     fontWeight: "600",
     marginLeft: "5%",
-    color: "#181725",
+    color: mainBlueText,
     fontSize: 16,
+    fontFamily: "GilroySemiBold",
   },
 
   icon: {
@@ -296,8 +323,8 @@ const styles = StyleSheet.create({
 
   blueButton: {
     justifyContent: "space-between",
-    backgroundColor: "#3443B9",
-    borderColor: "#EEEEEE",
+    backgroundColor: buttonFlashBlue,
+    borderColor: bgLightText,
     alignItems: "center",
     flexDirection: "row",
     borderRadius: 10,
@@ -311,10 +338,11 @@ const styles = StyleSheet.create({
     marginLeft: "5%",
     color: "white",
     fontSize: 16,
+    fontFamily: "GilroySemiBold",
   },
 
   logoutButton: {
-    backgroundColor: "#E3E3EE",
+    backgroundColor: buttonDisconnect,
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 19,
@@ -323,8 +351,9 @@ const styles = StyleSheet.create({
 
   logoutText: {
     fontWeight: "600",
-    color: "#232952",
+    color: buttonDarkBlue,
     fontSize: 18,
+    fontFamily: "GilroySemiBold",
   },
 
   logoutImage: {

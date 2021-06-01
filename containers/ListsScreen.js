@@ -67,13 +67,11 @@ const ListsScreen = ({ navigation, userToken, userId }) => {
   // State for product actif
   const [idProductActif, setIdProductActif] = useState();
 
-
   // State for display element in modal update product
   const [infosProductToUpdate, setInfosProductToUpdate] = useState();
 
   // console.log(idListActive);
   // console.log(idProductActif);
-
 
   useEffect(() => {
     const fetchData = async () => {
@@ -98,9 +96,7 @@ const ListsScreen = ({ navigation, userToken, userId }) => {
       }
     };
     fetchData();
-
   }, [newListCreated, addProductList, updateList, deleteList]);
-
 
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
@@ -155,7 +151,6 @@ const ListsScreen = ({ navigation, userToken, userId }) => {
              🚨 Gérer le screen au clic sur les 3 points */}
               <ListFull
                 data={data}
-
                 idListActive={idListActive}
                 setIdProductActif={setIdProductActif}
                 setInfosProductToUpdate={setInfosProductToUpdate}
@@ -165,12 +160,12 @@ const ListsScreen = ({ navigation, userToken, userId }) => {
                 addProductList={addProductList}
               />
 
-              <Button
+              {/* <Button
                 title="Ma liste maison"
                 onPress={() => {
                   navigation.navigate("ListScreen");
                 }}
-              />
+              /> */}
             </View>
 
             <View style={styles.blockBottomAddQuicklyAutocomplete}>
@@ -247,12 +242,10 @@ const ListsScreen = ({ navigation, userToken, userId }) => {
         typeModalProduct={idProductActif ? "update product" : "new product"}
         idList={idListActive}
         userToken={userToken}
-
         idProduct={idProductActif}
         infosProductToUpdate={infosProductToUpdate}
         addProductList={addProductList}
         setAddProductList={setAddProductList}
-
       />
     </View>
   );

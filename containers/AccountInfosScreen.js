@@ -12,12 +12,13 @@ import {
 import axios from "axios";
 import Constants from "expo-constants";
 import { useNavigation } from "@react-navigation/core";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const windowHeight = Dimensions.get("window").height;
 const statusBarHeight = Constants.statusBarHeight;
 const scrollViewHeight = windowHeight - statusBarHeight;
 
-function AccountInfosScreen({ userToken, userId }) {
+function AccountInfosScreen({ userToken, userId, serverURL, setToken }) {
   const [displayMessage, setDisplayMessage] = useState(null);
   const [userName, setUserName] = useState("");
   const [email, setEmail] = useState("");
@@ -31,11 +32,10 @@ function AccountInfosScreen({ userToken, userId }) {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get(
-        `https://express-airbnb-api.herokuapp.com/user/${userId}`,
-        { headers: { Authorization: "Bearer " + userToken } }
-      );
-      setUserName(response.data.username);
+      const response = await axios.get(`${serverURL}/user/${userId}`, {
+        headers: { Authorization: "Bearer " + userToken },
+      });
+      setUserName(response.data.account.firstName);
       setEmail(response.data.email);
       setPassword(response.data.password);
     } catch (error) {
@@ -43,29 +43,33 @@ function AccountInfosScreen({ userToken, userId }) {
     }
   };
 
-  const editInformations = async () => {
+  const editInformations = async (data) => {
     setDisplayMessage(false);
     if (isInfosModified) {
-      if (isInfosModified) {
-        try {
-          const obj = {};
-          obj.email = email;
-          obj.username = userName;
-          const response = await axios.put(
-            `https://express-airbnb-api.herokuapp.com/user/update`,
-            obj,
-            { headers: { Authorization: "Bearer " + userToken } }
-          );
-          if (response.data) {
-            setUserName(response.data.username);
-            setEmail(response.data.email);
-            setDisplayMessage({ message: "Votre profil a été mis a jour." });
-          } else {
-            setDisplayMessage({ message: "Une erreur s'est produite" });
-          }
-        } catch (error) {
-          setDisplayMessage({ message: error.response.data.error });
+      try {
+        const formData = new FormData();
+        if (data === "email") {
+          formData.append("email", email);
+        } else if (data === "password") {
+          formData.append("password", password);
+        } else if (data === "userName") {
+          formData.append("firstName", userName);
         }
+
+        const response = await axios.put(
+          `${serverURL}/user/update/${userId}`,
+          formData,
+          { headers: { Authorization: "Bearer " + userToken } }
+        );
+        if (response.data) {
+          setUserName(response.data.username);
+          setEmail(response.data.email);
+          setDisplayMessage({ message: "Votre profil a été mis a jour." });
+        } else {
+          setDisplayMessage({ message: "Une erreur s'est produite" });
+        }
+      } catch (error) {
+        setDisplayMessage({ message: error.response.data.error });
       }
 
       isInfosModified && setIsInfosModified(false);
@@ -73,6 +77,18 @@ function AccountInfosScreen({ userToken, userId }) {
       fetchData();
     } else {
       setDisplayMessage({ message: "Modifier au moins une information" });
+    }
+  };
+
+  const handleDeleteAccount = async () => {
+    try {
+      await axios.delete(`${serverURL}/user/delete/${userId}`, {
+        headers: { Authorization: "Bearer " + userToken },
+      });
+      await AsyncStorage.removeItem("onBoarding");
+      setToken(null, null, null);
+    } catch (error) {
+      setDisplayMessage({ message: "Une erreur s'est produite" });
     }
   };
 
@@ -102,21 +118,28 @@ function AccountInfosScreen({ userToken, userId }) {
           </View>
           <Text style={styles.title}>Prénom</Text>
           <View style={styles.block}>
-            <TextInput
-              style={styles.inputText}
-              autoCapitalize="none"
-              textContentType="none"
-              value={userName}
-              onChangeText={(text) => {
-                setUserName(text);
-                if (setDisplayMessage) {
-                  setDisplayMessage(false);
-                }
-                if (setIsInfosModified) {
+            <View style={styles.inputWrap}>
+              <TextInput
+                style={styles.textInputButton}
+                value={userName}
+                onChangeText={(text) => {
+                  setUserName(text);
+                  if (setDisplayMessage) {
+                    setDisplayMessage(false);
+                  }
+
                   setIsInfosModified(true);
-                }
-              }}
-            />
+                }}
+              />
+              <TouchableOpacity
+                style={styles.buttonInput}
+                onPress={() => {
+                  editInformations("userName");
+                }}
+              >
+                <Text style={styles.buttonText}>modifier</Text>
+              </TouchableOpacity>
+            </View>
           </View>
           <Text style={styles.title}>Adresse e-mail</Text>
           <View style={styles.block}>
@@ -131,15 +154,14 @@ function AccountInfosScreen({ userToken, userId }) {
                   if (setDisplayMessage) {
                     setDisplayMessage(false);
                   }
-                  if (setIsInfosModified) {
-                    setIsInfosModified(true);
-                  }
+
+                  setIsInfosModified(true);
                 }}
               />
               <TouchableOpacity
                 style={styles.buttonInput}
                 onPress={() => {
-                  editInformations();
+                  editInformations("email");
                 }}
               >
                 <Text style={styles.buttonText}>modifier</Text>
@@ -152,7 +174,7 @@ function AccountInfosScreen({ userToken, userId }) {
               <TextInput
                 style={styles.textInputButton}
                 placeholder="••••••••••"
-                secureTextEntry="true"
+                secureTextEntry={true}
                 autoCapitalize="none"
                 textContentType="none"
                 value={password}
@@ -161,15 +183,13 @@ function AccountInfosScreen({ userToken, userId }) {
                   if (setDisplayMessage) {
                     setDisplayMessage(false);
                   }
-                  if (setIsInfosModified) {
-                    setIsInfosModified(true);
-                  }
+                  setIsInfosModified(true);
                 }}
               />
               <TouchableOpacity
                 style={styles.buttonInput}
                 onPress={() => {
-                  editInformations();
+                  editInformations("password");
                 }}
               >
                 <Text style={styles.buttonText}>modifier</Text>
@@ -187,7 +207,7 @@ function AccountInfosScreen({ userToken, userId }) {
             <TouchableOpacity
               style={styles.deleteButton}
               underlayColor="#e24d4d"
-              onPress={() => {}}
+              onPress={handleDeleteAccount}
             >
               <Text style={styles.deleteText}>Supprimer mon compte</Text>
             </TouchableOpacity>
@@ -241,6 +261,8 @@ const styles = StyleSheet.create({
     color: "#232952",
     fontSize: 23,
     width: "75%",
+    fontFamily: "GilroySemiBold",
+    lineHeight: 26.95,
   },
 
   title: {
@@ -249,6 +271,7 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
     paddingTop: 20,
     fontSize: 14,
+    fontFamily: "GilroySemiBold",
   },
 
   inputText: {
@@ -305,6 +328,7 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     color: "white",
     fontSize: 14,
+    fontFamily: "GilroySemiBold",
   },
 
   messageWrap: {
@@ -315,6 +339,7 @@ const styles = StyleSheet.create({
 
   messageText: {
     color: "#CA2121",
+    fontFamily: "GilroySemiBold",
   },
 
   delete: {
@@ -334,5 +359,6 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     color: "white",
     fontSize: 18,
+    fontFamily: "GilroySemiBold",
   },
 });

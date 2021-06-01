@@ -34,6 +34,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 45,
     textAlign: "center",
     marginTop: 10,
+    fontFamily: "GilroyBold",
   },
 
   noMargin: {
