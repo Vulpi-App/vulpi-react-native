@@ -20,6 +20,7 @@ const ListModalNewList = ({
   userToken,
   setNewListCreated,
   newListCreated,
+  serverURL,
 }) => {
   // States for add a new list
   const [title, setTitle] = useState("");
@@ -39,7 +40,7 @@ const ListModalNewList = ({
           formData.append("emoji", emoji);
 
           const response = await axios.post(
-            `http://localhost:3310/lists/create`,
+            `${serverURL}/lists/create`,
             formData,
             {
               headers: { Authorization: `Bearer ${userToken}` },

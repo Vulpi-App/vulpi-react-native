@@ -13,11 +13,10 @@ const { radioBg, mainBlueText, productDetails, radioBorder, midGreyText } =
 const ListFullInput = ({
   item,
   idListActive,
-
+  user,
   setIdProductActif,
   setModalAddProductVisible,
   setInfosProductToUpdate,
-
 }) => {
   return (
     item._id === idListActive &&
@@ -39,11 +38,33 @@ const ListFullInput = ({
                   setModalAddProductVisible(true);
                 }}
               >
-                <Text style={styles.listProductText}>{el.reference}</Text>
+                {/* !! Ecrire une condition pour lier le user à l'idListActive */}
+                {user.products.map((products, index) => {
+                  console.log(products.name);
+                })}
 
+                {/* {user.products.map((productName, index) => {
+                  console.log("HERE ", productName);
+                  return (
+                    <Text style={styles.listProductText}>
+                      {productName.name}
+                    </Text>
+                  );
+                })} */}
                 {el.quantity || el.brand || el.shop ? (
                   <Text style={styles.listCustom}>
-                    {el.quantity} paquets, {el.brand} | {el.shop}
+                    {el.quantity &&
+                      el.brand &&
+                      el.shop &&
+                      el.quantity + ", " + el.brand + ", " + el.shop}
+
+                    {el.quantity && el.brand && el.quantity + ", " + el.brand}
+                    {el.quantity && el.shop && el.quantity + ", " + el.shop}
+                    {el.brand && el.shop && el.brand + ", " + el.shop}
+
+                    {el.quantity && el.quantity}
+                    {el.brand && el.brand}
+                    {el.shop && el.shop}
                   </Text>
                 ) : (
                   <Text style={styles.listNotCustom}>

@@ -20,6 +20,9 @@ const ListModalRenameList = ({
   listId,
   setDeleteList,
   setUpdateList,
+  serverURL,
+  titleListActive,
+  userId,
 }) => {
   // State for rename list
   const [title, setTitle] = useState("");
@@ -38,7 +41,7 @@ const ListModalRenameList = ({
           formData.append("title", title);
 
           const response = await axios.put(
-            `http://localhost:3310/lists/update/${listId}`,
+            `${serverURL}/lists/update/${listId}`,
             formData,
             {
               headers: { Authorization: `Bearer ${userToken}` },
@@ -69,7 +72,7 @@ const ListModalRenameList = ({
   const deleteListFunc = async () => {
     try {
       const response = await axios.delete(
-        `http://localhost:3310/lists/delete/${listId}`,
+        `${serverURL}/lists/delete/${listId}/${userId}`,
         {
           headers: { Authorization: `Bearer ${userToken}` },
         }
@@ -103,7 +106,7 @@ const ListModalRenameList = ({
           <Text style={styles.errorMsg}>{errorMessage}</Text>
           <ListModalInput
             title="Nom de la liste"
-            placeholder="Barbecue"
+            placeholder={titleListActive}
             setFunction={setTitle}
             value={title}
             length={30}
