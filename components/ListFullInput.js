@@ -13,11 +13,11 @@ const { radioBg, mainBlueText, productDetails, radioBorder, midGreyText } =
 const ListFullInput = ({
   item,
   idListActive,
-  user,
   setIdProductActif,
   setModalAddProductVisible,
   setInfosProductToUpdate,
 }) => {
+  const productRef = [];
   return (
     item._id === idListActive &&
     (item.products.length > 0 ? (
@@ -39,18 +39,7 @@ const ListFullInput = ({
                 }}
               >
                 {/* !! Ecrire une condition pour lier le user à l'idListActive */}
-                {user.products.map((products, index) => {
-                  console.log(products.name);
-                })}
 
-                {/* {user.products.map((productName, index) => {
-                  console.log("HERE ", productName);
-                  return (
-                    <Text style={styles.listProductText}>
-                      {productName.name}
-                    </Text>
-                  );
-                })} */}
                 {el.quantity || el.brand || el.shop ? (
                   <Text style={styles.listCustom}>
                     {el.quantity &&

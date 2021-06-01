@@ -76,7 +76,6 @@ const ListFull = ({
             return (
               <ListFullInput
                 item={item}
-                user={data.user}
                 idListActive={idListActive}
                 setIdProductActif={setIdProductActif}
                 setInfosProductToUpdate={setInfosProductToUpdate}

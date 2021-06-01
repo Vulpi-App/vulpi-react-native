@@ -1,6 +1,12 @@
 // React & React Native - Imports
-import React, { useEffect, useState } from "react";
-import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
+import React from "react";
+import {
+  Text,
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  ScrollView,
+} from "react-native";
 
 import axios from "axios";
 
@@ -22,8 +28,11 @@ const ListFullHeader = ({ item, idListActive, toggleModalUpdate }) => {
   return (
     item._id === idListActive && (
       <View style={styles.listTitleWrap}>
-        <View style={item.products.length > 0 ? styles.listTitle : null}>
-          <Text numberOfLines={1} ellipsizeMode="tail" style={styles.h2}>
+        <View
+          horizontal={true}
+          style={item.products.length > 0 ? styles.listTitle : null}
+        >
+          <Text numberOfLines={2} ellipsizeMode="tail" style={styles.h2}>
             {item.title}
           </Text>
         </View>
@@ -76,7 +85,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
   },
   listTitle: {
-    maxWidth: 200,
+    maxWidth: 170,
   },
   h2: {
     color: mainBlueText,

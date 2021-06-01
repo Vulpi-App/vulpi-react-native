@@ -71,9 +71,6 @@ const ListsScreen = ({ navigation, userToken, userId, serverURL }) => {
   // State for display element in modal update product
   const [infosProductToUpdate, setInfosProductToUpdate] = useState();
 
-  // State for products name
-  const [productName, setProductName] = useState("");
-
   // console.log(idListActive);
   // console.log(idProductActif);
 
@@ -89,8 +86,8 @@ const ListsScreen = ({ navigation, userToken, userId, serverURL }) => {
         // console.log("===== response.data", response.data);
 
         setData(response.data);
-        setLoading(false);
         setIdListActive(response.data.lists[0]._id);
+        setLoading(false);
       } catch (error) {
         console.log(error.message);
       }
