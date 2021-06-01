@@ -2,11 +2,8 @@
 import React, { useState, useEffect } from "react";
 import {
   View,
-  Text,
   Button,
   Platform,
-  ScrollView,
-  FlatList,
   SafeAreaView,
   ActivityIndicator,
   StyleSheet,
@@ -63,12 +60,6 @@ const ListsScreen = ({ navigation, userToken, userId }) => {
 
   // State for refresh products list
   const [addProductList, setAddProductList] = useState(false);
-
-  // State for product actif
-  const [idProductActif, setIdProductActif] = useState();
-
-  // State for display element in modal update product
-  const [infosProductToUpdate, setInfosProductToUpdate] = useState();
 
   // console.log(idListActive);
   // console.log(idProductActif);
@@ -152,12 +143,10 @@ const ListsScreen = ({ navigation, userToken, userId }) => {
               <ListFull
                 data={data}
                 idListActive={idListActive}
-                setIdProductActif={setIdProductActif}
-                setInfosProductToUpdate={setInfosProductToUpdate}
-                setModalAddProductVisible={setModalAddProductVisible}
                 userToken={userToken}
                 toggleModalUpdate={toggleModalUpdate}
                 addProductList={addProductList}
+                setAddProductList={setAddProductList}
               />
 
               <Button
@@ -235,14 +224,14 @@ const ListsScreen = ({ navigation, userToken, userId }) => {
         setDeleteList={setDeleteList}
       />
 
-      {/* Modal "Add or Update Product" */}
+      {/* Modal "Add Product" */}
       <ModalProduct
         modalAddProductVisible={modalAddProductVisible}
         setModalAddProductVisible={setModalAddProductVisible}
-        typeModalProduct={"new product"}
+        typeModalProduct="new product"
         idList={idListActive}
         userToken={userToken}
-        idProduct={idProductActif} // A changer avec le bon produit // A supprimer dans le lists screen
+        // product={null}
         addProductList={addProductList}
         setAddProductList={setAddProductList}
       />

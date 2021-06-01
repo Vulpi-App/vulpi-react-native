@@ -18,7 +18,7 @@ const colors = {
   orangeTotalPrice: "#F3AB3F",
   productDetails: "#3E4685",
   darkGreyFutur: "rgba(0, 0, 0, 0.7)",
-
+  greyAfterCheck: "#9B9B9B",
   white: "#fff",
   dark: "#000",
 };
