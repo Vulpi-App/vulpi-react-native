@@ -14,14 +14,12 @@ import ListFullInput from "./ListFullInput";
 const ListFull = ({
   data,
   idListActive,
-
+  serverURL,
   setIdProductActif,
   setInfosProductToUpdate,
   setModalAddProductVisible,
   userToken,
-
   toggleModalUpdate,
-
   addProductList,
 }) => {
   const [result, setResult] = useState();
@@ -30,7 +28,7 @@ const ListFull = ({
   //   const fetchData = async () => {
   //     try {
   //       const response = await axios.get(
-  //         `http://localhost:3310/listcontent/${idListActive}`,
+  //         `${serverURL}/listcontent/${idListActive}`,
   //         {
   //           headers: {
   //             Authorization: `Bearer ${userToken}`,
@@ -63,6 +61,8 @@ const ListFull = ({
               item={item}
               idListActive={idListActive}
               toggleModalUpdate={toggleModalUpdate}
+              serverURL={serverURL}
+              userToken={userToken}
             />
           );
         }}

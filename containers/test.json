@@ -1,0 +1,185 @@
+{
+  "lists": [
+    {
+      "__v": 3,
+      "_id": "60b5d499f674cdbb8b10aea4",
+      "emoji": "❤️",
+      "owner": "60b34cdb27fe1e80df064679",
+      "products": [
+        {
+          "_id": "60b5db13f674cdbb8b10aea6",
+          "added": false,
+          "brand": "",
+          "price": "10",
+          "quantity": "2",
+          "reference": "60b5db13f674cdbb8b10aea5",
+          "shop": ""
+        },
+        {
+          "_id": "60b5db23f674cdbb8b10aea9",
+          "added": false,
+          "brand": "",
+          "price": "5.50",
+          "quantity": "4",
+          "reference": "60b5db23f674cdbb8b10aea8",
+          "shop": ""
+        },
+        {
+          "_id": "60b5db2df674cdbb8b10aeac",
+          "added": false,
+          "brand": "",
+          "price": "9.80",
+          "quantity": "1",
+          "reference": "60b5db2df674cdbb8b10aeab",
+          "shop": ""
+        }
+      ],
+      "title": "Mon anniversaire de love"
+    },
+    {
+      "__v": 0,
+      "_id": "60b4ed92626261ae78c11b88",
+      "emoji": "🎉",
+      "owner": "60b34cdb27fe1e80df064679",
+      "products": [],
+      "title": "Party"
+    }
+  ],
+  "user": {
+    "__v": 6,
+    "_id": "60b34cdb27fe1e80df064679",
+    "account": {
+      "birthDate": "",
+      "firstName": "Paul-Xavier",
+      "gender": "",
+      "lastName": ""
+    },
+    "email": "pix@gmail.com",
+    "emailConfirm": false,
+    "firstConnection": false,
+    "friends": [],
+    "hash": "UpiWytkfv1BUeMnx/xYcx6JSwRuFCSmHZ2P+y63MVy0=",
+    "idThirdPartyAuth": "",
+    "lists": [
+      {
+        "__v": 3,
+        "_id": "60b5d499f674cdbb8b10aea4",
+        "emoji": "❤️",
+        "owner": "60b34cdb27fe1e80df064679",
+        "products": [
+          {
+            "_id": "60b5db13f674cdbb8b10aea6",
+            "added": false,
+            "brand": "",
+            "price": "10",
+            "quantity": "2",
+            "reference": "60b5db13f674cdbb8b10aea5",
+            "shop": ""
+          },
+          {
+            "_id": "60b5db23f674cdbb8b10aea9",
+            "added": false,
+            "brand": "",
+            "price": "5.50",
+            "quantity": "4",
+            "reference": "60b5db23f674cdbb8b10aea8",
+            "shop": ""
+          },
+          {
+            "_id": "60b5db2df674cdbb8b10aeac",
+            "added": false,
+            "brand": "",
+            "price": "9.80",
+            "quantity": "1",
+            "reference": "60b5db2df674cdbb8b10aeab",
+            "shop": ""
+          }
+        ],
+        "title": "Mon anniversaire de love"
+      },
+      {
+        "__v": 0,
+        "_id": "60b4ed92626261ae78c11b88",
+        "emoji": "🎉",
+        "owner": "60b34cdb27fe1e80df064679",
+        "products": [],
+        "title": "Party"
+      }
+    ],
+    "newsletter": false,
+    "products": [
+      {
+        "__v": 0,
+        "_id": "60b34dab27fe1e80df06467d",
+        "ecoScore": "",
+        "name": "Ribs",
+        "nutriScore": ""
+      },
+      {
+        "__v": 0,
+        "_id": "60b34dcc27fe1e80df064680",
+        "ecoScore": "",
+        "name": "Ketchup",
+        "nutriScore": ""
+      },
+      {
+        "__v": 0,
+        "_id": "60b34ded27fe1e80df064683",
+        "ecoScore": "",
+        "name": "Bières",
+        "nutriScore": ""
+      },
+      {
+        "__v": 0,
+        "_id": "60b497e7c68ccb9fbaec4896",
+        "ecoScore": "",
+        "name": "Moutarde",
+        "nutriScore": ""
+      },
+      {
+        "__v": 0,
+        "_id": "60b4b274dee051a169520973",
+        "ecoScore": "",
+        "name": "Jus",
+        "nutriScore": ""
+      },
+      {
+        "__v": 0,
+        "_id": "60b4b2addee051a169520976",
+        "ecoScore": "",
+        "name": "Lait",
+        "nutriScore": ""
+      },
+      {
+        "__v": 0,
+        "_id": "60b4b3bedee051a169520979",
+        "ecoScore": "",
+        "name": "Poire",
+        "nutriScore": ""
+      },
+      {
+        "__v": 0,
+        "_id": "60b5db13f674cdbb8b10aea5",
+        "ecoScore": "",
+        "name": "pâte à tartiner",
+        "nutriScore": ""
+      },
+      {
+        "__v": 0,
+        "_id": "60b5db23f674cdbb8b10aea8",
+        "ecoScore": "",
+        "name": "jus de fraise",
+        "nutriScore": ""
+      },
+      {
+        "__v": 0,
+        "_id": "60b5db2df674cdbb8b10aeab",
+        "ecoScore": "",
+        "name": "sardines",
+        "nutriScore": ""
+      }
+    ],
+    "salt": "WF87vaEA0owYeCMm",
+    "token": "KSpUkFnIaPDmIYfzmc24iaWzzlsISjQ2m3mPkdfK8jhshqBUx4ApsLNIMEivqut0"
+  }
+}

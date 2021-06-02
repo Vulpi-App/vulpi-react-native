@@ -1,6 +1,12 @@
 // React & React Native - Imports
 import React, { useState } from "react";
-import { View, StyleSheet, TouchableOpacity, Text } from "react-native";
+import {
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  Platform,
+  Text,
+} from "react-native";
 import { Dimensions } from "react-native";
 import Modal from "react-native-modal";
 import axios from "axios";
@@ -20,9 +26,13 @@ const ListModalRenameList = ({
   listId,
   setDeleteList,
   setUpdateList,
+  serverURL,
+  titleListActive,
+  userId,
 }) => {
   // State for rename list
   const [title, setTitle] = useState("");
+  const [emoji, setEmoji] = useState("");
   const [disabled, setDisabled] = useState(true);
 
   // State for errors
@@ -31,14 +41,14 @@ const ListModalRenameList = ({
   // Function for update the title of a list ✅
   const handleSubmit = async () => {
     try {
-      if (title) {
+      if (title || emoji) {
         if (title.length <= 30) {
           // Create form data to sent the body
           const formData = new FormData();
           formData.append("title", title);
 
           const response = await axios.put(
-            `http://localhost:3310/lists/update/${listId}`,
+            `${serverURL}/lists/update/${listId}`,
             formData,
             {
               headers: { Authorization: `Bearer ${userToken}` },
@@ -69,7 +79,7 @@ const ListModalRenameList = ({
   const deleteListFunc = async () => {
     try {
       const response = await axios.delete(
-        `http://localhost:3310/lists/delete/${listId}`,
+        `${serverURL}/lists/delete/${listId}/${userId}`,
         {
           headers: { Authorization: `Bearer ${userToken}` },
         }
@@ -103,14 +113,26 @@ const ListModalRenameList = ({
           <Text style={styles.errorMsg}>{errorMessage}</Text>
           <ListModalInput
             title="Nom de la liste"
-            placeholder="Barbecue"
+            placeholder={titleListActive}
             setFunction={setTitle}
             value={title}
             length={30}
+            keyboardType={
+              Platform.OS === "ios" ? "ascii-capable" : "visible-password"
+            }
+          />
+
+          <ListModalInput
+            title="Emoji"
+            placeholder="Choisi un nouvel emoji"
+            setFunction={setEmoji}
+            value={emoji}
+            length={null}
+            keyboardType="default"
           />
 
           {/* Button disabled if no title filled */}
-          {title ? (
+          {title || emoji ? (
             <TouchableOpacity
               disabled={!disabled}
               style={styles.btnBlue}
@@ -154,6 +176,7 @@ export default ListModalRenameList;
 
 const styles = StyleSheet.create({
   modal: {
+    marginTop: -20,
     alignItems: "center",
     flex: 1,
   },

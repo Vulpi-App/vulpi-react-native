@@ -13,12 +13,11 @@ const { radioBg, mainBlueText, productDetails, radioBorder, midGreyText } =
 const ListFullInput = ({
   item,
   idListActive,
-
   setIdProductActif,
   setModalAddProductVisible,
   setInfosProductToUpdate,
-
 }) => {
+  const productRef = [];
   return (
     item._id === idListActive &&
     (item.products.length > 0 ? (
@@ -39,11 +38,22 @@ const ListFullInput = ({
                   setModalAddProductVisible(true);
                 }}
               >
-                <Text style={styles.listProductText}>{el.reference}</Text>
+                {/* !! Ecrire une condition pour lier le user à l'idListActive */}
 
                 {el.quantity || el.brand || el.shop ? (
                   <Text style={styles.listCustom}>
-                    {el.quantity} paquets, {el.brand} | {el.shop}
+                    {el.quantity &&
+                      el.brand &&
+                      el.shop &&
+                      el.quantity + ", " + el.brand + ", " + el.shop}
+
+                    {el.quantity && el.brand && el.quantity + ", " + el.brand}
+                    {el.quantity && el.shop && el.quantity + ", " + el.shop}
+                    {el.brand && el.shop && el.brand + ", " + el.shop}
+
+                    {el.quantity && el.quantity}
+                    {el.brand && el.brand}
+                    {el.shop && el.shop}
                   </Text>
                 ) : (
                   <Text style={styles.listNotCustom}>

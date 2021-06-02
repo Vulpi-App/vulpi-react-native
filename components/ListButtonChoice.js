@@ -11,6 +11,7 @@ const ListButtonChoice = ({
   data,
   setIdListActive,
   idListActive,
+  setTitleListActive,
 }) => {
   return (
     <ScrollView
@@ -31,6 +32,7 @@ const ListButtonChoice = ({
                 item={item}
                 setIdListActive={setIdListActive}
                 idListActive={idListActive}
+                setTitleListActive={setTitleListActive}
               />
             );
           }}

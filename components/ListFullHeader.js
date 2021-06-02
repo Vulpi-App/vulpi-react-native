@@ -1,6 +1,14 @@
 // React & React Native - Imports
 import React from "react";
-import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
+import {
+  Text,
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  ScrollView,
+} from "react-native";
+
+import axios from "axios";
 
 // Colors - import
 import colors from "../assets/colors";
@@ -15,42 +23,47 @@ const {
 
 const ListFullHeader = ({ item, idListActive, toggleModalUpdate }) => {
   const totalPrice = [];
+  const totalArticles = [];
+
   return (
     item._id === idListActive && (
-      <View style={styles.listTitle}>
-        <View>
-          <Text style={styles.h2}>{item.title}</Text>
+      <View style={styles.listTitleWrap}>
+        <View
+          horizontal={true}
+          style={item.products.length > 0 ? styles.listTitle : null}
+        >
+          <Text numberOfLines={2} ellipsizeMode="tail" style={styles.h2}>
+            {item.title}
+          </Text>
         </View>
 
-        {/* {item.products.map((el, index) => {
-          totalPrice.push(el.price);
-          console.log(totalPrice);
-          totalPrice.reduce((acc, item) => acc + item);
-          return <Text>{totalPrice}</Text>;
-        })} */}
+        {/* Map for getting all prices */}
+        {item.products.map((el, index) => {
+          totalPrice.push(Number(el.price));
+          totalArticles.push(1);
+        })}
 
         <View style={styles.headerDetailsWrap}>
           {item.products.length > 0 ? (
             <View style={styles.headerDetailsWrap}>
               <View style={styles.totalPrice}>
-                <Text style={styles.priceText}>6 €</Text>
+                <Text style={styles.priceText}>
+                  {totalPrice.reduce((acc, item) => acc + item)} €
+                </Text>
               </View>
-              <Text style={styles.nbArticles}>2 articles</Text>
+              <Text style={styles.nbArticles}>
+                {totalArticles.length} articles
+              </Text>
             </View>
           ) : null}
 
+          {/* 3 dots for setting the list */}
           <TouchableOpacity onPress={toggleModalUpdate}>
             <View style={styles.blueDot}></View>
             <View style={[styles.blueDot, styles.marginDot]}></View>
             <View style={styles.blueDot}></View>
           </TouchableOpacity>
         </View>
-        {/* <View>
-          <Text style={styles.nbArticles}>2 articles</Text>
-          <View style={styles.totalPrice}>
-            <Text style={styles.priceText}>6 €</Text>
-          </View>
-        </View> */}
       </View>
     )
   );
@@ -59,13 +72,20 @@ const ListFullHeader = ({ item, idListActive, toggleModalUpdate }) => {
 export default ListFullHeader;
 
 const styles = StyleSheet.create({
-  listTitle: {
+  loading: {
+    flex: 1,
+    justifyContent: "center",
+  },
+  listTitleWrap: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
     borderBottomColor: radioBg,
     paddingBottom: 15,
     borderBottomWidth: 1,
+  },
+  listTitle: {
+    maxWidth: 170,
   },
   h2: {
     color: mainBlueText,
