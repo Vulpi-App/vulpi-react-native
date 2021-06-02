@@ -35,6 +35,7 @@ const ListFullInput = ({
   // State for modal update product
   const [modalAddProductVisible, setModalAddProductVisible] = useState(false);
   const [infosProduct, setInfosProduct] = useState(null);
+  // let infosProduct;
 
   // Function to added/checked product or not
   const checkProduct = async (product) => {
@@ -81,9 +82,6 @@ const ListFullInput = ({
     return name.charAt(0).toUpperCase() + name.slice(1);
   };
 
-
-  const productRef = [];
-
   return (
     item._id === idListActive &&
     (item.products.length > 0 ? (
@@ -114,8 +112,8 @@ const ListFullInput = ({
 
                 <TouchableOpacity
                   onPress={() => {
-                    setModalAddProductVisible(true);
                     setInfosProduct(el);
+                    setModalAddProductVisible(true);
                   }}
                 >
                   <Text
@@ -146,22 +144,9 @@ const ListFullInput = ({
                   )}
                 </TouchableOpacity>
 
-
                 {el.price ? (
                   <Text style={styles.price}>{el.price} €</Text>
                 ) : null}
-
-                {/* Modal "Update Product" */}
-                <ModalProduct
-                  modalAddProductVisible={modalAddProductVisible}
-                  setModalAddProductVisible={setModalAddProductVisible}
-                  typeModalProduct="update product"
-                  idList={idListActive}
-                  userToken={userToken}
-                  product={infosProduct}
-                  addProductList={addProductList}
-                  setAddProductList={setAddProductList}
-                />
               </View>
             )
           );
@@ -191,8 +176,8 @@ const ListFullInput = ({
 
                 <TouchableOpacity
                   onPress={() => {
-                    setModalAddProductVisible(true);
                     setInfosProduct(el);
+                    setModalAddProductVisible(true);
                   }}
                 >
                   <Text
@@ -203,7 +188,6 @@ const ListFullInput = ({
                     }
                   >
                     {capitalizeFirstLetter(el.reference.name)}
-
                   </Text>
 
                   {el.quantity || el.brand || el.shop ? (
@@ -228,7 +212,7 @@ const ListFullInput = ({
                   <Text style={styles.price}>{el.price} €</Text>
                 ) : null}
 
-                {/* Modal "Update Product" */}
+                {/* {/* Modal "Update Product"
                 <ModalProduct
                   modalAddProductVisible={modalAddProductVisible}
                   setModalAddProductVisible={setModalAddProductVisible}
@@ -238,11 +222,23 @@ const ListFullInput = ({
                   product={infosProduct}
                   addProductList={addProductList}
                   setAddProductList={setAddProductList}
-                />
+                /> */}
               </View>
             )
           );
         })}
+
+        {/* Modal "Update Product"*/}
+        <ModalProduct
+          modalAddProductVisible={modalAddProductVisible}
+          setModalAddProductVisible={setModalAddProductVisible}
+          typeModalProduct="update product"
+          idList={idListActive}
+          userToken={userToken}
+          product={infosProduct}
+          addProductList={addProductList}
+          setAddProductList={setAddProductList}
+        />
       </View>
     ) : (
       <ListEmptyContent />

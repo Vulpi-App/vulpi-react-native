@@ -26,13 +26,13 @@ const ProductButtonPicture = ({
           {pictureProduct ? "Modifier la photo" : "Ajouter une photo"}
         </Text>
 
-        {pictureProduct && (
+        {pictureProduct ? (
           <Image
             source={{ uri: pictureProduct }}
             style={styles.pictureProduct}
             resizeMode="cover"
           />
-        )}
+        ) : null}
       </View>
     </TouchableHighlight>
   );

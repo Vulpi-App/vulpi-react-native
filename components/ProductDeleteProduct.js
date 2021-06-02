@@ -1,10 +1,21 @@
 // Tools
 import React from "react";
-import { View, Text, StyleSheet, TouchableHighlight } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableHighlight,
+  ActivityIndicator,
+} from "react-native";
+
+// Colors - import
+import colors from "../assets/colors";
+const { buttonDarkBlue } = colors;
 
 const ProductDeleteProduct = ({
   setModalAddProductVisible,
   setModalDeleteProductVisible,
+  isLoading,
 }) => {
   return (
     <View>
@@ -15,7 +26,11 @@ const ProductDeleteProduct = ({
           setModalAddProductVisible(false);
         }}
       >
-        <Text style={styles.textDeleteProduct}>Supprimer cet article</Text>
+        {isLoading ? (
+          <ActivityIndicator size="small" color={buttonDarkBlue} />
+        ) : (
+          <Text style={styles.textDeleteProduct}>Supprimer cet article</Text>
+        )}
       </TouchableHighlight>
     </View>
   );

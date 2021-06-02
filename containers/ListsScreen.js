@@ -7,6 +7,7 @@ import {
   SafeAreaView,
   ActivityIndicator,
   StyleSheet,
+  ScrollView,
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import Constants from "expo-constants";
@@ -62,14 +63,12 @@ const ListsScreen = ({ navigation, userToken, userId, serverURL }) => {
   // State for refresh products list
   const [addProductList, setAddProductList] = useState(false);
 
-
   // console.log(idListActive);
   // console.log(idProductActif);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-
         const response = await axios.get(`${serverURL}/lists/${userId}`, {
           headers: {
             Authorization: `Bearer ${userToken}`,
@@ -77,7 +76,6 @@ const ListsScreen = ({ navigation, userToken, userId, serverURL }) => {
         });
 
         // console.log("===== response.data", response.data);
-
 
         setData(response.data);
         setIdListActive(response.data.lists[0]._id);
@@ -109,7 +107,7 @@ const ListsScreen = ({ navigation, userToken, userId, serverURL }) => {
     <View style={styles.screen}>
       <KeyboardAwareScrollView
         contentContainerStyle={{ height: "100%", margin: 0 }}
-        viewIsInsideTabBar={true}
+        viewIsInsideTabBar={false}
       >
         <StatusBar style="light" />
         <SafeAreaView style={styles.pageScreen}>
@@ -129,13 +127,15 @@ const ListsScreen = ({ navigation, userToken, userId, serverURL }) => {
               {/* ----- Navigation scrollbar horizontal ✅ 
             🚨 Gérer l'ajout de la nouvelle liste au DEBUT et non à la suite des listes existantes */}
               {foldedNav ? null : (
-                <ListButtonChoice
-                  toggleModal={toggleModal}
-                  data={data}
-                  idListActive={idListActive}
-                  setIdListActive={setIdListActive}
-                  setTitleListActive={setTitleListActive}
-                />
+                <View>
+                  <ListButtonChoice
+                    toggleModal={toggleModal}
+                    data={data}
+                    idListActive={idListActive}
+                    setIdListActive={setIdListActive}
+                    setTitleListActive={setTitleListActive}
+                  />
+                </View>
               )}
 
               {/* ----- List(s) ✅ 
@@ -149,7 +149,6 @@ const ListsScreen = ({ navigation, userToken, userId, serverURL }) => {
                 addProductList={addProductList}
                 setAddProductList={setAddProductList}
                 serverURL={serverURL}
-
               />
 
               {/* <Button
@@ -274,7 +273,13 @@ const styles = StyleSheet.create({
     marginBottom: 0,
     marginLeft: "auto",
     marginRight: "auto",
+    flex: 1,
   },
 
-  blockBottomAddQuicklyAutocomplete: {},
+  blockBottomAddQuicklyAutocomplete: {
+    // backgroundColor: "red",
+    height: 65,
+    justifyContent: "flex-end",
+    // marginTop: 30,
+  },
 });

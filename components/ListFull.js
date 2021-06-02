@@ -2,9 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 
-
-import { View, Text, FlatList, StyleSheet } from "react-native";
-
+import { View, Text, FlatList, StyleSheet, ScrollView } from "react-native";
 
 // Axios - import
 import axios from "axios";
@@ -68,7 +66,7 @@ const ListFull = ({
         }}
       />
 
-      <View style={styles.listContent}>
+      <ScrollView style={styles.listContent}>
         <FlatList
           data={data.lists}
           keyExtractor={(item) => item._id}
@@ -84,7 +82,7 @@ const ListFull = ({
             );
           }}
         />
-      </View>
+      </ScrollView>
     </View>
   );
 };
@@ -93,10 +91,11 @@ export default ListFull;
 
 const styles = StyleSheet.create({
   list: {
-    maxHeight: "85%",
+    // maxHeight: "80%",
     backgroundColor: "#fff",
     borderRadius: 10,
     padding: 15,
+    flex: 1,
   },
   listContent: {
     paddingTop: 15,

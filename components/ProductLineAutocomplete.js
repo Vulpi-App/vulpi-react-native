@@ -7,7 +7,6 @@ import axios from "axios";
 // URL request
 const localURLAdd = "http://localhost:3310/lists/add-product/";
 
-
 const ProductLineAutoComplete = ({
   firstLine,
   setValueInputAddQuickly,
@@ -17,7 +16,6 @@ const ProductLineAutoComplete = ({
 
   addProductList,
   setAddProductList,
-
 }) => {
   const addProduct = async () => {
     try {
@@ -61,6 +59,11 @@ const ProductLineAutoComplete = ({
     }
   };
 
+  // Function to capitalize first letter of name product
+  const capitalizeFirstLetter = (name) => {
+    return name.charAt(0).toUpperCase() + name.slice(1);
+  };
+
   return (
     <View
       style={[
@@ -71,7 +74,9 @@ const ProductLineAutoComplete = ({
         },
       ]}
     >
-      <Text style={styles.textAdd}>{valueAutocomplete}</Text>
+      <Text style={styles.textAdd}>
+        {capitalizeFirstLetter(valueAutocomplete)}
+      </Text>
       <View style={styles.blockButtonAdd}>
         <AntDesign
           name="arrowup"

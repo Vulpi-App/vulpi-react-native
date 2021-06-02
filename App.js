@@ -34,8 +34,6 @@ const Stack = createStackNavigator();
 // ================================================
 
 export default function App() {
-
-
   const [isLoading, setIsLoading] = useState(true);
   const [userToken, setUserToken] = useState(null);
   const [userId, setUserId] = useState(null);
@@ -82,9 +80,6 @@ export default function App() {
       setUserToken(userToken);
       setUserId(userId);
 
-
-
-
       // Check if the user has already seen the on-Boarding
       const onBoarding = await AsyncStorage.getItem("onBoarding");
       if (onBoarding === "done") {
@@ -127,7 +122,6 @@ export default function App() {
     setUserId(id);
 
     setFirstName(firstName);
-
   };
 
   // Function used after the user has seen the onBoarding
@@ -148,8 +142,6 @@ export default function App() {
       console.log(error.message);
     }
   };
-
-
 
   // Function to update user account
   const editInformation = async (data, isInfosModified) => {
@@ -198,9 +190,6 @@ export default function App() {
 
   // ===============================================
   // ===============================================
-
-
-
 
   return (
     <NavigationContainer>
