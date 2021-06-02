@@ -21,9 +21,10 @@ import SettingsScreen from "./containers/SettingsScreen";
 import FeedbackScreen from "./containers/FeedbackScreen";
 import ListScreen from "./containers/ListScreen";
 import RegisterScreen from "./containers/RegisterScreen";
+import BarCodeScanner from "./containers/BarCodeScanner";
 
 // Useful variables
-const serverURL = "http://localhost:3310";
+const serverURL = "https://vulpi-forest.herokuapp.com";
 // Local server : "http://localhost:3310"
 // Heroku server : "https://vulpi-forest.herokuapp.com"
 
@@ -34,8 +35,6 @@ const Stack = createStackNavigator();
 // ================================================
 
 export default function App() {
-
-
   const [isLoading, setIsLoading] = useState(true);
   const [userToken, setUserToken] = useState(null);
   const [userId, setUserId] = useState(null);
@@ -82,9 +81,6 @@ export default function App() {
       setUserToken(userToken);
       setUserId(userId);
 
-
-
-
       // Check if the user has already seen the on-Boarding
       const onBoarding = await AsyncStorage.getItem("onBoarding");
       if (onBoarding === "done") {
@@ -127,7 +123,6 @@ export default function App() {
     setUserId(id);
 
     setFirstName(firstName);
-
   };
 
   // Function used after the user has seen the onBoarding
@@ -148,8 +143,6 @@ export default function App() {
       console.log(error.message);
     }
   };
-
-
 
   // Function to update user account
   const editInformation = async (data, isInfosModified) => {
@@ -198,9 +191,6 @@ export default function App() {
 
   // ===============================================
   // ===============================================
-
-
-
 
   return (
     <NavigationContainer>
@@ -321,6 +311,20 @@ export default function App() {
                         options={{ headerShown: false }}
                       >
                         {(props) => <ListScreen {...props} />}
+                      </Stack.Screen>
+                      <Stack.Screen
+                        name="BarCodeScanner"
+                        options={{ headerShown: false }}
+                      >
+                        {(props) => (
+                          <BarCodeScanner
+                            {...props}
+                            userToken={userToken}
+                            userId={userId}
+                            setToken={setToken}
+                            serverURL={serverURL}
+                          />
+                        )}
                       </Stack.Screen>
                     </Stack.Navigator>
                   )}
