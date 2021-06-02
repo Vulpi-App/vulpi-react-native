@@ -47,6 +47,7 @@ const styles = StyleSheet.create({
   text: {
     color: "white",
     marginRight: 5,
+    fontFamily: "GilroySemiBold",
   },
 });
 

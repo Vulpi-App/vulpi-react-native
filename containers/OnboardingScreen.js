@@ -18,29 +18,7 @@ import DescriptionOnBoarding from "../components/DescriptionOnBoarding";
 import ButtonOnBoarding from "../components/ButtonOnBoarding";
 
 import colors from "../assets/colors";
-const {
-  bgLight,
-  mainLightGrey,
-  mainBlueText,
-  bgLightText,
-  midGreyText,
-  darkGreyText,
-  buttonFlashBlue,
-  buttonDarkBlue,
-  buttonDisconnect,
-  buttonNewList,
-  radioBg,
-  radioBorder,
-  inputBg,
-  deleteRed,
-  productAdd,
-  orangeNotifications,
-  orangeTotalPrice,
-  productDetails,
-  darkGreyFutur,
-  white,
-  dark,
-} = colors;
+const { buttonDarkBlue } = colors;
 
 const OnboardingScreen = ({ setOnBoardingDone, firstName }) => {
   const [screenNumber, setScreenNumber] = useState(0);
@@ -48,7 +26,6 @@ const OnboardingScreen = ({ setOnBoardingDone, firstName }) => {
   return (
     <SafeAreaView style={styles.safeAreaView}>
       <StatusBar barStyle="light-content" />
-      {/* To do : rendre dynamique le prénom */}
       <Text style={styles.mainTitle}>Bonjour {firstName}</Text>
       <ScreenNumberIndicator screenNumber={screenNumber} />
       <TitleOnBoarding screenNumber={screenNumber} />
@@ -92,6 +69,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontSize: 24,
     marginTop: 10,
+    fontFamily: "GilroyBold",
   },
   buttonView: {
     flexDirection: "row",

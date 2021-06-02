@@ -17,7 +17,7 @@ const windowHeight = Dimensions.get("window").height;
 const statusBarHeight = Constants.statusBarHeight;
 const scrollViewHeight = windowHeight - statusBarHeight;
 
-function RegisterScreen({ setToken, serverURL }) {
+function RegisterScreen({ setToken, serverURL, setFirstConnection }) {
   const [errorMessage, setErrorMessage] = useState(null);
   const [step, setStep] = useState(1);
   const [email, setEmail] = useState("");
@@ -25,7 +25,6 @@ function RegisterScreen({ setToken, serverURL }) {
   const [password, setPassword] = useState("");
 
   const handleSubmit = async () => {
-    console.log("test");
     if (email && firstName && password) {
       if (errorMessage !== null) {
         setErrorMessage(null);
@@ -35,21 +34,21 @@ function RegisterScreen({ setToken, serverURL }) {
         const formData = new FormData();
         formData.append("email", email);
         formData.append("password", password);
-        formData.append("firstName", password);
+        formData.append("firstName", firstName);
 
-        console.log(formData);
         const response = await axios.post(`${serverURL}/user/signup`, formData);
         formData;
 
         if (response.data.token && response.data._id) {
           const token = response.data.token;
           const id = response.data._id;
-          setToken(token, id);
+          const firstName = response.data.account.firstName;
+          setToken(token, id, firstName);
+          setFirstConnection(true);
         } else {
           setErrorMessage("An error occurred");
         }
       } catch (error) {
-        console.log(error.message);
         const errorMessage = error.response.data.error;
         if (
           errorMessage === "This email already has an account." ||
