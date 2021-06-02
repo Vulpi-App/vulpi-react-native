@@ -6,20 +6,28 @@ import { Text, TouchableOpacity, StyleSheet } from "react-native";
 import colors from "../assets/colors";
 const { buttonNewList, buttonFlashBlue, white } = colors;
 
-const ListButtonOther = ({ item, idListActive, setIdListActive }) => {
+const ListButtonOther = ({
+  item,
+  idListActive,
+  setIdListActive,
+  setTitleListActive,
+}) => {
   // Function to check the right list selected
-  const changeListActive = () => {
+  const changeListActiveAndTitle = () => {
     setIdListActive(item._id);
+    setTitleListActive(item.title);
   };
 
   return (
     <TouchableOpacity
-      onPress={changeListActive}
+      onPress={changeListActiveAndTitle}
       style={
         item._id === idListActive ? styles.otherListBlue : styles.otherList
       }
     >
       <Text
+        numberOfLines={1}
+        ellipsizeMode="tail"
         style={
           item._id === idListActive
             ? styles.otherListTextWhite
@@ -41,6 +49,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 15,
     backgroundColor: "#181D39",
+    maxWidth: 160,
   },
   otherListText: {
     color: buttonNewList,
@@ -51,6 +60,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 15,
     backgroundColor: buttonFlashBlue,
+    maxWidth: 160,
   },
   otherListTextWhite: {
     color: white,

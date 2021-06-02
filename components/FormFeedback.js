@@ -12,14 +12,7 @@ const FormFeedback = ({ setFeedbackSent }) => {
   return (
     <View style={styles.mainView}>
       <Text style={styles.title}>C'est à quel sujet ?</Text>
-      {/* <TextInput
-        value={object}
-        style={styles.textInput}
-        onChangeText={(text) => {
-          setObject(text);
-        }}
-        placeholder="Bug technique"
-      /> */}
+
       <TextInput
         placeholder="Bug Technique"
         style={styles.textInput}
@@ -51,7 +44,6 @@ const FormFeedback = ({ setFeedbackSent }) => {
 
 const styles = StyleSheet.create({
   mainView: {
-    marginTop: 80,
     position: "relative",
     flex: 1,
     paddingHorizontal: 30,
@@ -76,6 +68,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     marginBottom: 10,
     marginTop: 30,
+    fontFamily: "GilroySemiBold",
   },
 });
 

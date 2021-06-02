@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, View, StyleSheet } from "react-native";
+import { Text, StyleSheet } from "react-native";
 
 const TitleOnBoarding = ({ screenNumber }) => {
   // Modification of the title depending on the onBoarding page
@@ -34,6 +34,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 45,
     textAlign: "center",
     marginTop: 10,
+    fontFamily: "GilroyBold",
   },
 
   noMargin: {

@@ -32,7 +32,7 @@ const { buttonDarkBlue, white } = colors;
 
 // ======================================
 
-const ListsScreen = ({ navigation, userToken, userId }) => {
+const ListsScreen = ({ navigation, userToken, userId, serverURL }) => {
   // States for modals
   const [isModalVisible, setModalVisible] = useState(false);
   const [isModalUpdateVisible, setModalUpdateVisible] = useState(false);
@@ -44,6 +44,7 @@ const ListsScreen = ({ navigation, userToken, userId }) => {
 
   // State for active lists (scrollbar horizontal)
   const [idListActive, setIdListActive] = useState();
+  const [titleListActive, setTitleListActive] = useState();
 
   // State for new list
   const [newListCreated, setNewListCreated] = useState("");
@@ -61,27 +62,26 @@ const ListsScreen = ({ navigation, userToken, userId }) => {
   // State for refresh products list
   const [addProductList, setAddProductList] = useState(false);
 
+
   // console.log(idListActive);
   // console.log(idProductActif);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(
-          `http://localhost:3310/lists/${userId}`,
-          {
-            headers: {
-              Authorization: `Bearer ${userToken}`,
-            },
-          }
-        );
 
-        // console.log("response.data", response.data);
-        // console.log("response.data.lists", response.data.lists);
+        const response = await axios.get(`${serverURL}/lists/${userId}`, {
+          headers: {
+            Authorization: `Bearer ${userToken}`,
+          },
+        });
+
+        // console.log("===== response.data", response.data);
+
 
         setData(response.data);
-        setLoading(false);
         setIdListActive(response.data.lists[0]._id);
+        setLoading(false);
       } catch (error) {
         console.log(error.message);
       }
@@ -134,6 +134,7 @@ const ListsScreen = ({ navigation, userToken, userId }) => {
                   data={data}
                   idListActive={idListActive}
                   setIdListActive={setIdListActive}
+                  setTitleListActive={setTitleListActive}
                 />
               )}
 
@@ -147,14 +148,16 @@ const ListsScreen = ({ navigation, userToken, userId }) => {
                 toggleModalUpdate={toggleModalUpdate}
                 addProductList={addProductList}
                 setAddProductList={setAddProductList}
+                serverURL={serverURL}
+
               />
 
-              <Button
+              {/* <Button
                 title="Ma liste maison"
                 onPress={() => {
                   navigation.navigate("ListScreen");
                 }}
-              />
+              /> */}
             </View>
 
             <View style={styles.blockBottomAddQuicklyAutocomplete}>
@@ -211,6 +214,7 @@ const ListsScreen = ({ navigation, userToken, userId }) => {
         userToken={userToken}
         setNewListCreated={setNewListCreated}
         newListCreated={newListCreated}
+        serverURL={serverURL}
       />
 
       {/* Modal "update or delete a list" ✅ */}
@@ -219,9 +223,12 @@ const ListsScreen = ({ navigation, userToken, userId }) => {
         setModalUpdateVisible={setModalUpdateVisible}
         userToken={userToken}
         listId={idListActive}
+        userId={userId}
         updateList={updateList}
         setUpdateList={setUpdateList}
         setDeleteList={setDeleteList}
+        serverURL={serverURL}
+        titleListActive={titleListActive}
       />
 
       {/* Modal "Add Product" */}

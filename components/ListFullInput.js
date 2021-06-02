@@ -81,6 +81,9 @@ const ListFullInput = ({
     return name.charAt(0).toUpperCase() + name.slice(1);
   };
 
+
+  const productRef = [];
+
   return (
     item._id === idListActive &&
     (item.products.length > 0 ? (
@@ -143,6 +146,7 @@ const ListFullInput = ({
                   )}
                 </TouchableOpacity>
 
+
                 {el.price ? (
                   <Text style={styles.price}>{el.price} €</Text>
                 ) : null}
@@ -199,6 +203,7 @@ const ListFullInput = ({
                     }
                   >
                     {capitalizeFirstLetter(el.reference.name)}
+
                   </Text>
 
                   {el.quantity || el.brand || el.shop ? (

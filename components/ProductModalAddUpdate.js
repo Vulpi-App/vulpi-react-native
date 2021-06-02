@@ -34,6 +34,7 @@ const ModalProduct = ({
   product,
   addProductList,
   setAddProductList,
+
 }) => {
   const [nameProduct, setNameProduct] = useState();
   const [quantityProduct, setQuantityProduct] = useState();

@@ -22,7 +22,7 @@ const windowHeight = Dimensions.get("window").height;
 const statusBarHeight = Constants.statusBarHeight;
 const scrollViewHeight = windowHeight - statusBarHeight;
 
-function SetUpProfilScreen({ userToken, setToken, userId, serverURL }) {
+function SetUpProfilScreen({ setToken, serverURL }) {
   const [errorMessage, setErrorMessage] = useState(null);
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
@@ -39,15 +39,13 @@ function SetUpProfilScreen({ userToken, setToken, userId, serverURL }) {
         formData.append("email", email);
         formData.append("password", password);
 
-        console.log(formData);
         const response = await axios.post(`${serverURL}/user/login`, formData);
 
         if (response.data.token && response.data._id) {
           const token = response.data.token;
           const id = response.data._id;
-          console.log(id);
-          console.log(token);
-          setToken(token, id);
+          const firstName = response.data.account.firstName;
+          setToken(token, id, firstName);
         } else {
           setErrorMessage("Une erreur s'est produite");
         }
@@ -171,6 +169,10 @@ function SetUpProfilScreen({ userToken, setToken, userId, serverURL }) {
                       `${serverURL}/user/appleauth`,
                       formData
                     );
+                    const token = response.data.token;
+                    const id = response.data._id;
+                    const firstName = response.data.account.firstName;
+                    setToken(token, id, firstName);
                   } catch (e) {
                     if (e.code === "ERR_CANCELED") {
                       // handle that the user canceled the sign-in flow

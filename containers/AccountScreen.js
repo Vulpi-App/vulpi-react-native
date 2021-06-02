@@ -7,97 +7,74 @@ import {
   Text,
   TouchableOpacity,
   View,
+  ActivityIndicator,
+  FlatList,
 } from "react-native";
-import axios from "axios";
 import Constants from "expo-constants";
 import * as ImagePicker from "expo-image-picker";
 import { useNavigation } from "@react-navigation/core";
+import { AntDesign } from "@expo/vector-icons";
+
+import colors from "../assets/colors";
+import axios from "axios";
+const {
+  buttonFlashBlue,
+  bgLight,
+  buttonDarkBlue,
+  buttonDisconnect,
+  midGreyText,
+  mainBlueText,
+  bgLightText,
+} = colors;
 
 const windowHeight = Dimensions.get("window").height;
 const statusBarHeight = Constants.statusBarHeight;
 const scrollViewHeight = windowHeight - statusBarHeight;
 
-function AccountScreen({ userToken, userId, setToken, serverURL }) {
-  const [isLoading, setIsLoading] = useState(true);
-  const [displayMessage, setDisplayMessage] = useState(null);
-  const [email, setEmail] = useState("");
-  const [firstName, setFirstName] = useState("");
-  const [picture, setPicture] = useState(null);
+function AccountScreen({
+  setToken,
+  email,
+  firstName,
+  avatar,
+  setAvatar,
+  displayMessage,
+  setDisplayMessage,
+  editInformation,
+  serverURL,
+  userToken,
+  userId,
+}) {
   const [isPictureModified, setIsPictureModified] = useState(false);
+  const [userLists, setUserLists] = useState([]);
+  const [userListsVisible, setUserListsVisible] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const navigation = useNavigation();
 
   useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`${serverURL}/lists/${userId}`, {
+          headers: { Authorization: "Bearer " + userToken },
+        });
+        setUserLists(response.data);
+        console.log(response.data);
+        setIsLoading(false);
+      } catch (error) {
+        console.log(error.message);
+      }
+    };
     fetchData();
   }, []);
-
-  const fetchData = async () => {
-    try {
-      const response = await axios.get(
-        // `http://localhost:3000/user/${userId}`,
-        `${serverURL}/user/${userId}`,
-        {
-          headers: {
-            Authorization: "Bearer " + userToken,
-          },
-        }
-      );
-
-      console.log(response.data);
-      setFirstName(response.data.account.firstName);
-      setEmail(response.data.email);
-
-      if (response.data.photo) {
-        setPicture(response.data.photo[0].url);
-      }
-
-      setIsLoading(false);
-    } catch (error) {
-      setDisplayMessage({
-        message: "An error occurred",
-        color: "error",
-      });
-    }
-  };
-
-  const editInformations = async () => {
-    if (isPictureModified) {
-      if (isPictureModified) {
-        try {
-          const uri = picture;
-          const uriParts = uri.split(".");
-          const fileType = uriParts[1];
-          const formData = new FormData();
-          formData.append("photo", {
-            uri,
-            name: `userPicture`,
-            type: `image/${fileType}`,
-          });
-          const response = await axios.put(
-            `http://localhost:3310/lists/${userId}`,
-            formData,
-            { headers: { Authorization: "Bearer " + userToken } }
-          );
-          if (response.data) {
-            setPicture(response.data.photo[0].url);
-          }
-        } catch (error) {}
-      }
-      isPictureModified && setIsPictureModified(false);
-
-      fetchData();
-    } else {
-    }
-  };
 
   const uploadPicture = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (status === "granted") {
       const result = await ImagePicker.launchImageLibraryAsync();
       if (!result.cancelled) {
-        setPicture(result.uri);
-        if (!isPictureModified) {
-          setIsPictureModified(true);
-        }
+        setIsPictureModified(true);
+        setAvatar(result.uri);
+
+        editInformation("avatar", isPictureModified);
       }
     }
   };
@@ -115,15 +92,23 @@ function AccountScreen({ userToken, userId, setToken, serverURL }) {
                     uploadPicture();
                   }}
                 >
-                  <Image
-                    source={{ uri: picture }}
-                    style={styles.avatar}
-                    resizeMode="cover"
-                  />
+                  {avatar ? (
+                    <Image
+                      source={{
+                        uri: avatar,
+                      }}
+                      style={styles.avatar}
+                      resizeMode="cover"
+                    />
+                  ) : (
+                    <View style={[styles.avatar, styles.viewAvatar]} />
+                  )}
                 </TouchableOpacity>
                 <View style={styles.infos}>
                   <Text style={styles.name}>{firstName}</Text>
-                  <Text style={styles.email}>{email}</Text>
+                  <Text style={styles.email} numberOfLines={1}>
+                    {email}
+                  </Text>
                 </View>
               </View>
             </View>
@@ -133,12 +118,13 @@ function AccountScreen({ userToken, userId, setToken, serverURL }) {
               <TouchableOpacity
                 style={styles.navigation}
                 onPress={() => {
+                  setDisplayMessage({ message: null });
                   navigation.navigate("AccountInfosScreen");
                 }}
               >
                 <View style={styles.whiteButton}>
                   <Text style={styles.blueText}>
-                    👋{"   "}Mes informations personnelles
+                    👋 Mes informations personnelles
                   </Text>
                   <Image
                     source={require("../assets/icon-chevron-right-blue.png")}
@@ -150,18 +136,52 @@ function AccountScreen({ userToken, userId, setToken, serverURL }) {
               <TouchableOpacity
                 style={styles.navigation}
                 onPress={() => {
-                  navigation.navigate("Lists");
+                  //navigation.navigate("Lists");
+                  setUserListsVisible(!userListsVisible);
                 }}
               >
                 <View style={styles.whiteButton}>
-                  <Text style={styles.blueText}>🥑{"   "}Ma liste</Text>
-                  <Image
-                    source={require("../assets/icon-chevron-right-blue.png")}
-                    resizeMode={"contain"}
-                    style={styles.icon}
-                  />
+                  <Text style={styles.blueText}>🗒{"   "}Mes listes</Text>
+                  {isLoading ? (
+                    <ActivityIndicator />
+                  ) : !userListsVisible ? (
+                    <Image
+                      source={require("../assets/icon-chevron-right-blue.png")}
+                      resizeMode={"contain"}
+                      style={styles.icon}
+                    />
+                  ) : (
+                    <AntDesign
+                      name="down"
+                      size={18}
+                      color={mainBlueText}
+                      style={styles.icon}
+                    />
+                  )}
                 </View>
               </TouchableOpacity>
+              {userListsVisible && (
+                <View style={styles.flatListView}>
+                  <FlatList
+                    data={userLists.lists}
+                    keyExtractor={(item) => String(item._id)}
+                    renderItem={({ item }) => (
+                      <TouchableOpacity
+                        style={[styles.whiteButton, styles.listView]}
+                      >
+                        <Text style={styles.blueText}>
+                          {item.emoji} {item.title}
+                        </Text>
+                        <Image
+                          source={require("../assets/icon-chevron-right-blue.png")}
+                          resizeMode={"contain"}
+                          style={styles.listIcon}
+                        />
+                      </TouchableOpacity>
+                    )}
+                  />
+                </View>
+              )}
             </View>
           </View>
           <View style={styles.block}>
@@ -212,8 +232,8 @@ export default AccountScreen;
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#F7F7F8",
-    width: scrollViewHeight,
+    backgroundColor: bgLight,
+    height: "100%",
     width: "100%",
   },
 
@@ -245,13 +265,16 @@ const styles = StyleSheet.create({
   name: {
     marginBottom: "5%",
     fontWeight: "600",
-    color: "#232952",
+    color: buttonDarkBlue,
     fontSize: 23,
+    fontFamily: "GilroySemiBold",
   },
 
   email: {
-    color: "#5F616A",
+    color: midGreyText,
     fontSize: 16,
+    width: 200,
+    fontFamily: "GilroyRegular",
   },
 
   avatar: {
@@ -261,6 +284,10 @@ const styles = StyleSheet.create({
     width: 85,
   },
 
+  viewAvatar: {
+    backgroundColor: buttonFlashBlue,
+  },
+
   navigation: {
     marginTop: "3%",
   },
@@ -268,26 +295,41 @@ const styles = StyleSheet.create({
   whiteButton: {
     justifyContent: "space-between",
     backgroundColor: "#FFFFFF",
-    borderColor: "#EEEEEE",
+    borderColor: bgLightText,
     alignItems: "center",
     flexDirection: "row",
     borderRadius: 10,
     borderWidth: 1,
     width: "100%",
     height: 58,
+    paddingRight: "3%",
+  },
+
+  flatListView: {
+    maxHeight: 130,
+  },
+
+  listView: {
+    width: "90%",
+    height: 50,
   },
 
   blueText: {
     fontWeight: "600",
     marginLeft: "5%",
-    color: "#181725",
+    color: mainBlueText,
     fontSize: 16,
+    fontFamily: "GilroySemiBold",
   },
 
   icon: {
-    marginRight: "3%",
     height: 15,
     width: 15,
+  },
+
+  listIcon: {
+    height: 10,
+    width: 10,
   },
 
   feedbackButton: {
@@ -296,14 +338,15 @@ const styles = StyleSheet.create({
 
   blueButton: {
     justifyContent: "space-between",
-    backgroundColor: "#3443B9",
-    borderColor: "#EEEEEE",
+    backgroundColor: buttonFlashBlue,
+    borderColor: bgLightText,
     alignItems: "center",
     flexDirection: "row",
     borderRadius: 10,
     borderWidth: 1,
     width: "100%",
     height: 58,
+    paddingRight: "3%",
   },
 
   whiteText: {
@@ -311,10 +354,11 @@ const styles = StyleSheet.create({
     marginLeft: "5%",
     color: "white",
     fontSize: 16,
+    fontFamily: "GilroySemiBold",
   },
 
   logoutButton: {
-    backgroundColor: "#E3E3EE",
+    backgroundColor: buttonDisconnect,
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 19,
@@ -323,8 +367,9 @@ const styles = StyleSheet.create({
 
   logoutText: {
     fontWeight: "600",
-    color: "#232952",
+    color: buttonDarkBlue,
     fontSize: 18,
+    fontFamily: "GilroySemiBold",
   },
 
   logoutImage: {
