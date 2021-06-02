@@ -6,7 +6,14 @@ import { Text, TextInput, View, StyleSheet } from "react-native";
 import colors from "../assets/colors";
 const { inputBg } = colors;
 
-const ListModalInput = ({ placeholder, setFunction, value, title, length }) => {
+const ListModalInput = ({
+  placeholder,
+  setFunction,
+  value,
+  title,
+  length,
+  keyboardType,
+}) => {
   return (
     <View>
       <Text style={styles.modalText}>{title}</Text>
@@ -18,6 +25,7 @@ const ListModalInput = ({ placeholder, setFunction, value, title, length }) => {
         onChangeText={(text) => {
           setFunction(text);
         }}
+        keyboardType={keyboardType}
       />
     </View>
   );

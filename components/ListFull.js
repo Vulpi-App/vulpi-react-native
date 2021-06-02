@@ -3,7 +3,6 @@
 import React, { useState, useEffect } from "react";
 
 import { View, Text, FlatList, StyleSheet } from "react-native";
-import axios from "axios";
 
 // Axios - import
 import axios from "axios";
@@ -15,14 +14,12 @@ import ListFullInput from "./ListFullInput";
 const ListFull = ({
   data,
   idListActive,
-
+  serverURL,
   setIdProductActif,
   setInfosProductToUpdate,
   setModalAddProductVisible,
   userToken,
-
   toggleModalUpdate,
-
   addProductList,
 }) => {
   const [result, setResult] = useState();
@@ -31,14 +28,13 @@ const ListFull = ({
   //   const fetchData = async () => {
   //     try {
   //       const response = await axios.get(
-  //         `http://localhost:3310/listcontent/${idListActive}`,
+  //         `${serverURL}/listcontent/${idListActive}`,
   //         {
   //           headers: {
   //             Authorization: `Bearer ${userToken}`,
   //           },
   //         }
   //       );
-
 
   //       console.log("response.data HEREEEEEEE ", response.data);
   //       // console.log("response.data.lists", response.data.lists);
@@ -54,7 +50,6 @@ const ListFull = ({
 
   // }, []);
 
-
   return (
     <View style={styles.list}>
       <FlatList
@@ -66,6 +61,8 @@ const ListFull = ({
               item={item}
               idListActive={idListActive}
               toggleModalUpdate={toggleModalUpdate}
+              serverURL={serverURL}
+              userToken={userToken}
             />
           );
         }}
@@ -83,7 +80,6 @@ const ListFull = ({
                 setIdProductActif={setIdProductActif}
                 setInfosProductToUpdate={setInfosProductToUpdate}
                 setModalAddProductVisible={setModalAddProductVisible}
-
               />
             );
           }}

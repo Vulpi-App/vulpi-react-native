@@ -20,7 +20,7 @@ import axios from "axios";
 import RegisterScreen from "./containers/RegisterScreen";
 
 // Useful variables
-const serverURL = "https://vulpi-forest.herokuapp.com";
+const serverURL = "http://localhost:3310";
 // Local server : "http://localhost:3310"
 // Heroku server : "https://vulpi-forest.herokuapp.com"
 
@@ -29,14 +29,11 @@ const Stack = createStackNavigator();
 
 export default function App() {
   const [isLoading, setIsLoading] = useState(false);
-  // Création d'un state temporaire/fictif à revoir par la suite
 
   const [userToken, setUserToken] = useState(
-
-    "pDwF8Hzeu4M6thn9BOzrf32dBy0vUlLD1J0lOSbxnPxIAkgzw9Q0MkaJ0dC8ELa6"
+    "KSpUkFnIaPDmIYfzmc24iaWzzlsISjQ2m3mPkdfK8jhshqBUx4ApsLNIMEivqut0"
   );
-  const [userId, setUserId] = useState("60b4ac5f48c552347cc545c3");
-
+  const [userId, setUserId] = useState("60b34cdb27fe1e80df064679");
 
   // State pour gérer l'affichage du Onboarding
   const [firstConnection, setFirstConnection] = useState(true);
@@ -53,8 +50,8 @@ export default function App() {
       await AsyncStorage.removeItem("userToken");
       await AsyncStorage.removeItem("userId");
     }
-    // setUserToken(token);
-    // setUserId(id);
+    setUserToken(token);
+    setUserId(id);
   };
 
   const setOnBoardingDone = async () => {
@@ -80,7 +77,6 @@ export default function App() {
     }
   };
 
-
   // useEffect(() => {
   //   // Fetch the token from storage then navigate to our appropriate place
   //   const bootstrapAsync = async () => {
@@ -98,7 +94,6 @@ export default function App() {
 
   //   bootstrapAsync();
   // }, []);
-
 
   return (
     <NavigationContainer>
@@ -214,6 +209,7 @@ export default function App() {
                             userToken={userToken}
                             userId={userId}
                             setToken={setToken}
+                            serverURL={serverURL}
                           />
                         )}
                       </Stack.Screen>

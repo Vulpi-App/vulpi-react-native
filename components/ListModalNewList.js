@@ -1,6 +1,12 @@
 // React & React Native - Imports
 import React, { useState } from "react";
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Platform,
+  StyleSheet,
+} from "react-native";
 import { Dimensions } from "react-native";
 import Modal from "react-native-modal";
 
@@ -20,6 +26,7 @@ const ListModalNewList = ({
   userToken,
   setNewListCreated,
   newListCreated,
+  serverURL,
 }) => {
   // States for add a new list
   const [title, setTitle] = useState("");
@@ -39,7 +46,7 @@ const ListModalNewList = ({
           formData.append("emoji", emoji);
 
           const response = await axios.post(
-            `http://localhost:3310/lists/create`,
+            `${serverURL}/lists/create`,
             formData,
             {
               headers: { Authorization: `Bearer ${userToken}` },
@@ -47,6 +54,8 @@ const ListModalNewList = ({
           );
 
           console.log(response.status);
+
+          console.log(emoji[0].length);
 
           if (response.status === 200) {
             setModalVisible(false);
@@ -89,6 +98,9 @@ const ListModalNewList = ({
             setFunction={setTitle}
             value={title}
             length={30}
+            keyboardType={
+              Platform.OS === "ios" ? "ascii-capable" : "visible-password"
+            }
           />
           <ListModalInput
             title="Emoji *"
@@ -96,6 +108,7 @@ const ListModalNewList = ({
             setFunction={setEmoji}
             value={emoji}
             length={null}
+            keyboardType="default"
           />
           {/* Button disabled if no title and no emoji filled */}
           {title && emoji ? (
