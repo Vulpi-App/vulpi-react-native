@@ -2,7 +2,9 @@
 
 import React, { useState, useEffect } from "react";
 
+
 import { View, Text, FlatList, StyleSheet } from "react-native";
+
 
 // Axios - import
 import axios from "axios";
@@ -14,13 +16,11 @@ import ListFullInput from "./ListFullInput";
 const ListFull = ({
   data,
   idListActive,
-  serverURL,
-  setIdProductActif,
-  setInfosProductToUpdate,
-  setModalAddProductVisible,
-  userToken,
   toggleModalUpdate,
+  userToken,
+  serverURL,
   addProductList,
+  setAddProductList,
 }) => {
   const [result, setResult] = useState();
 
@@ -77,9 +77,9 @@ const ListFull = ({
               <ListFullInput
                 item={item}
                 idListActive={idListActive}
-                setIdProductActif={setIdProductActif}
-                setInfosProductToUpdate={setInfosProductToUpdate}
-                setModalAddProductVisible={setModalAddProductVisible}
+                userToken={userToken}
+                addProductList={addProductList}
+                setAddProductList={setAddProductList}
               />
             );
           }}

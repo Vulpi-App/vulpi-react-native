@@ -2,7 +2,16 @@
 import React from "react";
 import { Text, View, StyleSheet, TextInput } from "react-native";
 
-const ModalProduct = ({ nameInput, valueInput, setValueInput }) => {
+// Import picker
+import { Picker } from "@react-native-picker/picker";
+
+const ModalProduct = ({
+  nameInput,
+  valueInput,
+  setValueInput,
+  measureProduct,
+  setMeasureProduct,
+}) => {
   let placeholderInput;
   let labelInput;
   if (nameInput === "nameProduct") {
@@ -43,6 +52,30 @@ const ModalProduct = ({ nameInput, valueInput, setValueInput }) => {
           <Text style={styles.textEuro}>€</Text>
         </View>
       ) : (
+        // nameInput === "quantity" ? (
+        //   <View style={styles.blockInputQuantity}>
+        //     <TextInput
+        //       style={styles.inputTextQuantity}
+        //       placeholder={placeholderInput}
+        //       placeholderTextColor="#797979"
+        //       onChangeText={(input) => {
+        //         setValueInput(input);
+        //       }}
+        //       value={valueInput}
+        //     />
+        //     {/* <Picker
+        //       style={styles.pickerMeasures}
+        //       selectedValue={measureProduct}
+        //       onValueChange={(itemValue, itemIndex) =>
+        //         setMeasureProduct(itemValue)
+        //       }
+        //     >
+        //       <Picker.Item label="Kg" value="kilogramme" />
+        //       <Picker.Item label="Litre" value="litre" />
+        //       <Picker.Item label="Paquet" value="paquet" />
+        //     </Picker> */}
+        //   </View>
+        // ) :
         <TextInput
           style={styles.inputText}
           placeholder={placeholderInput}
@@ -85,4 +118,8 @@ const styles = StyleSheet.create({
     width: "10%",
     textAlign: "right",
   },
+
+  blockInputQuantity: {},
+  inputTextQuantity: {},
+  pickerMeasures: { height: 50, backgroundColor: "red", color: "green" },
 });

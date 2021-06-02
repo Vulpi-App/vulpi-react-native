@@ -2,11 +2,8 @@
 import React, { useState, useEffect } from "react";
 import {
   View,
-  Text,
   Button,
   Platform,
-  ScrollView,
-  FlatList,
   SafeAreaView,
   ActivityIndicator,
   StyleSheet,
@@ -65,11 +62,6 @@ const ListsScreen = ({ navigation, userToken, userId, serverURL }) => {
   // State for refresh products list
   const [addProductList, setAddProductList] = useState(false);
 
-  // State for product actif
-  const [idProductActif, setIdProductActif] = useState();
-
-  // State for display element in modal update product
-  const [infosProductToUpdate, setInfosProductToUpdate] = useState();
 
   // console.log(idListActive);
   // console.log(idProductActif);
@@ -77,6 +69,7 @@ const ListsScreen = ({ navigation, userToken, userId, serverURL }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
+
         const response = await axios.get(`${serverURL}/lists/${userId}`, {
           headers: {
             Authorization: `Bearer ${userToken}`,
@@ -84,6 +77,7 @@ const ListsScreen = ({ navigation, userToken, userId, serverURL }) => {
         });
 
         // console.log("===== response.data", response.data);
+
 
         setData(response.data);
         setIdListActive(response.data.lists[0]._id);
@@ -115,7 +109,7 @@ const ListsScreen = ({ navigation, userToken, userId, serverURL }) => {
     <View style={styles.screen}>
       <KeyboardAwareScrollView
         contentContainerStyle={{ height: "100%", margin: 0 }}
-        viewIsInsideTabBar={false}
+        viewIsInsideTabBar={true}
       >
         <StatusBar style="light" />
         <SafeAreaView style={styles.pageScreen}>
@@ -150,13 +144,12 @@ const ListsScreen = ({ navigation, userToken, userId, serverURL }) => {
               <ListFull
                 data={data}
                 idListActive={idListActive}
-                setIdProductActif={setIdProductActif}
-                setInfosProductToUpdate={setInfosProductToUpdate}
-                setModalAddProductVisible={setModalAddProductVisible}
                 userToken={userToken}
                 toggleModalUpdate={toggleModalUpdate}
                 addProductList={addProductList}
+                setAddProductList={setAddProductList}
                 serverURL={serverURL}
+
               />
 
               {/* <Button
@@ -238,15 +231,14 @@ const ListsScreen = ({ navigation, userToken, userId, serverURL }) => {
         titleListActive={titleListActive}
       />
 
-      {/* Modal "Add or Update Product" */}
+      {/* Modal "Add Product" */}
       <ModalProduct
         modalAddProductVisible={modalAddProductVisible}
         setModalAddProductVisible={setModalAddProductVisible}
-        typeModalProduct={idProductActif ? "update product" : "new product"}
+        typeModalProduct="new product"
         idList={idListActive}
         userToken={userToken}
-        idProduct={idProductActif}
-        infosProductToUpdate={infosProductToUpdate}
+        // product={null}
         addProductList={addProductList}
         setAddProductList={setAddProductList}
       />

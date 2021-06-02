@@ -35,6 +35,7 @@ const Stack = createStackNavigator();
 
 export default function App() {
 
+
   const [isLoading, setIsLoading] = useState(true);
   const [userToken, setUserToken] = useState(null);
   const [userId, setUserId] = useState(null);
@@ -80,6 +81,7 @@ export default function App() {
       // screen will be unmounted and thrown away.
       setUserToken(userToken);
       setUserId(userId);
+
 
 
 
@@ -146,6 +148,7 @@ export default function App() {
       console.log(error.message);
     }
   };
+
 
 
   // Function to update user account

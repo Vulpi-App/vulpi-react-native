@@ -1,5 +1,5 @@
 // Tools
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Text,
   View,
@@ -31,18 +31,37 @@ const ModalProduct = ({
   typeModalProduct,
   idList,
   userToken,
-  idProduct,
+  product,
   addProductList,
   setAddProductList,
 
-  infosProductToUpdate,
 }) => {
   const [nameProduct, setNameProduct] = useState();
   const [quantityProduct, setQuantityProduct] = useState();
+  const [measureProduct, setMeasureProduct] = useState();
   const [brandProduct, setBrandProduct] = useState();
   const [shopProduct, setShopProduct] = useState();
   const [priceProduct, setPriceProduct] = useState();
   const [pictureProduct, setPictureProduct] = useState();
+
+  // Check if typemodal update for goodstate
+
+  // useEffect(() => {
+  //   const test = () => {
+  //     if (typeModalProduct === "update product") {
+  //       // console.log(product.quantity);
+  //       setNameProduct(); // A compléter
+  //       setQuantityProduct(product.quantity);
+  //       setBrandProduct(product.brand);
+  //       setShopProduct(product.shop);
+  //       setPriceProduct(product.price);
+  //       setPictureProduct(); // A
+  //       // console.log("test", quantityProduct);
+  //     }
+  //   };
+  //   test();
+  // }, []);
+
   const [messageErrorAfterSubmit, setMessageErrorAfterSubmit] = useState(null);
   const [modalDeleteProductVisible, setModalDeleteProductVisible] =
     useState(false);
@@ -88,6 +107,7 @@ const ModalProduct = ({
             if (response.status === 200) {
               setNameProduct();
               setQuantityProduct();
+              setMeasureProduct();
               setBrandProduct();
               setShopProduct();
               setAddProductList(!addProductList);
@@ -111,7 +131,9 @@ const ModalProduct = ({
         // --------- UPDATE PRODUCT ----------- //
         // ------------------------------------ //
       } else if (typeModalProduct === "update product") {
+        console.log("test: ", product._id);
         const formData = new FormData();
+        nameProduct && formData.append("nameProduct", nameProduct);
         quantityProduct && formData.append("quantity", quantityProduct);
         brandProduct && formData.append("brand", brandProduct);
         shopProduct && formData.append("shop", shopProduct);
@@ -129,7 +151,7 @@ const ModalProduct = ({
         }
 
         const response = await axios.put(
-          `${localURLUpdate}${idList}?idProduct=${idProduct}`,
+          `${localURLUpdate}${idList}?idProduct=${product._id}`,
           formData,
           {
             headers: { Authorization: `Bearer ${userToken}` },
@@ -140,8 +162,8 @@ const ModalProduct = ({
         if (response.status === 200) {
           setNameProduct();
           setQuantityProduct();
+          setMeasureProduct();
           setBrandProduct();
-          setAddProductList(!addProductList);
           setShopProduct();
           setPriceProduct();
           setPictureProduct();
@@ -171,6 +193,13 @@ const ModalProduct = ({
           "La liste que vous souhaitez modifier n'existe pas"
         );
       }
+
+      if (
+        error.response.status === 400 &&
+        error.response.data.message === "Please, enter the product name"
+      ) {
+        setMessageErrorAfterSubmit("Merci de saisir un nom d'article");
+      }
     }
   };
 
@@ -180,9 +209,9 @@ const ModalProduct = ({
 
   const deleteProduct = async () => {
     try {
-      if (idProduct) {
+      if (product._id) {
         const response = await axios.delete(
-          `${localURLDelete}${idList}?idProduct=${idProduct}`,
+          `${localURLDelete}${idList}?idProduct=${product._id}`,
           {
             headers: { Authorization: `Bearer ${userToken}` },
           }
@@ -192,6 +221,7 @@ const ModalProduct = ({
         if (response.status === 200) {
           setNameProduct();
           setQuantityProduct();
+          setMeasureProduct();
           setBrandProduct();
           setShopProduct();
           setPriceProduct();
@@ -199,6 +229,7 @@ const ModalProduct = ({
           setMessageErrorAfterSubmit();
           setModalAddProductVisible(false);
           setModalDeleteProductVisible(false);
+          setAddProductList(!addProductList); // Pour rafraichir après suppression
           alert("Produt deleted successfully !");
         }
       } else {
@@ -207,7 +238,7 @@ const ModalProduct = ({
         );
       }
     } catch (error) {
-      // console.log(error.message);
+      console.log(error.message);
       if (
         error.response.status === 400 &&
         error.response.data.message ===
@@ -233,6 +264,7 @@ const ModalProduct = ({
     setModalAddProductVisible(false);
     setNameProduct();
     setQuantityProduct();
+    setMeasureProduct();
     setBrandProduct();
     setShopProduct();
     setPriceProduct();
@@ -240,11 +272,13 @@ const ModalProduct = ({
     setMessageErrorAfterSubmit();
   };
 
+  // console.log("test2", quantityProduct);
+
   return (
     <View style={styles.pageScreen}>
       <Modal
         style={styles.centeredView}
-        animationType="fade"
+        animationType="none"
         transparent={true}
         visible={modalAddProductVisible}
       >
@@ -273,42 +307,24 @@ const ModalProduct = ({
 
                 <InputProduct
                   nameInput="quantity"
-                  valueInput={
-                    // infosProductToUpdate
-                    //   ? infosProductToUpdate.quantity
-                    //   : quantityProduct
-                    quantityProduct
-                  }
+                  valueInput={quantityProduct}
                   setValueInput={setQuantityProduct}
+                  measureProduct={measureProduct}
+                  setMeasureProduct={setMeasureProduct}
                 />
                 <InputProduct
                   nameInput="brand"
-                  valueInput={
-                    // infosProductToUpdate
-                    //   ? infosProductToUpdate.brand
-                    //   : brandProduct
-                    brandProduct
-                  }
+                  valueInput={brandProduct}
                   setValueInput={setBrandProduct}
                 />
                 <InputProduct
                   nameInput="shop"
-                  valueInput={
-                    // infosProductToUpdate
-                    //   ? infosProductToUpdate.shop
-                    //   : shopProduct
-                    shopProduct
-                  }
+                  valueInput={shopProduct}
                   setValueInput={setShopProduct}
                 />
                 <InputProduct
                   nameInput="price"
-                  valueInput={
-                    // infosProductToUpdate
-                    //   ? infosProductToUpdate.price
-                    //   : priceProduct
-                    priceProduct
-                  }
+                  valueInput={priceProduct}
                   setValueInput={setPriceProduct}
                 />
               </View>
