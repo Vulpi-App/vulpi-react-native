@@ -172,7 +172,7 @@ export default function App() {
             name: `avatar.${userId}`,
             type: `image/${fileType}`,
           });
-          console.log("formData : " + formData.avatar);
+          console.log("formData : " + formData);
         }
 
         const response = await axios.put(
@@ -181,7 +181,8 @@ export default function App() {
           { headers: { Authorization: "Bearer " + userToken } }
         );
         if (response.data) {
-          console.log("requête passée");
+          console.log("formData : " + formData.avatar);
+          console.log("requête passée", response.data);
           setDisplayMessage({ message: "Votre profil a été mis a jour." });
           setReloadUser(true);
         } else {

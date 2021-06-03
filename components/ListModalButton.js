@@ -8,12 +8,7 @@ const { buttonFlashBlue, white, deleteRed } = colors;
 
 const ListModalButton = ({ name, color, handleSubmit }) => {
   return color === "blue" ? (
-    <TouchableOpacity
-      style={styles.buttonBlue}
-      onPress={async () => {
-        handleSubmit();
-      }}
-    >
+    <TouchableOpacity style={styles.buttonBlue} onPress={handleSubmit}>
       <Text style={styles.buttonTextBlue}>{name}</Text>
     </TouchableOpacity>
   ) : (

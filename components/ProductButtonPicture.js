@@ -1,12 +1,6 @@
 // Tools
 import React, { useState } from "react";
-import {
-  View,
-  Text,
-  Image,
-  StyleSheet,
-  TouchableHighlight,
-} from "react-native";
+import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 
 const ProductButtonPicture = ({
   pictureProduct,
@@ -14,7 +8,7 @@ const ProductButtonPicture = ({
   setModalAddProductVisible,
 }) => {
   return (
-    <TouchableHighlight
+    <TouchableOpacity
       style={styles.blockButton}
       onPress={() => {
         setProductModalPictureVisible(true);
@@ -34,7 +28,7 @@ const ProductButtonPicture = ({
           />
         ) : null}
       </View>
-    </TouchableHighlight>
+    </TouchableOpacity>
   );
 };
 

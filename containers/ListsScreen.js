@@ -140,7 +140,6 @@ const ListsScreen = ({ navigation, userToken, userId, serverURL, reload }) => {
                 setFoldedNav={setFoldedNav}
                 foldOrUnfoldLists={foldOrUnfoldLists}
               />
-
               {/* ----- Navigation scrollbar horizontal ✅ 
             🚨 Gérer l'ajout de la nouvelle liste au DEBUT et non à la suite des listes existantes */}
               {foldedNav ? null : (
@@ -154,9 +153,7 @@ const ListsScreen = ({ navigation, userToken, userId, serverURL, reload }) => {
                   />
                 </View>
               )}
-
               {/* ----- List(s) ✅ */}
-
               <ListFull
                 data={data}
                 idListActive={idListActive}
@@ -166,7 +163,6 @@ const ListsScreen = ({ navigation, userToken, userId, serverURL, reload }) => {
                 setAddProductList={setAddProductList}
                 serverURL={serverURL}
               />
-
               <Button
                 title="Ma liste maison"
                 onPress={() => {
@@ -185,6 +181,7 @@ const ListsScreen = ({ navigation, userToken, userId, serverURL, reload }) => {
                   userToken={userToken}
                   addProductList={addProductList}
                   setAddProductList={setAddProductList}
+                  serverURL={serverURL}
                 />
               ) : null}
               {valueInputAddQuickly && dataProductsDisplay.length > 1 ? (
@@ -196,6 +193,7 @@ const ListsScreen = ({ navigation, userToken, userId, serverURL, reload }) => {
                   userToken={userToken}
                   addProductList={addProductList}
                   setAddProductList={setAddProductList}
+                  serverURL={serverURL}
                 />
               ) : null}
               {valueInputAddQuickly ? (
@@ -207,6 +205,7 @@ const ListsScreen = ({ navigation, userToken, userId, serverURL, reload }) => {
                   userToken={userToken}
                   addProductList={addProductList}
                   setAddProductList={setAddProductList}
+                  serverURL={serverURL}
                 />
               ) : null}
               <ProductBottomBlockAdd
@@ -258,6 +257,7 @@ const ListsScreen = ({ navigation, userToken, userId, serverURL, reload }) => {
           // product={null}
           addProductList={addProductList}
           setAddProductList={setAddProductList}
+          serverURL={serverURL}
         />
       </View>
     </KeyboardAwareScrollView>

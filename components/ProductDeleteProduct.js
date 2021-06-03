@@ -4,8 +4,8 @@ import {
   View,
   Text,
   StyleSheet,
-  TouchableHighlight,
   ActivityIndicator,
+  TouchableOpacity,
 } from "react-native";
 
 // Colors - import
@@ -15,23 +15,23 @@ const { buttonDarkBlue } = colors;
 const ProductDeleteProduct = ({
   setModalAddProductVisible,
   setModalDeleteProductVisible,
-  isLoading,
+  isLoadingDelete,
 }) => {
   return (
     <View>
-      <TouchableHighlight
+      <TouchableOpacity
         style={styles.buttonDeleteProduct}
         onPress={() => {
           setModalDeleteProductVisible(true);
           setModalAddProductVisible(false);
         }}
       >
-        {isLoading ? (
+        {isLoadingDelete ? (
           <ActivityIndicator size="small" color={buttonDarkBlue} />
         ) : (
           <Text style={styles.textDeleteProduct}>Supprimer cet article</Text>
         )}
-      </TouchableHighlight>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -40,6 +40,7 @@ export default ProductDeleteProduct;
 
 const styles = StyleSheet.create({
   buttonDeleteProduct: {
+    marginTop: 10,
     paddingHorizontal: 20,
     paddingVertical: 10,
     width: "100%",

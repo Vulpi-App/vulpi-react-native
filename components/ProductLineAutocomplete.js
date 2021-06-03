@@ -4,18 +4,15 @@ import { StyleSheet, View, Text } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import axios from "axios";
 
-// URL request
-const localURLAdd = "http://localhost:3310/lists/add-product/";
-
 const ProductLineAutoComplete = ({
   firstLine,
   setValueInputAddQuickly,
   valueAutocomplete,
   idList,
   userToken,
-
   addProductList,
   setAddProductList,
+  serverURL,
 }) => {
   const addProduct = async () => {
     try {
@@ -30,7 +27,7 @@ const ProductLineAutoComplete = ({
 
           // Request API
           const response = await axios.post(
-            `${localURLAdd}${idList}`,
+            `${serverURL}/lists/add-product/${idList}`,
             formData,
             {
               headers: { Authorization: `Bearer ${userToken}` },
@@ -71,6 +68,9 @@ const ProductLineAutoComplete = ({
         {
           borderTopLeftRadius: firstLine ? 15 : 0,
           borderTopRightRadius: firstLine ? 15 : 0,
+          shadowColor: firstLine ? "grey" : null,
+          shadowOpacity: firstLine ? 5 : 0,
+          shadowOffset: firstLine ? { height: -1 } : null,
         },
       ]}
     >

@@ -4,8 +4,8 @@ import {
   Text,
   View,
   StyleSheet,
-  TouchableHighlight,
   ActivityIndicator,
+  TouchableOpacity,
 } from "react-native";
 
 const ProductButtonCancelSave = ({
@@ -15,13 +15,13 @@ const ProductButtonCancelSave = ({
 }) => {
   return (
     <View style={styles.blockButtonsCancelSave}>
-      <TouchableHighlight
+      <TouchableOpacity
         style={[styles.button, styles.buttonCancel]}
         onPress={closeModalProduct}
       >
         <Text style={styles.textCancel}>Annuler</Text>
-      </TouchableHighlight>
-      <TouchableHighlight
+      </TouchableOpacity>
+      <TouchableOpacity
         style={[styles.button, styles.buttonSave]}
         onPress={submitInfosProduct}
       >
@@ -30,7 +30,7 @@ const ProductButtonCancelSave = ({
         ) : (
           <Text style={styles.textSave}>Enregistrer</Text>
         )}
-      </TouchableHighlight>
+      </TouchableOpacity>
     </View>
   );
 };

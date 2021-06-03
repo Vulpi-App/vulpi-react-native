@@ -112,17 +112,18 @@ const ListScreen = () => {
     };
   }, []);
 
+  const handleSubmit = async () => {
+    await sendPushNotification(expoPushToken);
+  };
+
   return (
     <View style={styles.screen}>
       <ScrollView style={[styles.wrapper, styles.scrollView]}>
         <SafeAreaView>
           <StatusBar style="dark" />
 
-
           <View style={styles.container}>
-            <TouchableOpacity onPress={async () => {
-              await sendPushNotification(expoPushToken);
-            }}>
+            <TouchableOpacity>
               <Text>Notifications</Text>
             </TouchableOpacity>
             <View style={styles.buttonWrap}>
@@ -131,13 +132,13 @@ const ListScreen = () => {
                   name="👋 Je vais faire les courses !"
                   color="blue"
                   style={styles.boxShadow}
+                  handleSubmit={handleSubmit}
                 />
               </View>
               <Text style={styles.asterisk}>
                 * Prévenez les autres que vous allez faire les courses
               </Text>
             </View>
-
 
             <View style={styles.cardWrap}>
               <View>
@@ -155,9 +156,7 @@ const ListScreen = () => {
           </View>
         </SafeAreaView>
       </ScrollView>
-
     </View>
-
   );
 };
 
