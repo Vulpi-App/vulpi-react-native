@@ -25,7 +25,6 @@ function RegisterScreen({ setToken, serverURL }) {
   const [password, setPassword] = useState("");
 
   const handleSubmit = async () => {
-    console.log("test");
     if (email && firstName && password) {
       if (errorMessage !== null) {
         setErrorMessage(null);
@@ -35,9 +34,8 @@ function RegisterScreen({ setToken, serverURL }) {
         const formData = new FormData();
         formData.append("email", email);
         formData.append("password", password);
-        formData.append("firstName", password);
+        formData.append("firstName", firstName);
 
-        console.log(formData);
         const response = await axios.post(`${serverURL}/user/signup`, formData);
         formData;
 

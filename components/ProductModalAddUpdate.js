@@ -21,7 +21,8 @@ import ModalDeleteProduct from "./ProductModalConfirmDelete";
 import { BlurView } from "expo-blur";
 
 // URL request
-const localURLAdd = "http://localhost:3310/lists/add-product/";
+const localURLAdd = "http://192.168.0.20:3310/lists/add-product/";
+// "http://192.168.0.20:3310"
 const localURLUpdate = "http://localhost:3310/lists/update-product/";
 const localURLDelete = "http://localhost:3310/lists/delete-product/";
 const localURLInfosProduct = "http://localhost:3310/lists/infos-product/";

@@ -27,7 +27,8 @@ import IconTabBarList from "./components/IconTabBarList";
 import IconTabBarExplore from "./components/IconTabBarExplore";
 
 // Useful variables
-const serverURL = "https://vulpi-forest.herokuapp.com";
+// const serverURL = "http://localhost:3310";
+const serverURL = "http://192.168.0.20:3310";
 // Local server : "http://localhost:3310"
 // Heroku server : "https://vulpi-forest.herokuapp.com"
 
@@ -41,7 +42,7 @@ export default function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [userToken, setUserToken] = useState(null);
   const [userId, setUserId] = useState(null);
-  const [firstConnection, setFirstConnection] = useState(true);
+  const [firstConnection, setFirstConnection] = useState(false);
   const [email, setEmail] = useState("");
   const [avatar, setAvatar] = useState();
   const [firstName, setFirstName] = useState("");
@@ -227,17 +228,14 @@ export default function App() {
       ) : (
         // User is signed in
         <Stack.Navigator>
-          <Stack.Screen
-            name="Tab"
-            options={{ headerShown: false }}
-            //initialRouteName="ShoppingScreen"
-          >
+          <Stack.Screen name="Tab" options={{ headerShown: false }}>
             {() => (
               <Tab.Navigator
                 tabBarOptions={{
                   activeTintColor: buttonDarkBlue,
                   inactiveTintColor: inactiveTabBar,
                 }}
+                initialRouteName="Lists"
               >
                 {/* ----------------- */}
                 {/* ---- EXPLORE ---- */}
@@ -302,6 +300,7 @@ export default function App() {
                             userId={userId}
                             setToken={setToken}
                             serverURL={serverURL}
+                            reload={reload}
                           />
                         )}
                       </Stack.Screen>
