@@ -7,6 +7,7 @@ import {
   SafeAreaView,
   ActivityIndicator,
   StyleSheet,
+  ScrollView,
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import Constants from "expo-constants";
@@ -111,8 +112,12 @@ const ListsScreen = ({ navigation, userToken, userId, serverURL }) => {
       <View style={styles.screen}>
         {/* <KeyboardAwareScrollView
         contentContainerStyle={{ height: "100%", margin: 0 }}
-        viewIsInsideTabBar={true}
-      > */}
+
+        viewIsInsideTabBar={false}
+      >
+
+        */}
+
         <StatusBar style="light" />
         <SafeAreaView style={styles.pageScreen}>
           <View style={styles.globalContainer}>
@@ -154,12 +159,12 @@ const ListsScreen = ({ navigation, userToken, userId, serverURL }) => {
                 serverURL={serverURL}
               />
 
-              <Button
+              {/* <Button
                 title="Ma liste maison"
                 onPress={() => {
                   navigation.navigate("ListScreen");
                 }}
-              />
+              /> */}
             </View>
 
             <View style={styles.blockBottomAddQuicklyAutocomplete}>
@@ -279,7 +284,13 @@ const styles = StyleSheet.create({
     marginBottom: 0,
     marginLeft: "auto",
     marginRight: "auto",
+    flex: 1,
   },
 
-  blockBottomAddQuicklyAutocomplete: {},
+  blockBottomAddQuicklyAutocomplete: {
+    // backgroundColor: "red",
+    height: 65,
+    justifyContent: "flex-end",
+    // marginTop: 30,
+  },
 });

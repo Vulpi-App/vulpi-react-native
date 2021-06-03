@@ -66,7 +66,10 @@ const ListFull = ({
         }}
       />
 
-      <View style={styles.listContent}>
+      <ScrollView
+        style={styles.listContent}
+        showsVerticalScrollIndicator={false}
+      >
         <FlatList
           data={data.lists}
           keyExtractor={(item) => item._id}
@@ -82,7 +85,7 @@ const ListFull = ({
             );
           }}
         />
-      </View>
+      </ScrollView>
     </View>
   );
 };
@@ -91,9 +94,11 @@ export default ListFull;
 
 const styles = StyleSheet.create({
   list: {
+    // maxHeight: "80%",
     backgroundColor: "#fff",
     borderRadius: 10,
     padding: 15,
+    flex: 1,
   },
   listContent: {
     paddingTop: 15,

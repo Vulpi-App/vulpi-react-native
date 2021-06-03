@@ -1,8 +1,18 @@
 // Tools
 import React from "react";
-import { Text, View, StyleSheet, TouchableHighlight } from "react-native";
+import {
+  Text,
+  View,
+  StyleSheet,
+  TouchableHighlight,
+  ActivityIndicator,
+} from "react-native";
 
-const ProductButtonCancelSave = ({ closeModalProduct, submitInfosProduct }) => {
+const ProductButtonCancelSave = ({
+  closeModalProduct,
+  submitInfosProduct,
+  isLoading,
+}) => {
   return (
     <View style={styles.blockButtonsCancelSave}>
       <TouchableHighlight
@@ -15,7 +25,11 @@ const ProductButtonCancelSave = ({ closeModalProduct, submitInfosProduct }) => {
         style={[styles.button, styles.buttonSave]}
         onPress={submitInfosProduct}
       >
-        <Text style={styles.textSave}>Enregistrer</Text>
+        {isLoading ? (
+          <ActivityIndicator size="small" color="white" />
+        ) : (
+          <Text style={styles.textSave}>Enregistrer</Text>
+        )}
       </TouchableHighlight>
     </View>
   );

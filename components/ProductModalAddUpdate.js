@@ -24,6 +24,12 @@ import { BlurView } from "expo-blur";
 const localURLAdd = "http://localhost:3310/lists/add-product/";
 const localURLUpdate = "http://localhost:3310/lists/update-product/";
 const localURLDelete = "http://localhost:3310/lists/delete-product/";
+const localURLInfosProduct = "http://localhost:3310/lists/infos-product/";
+
+// Function to capitalize first letter of name product
+const capitalizeFirstLetter = (name) => {
+  return name.charAt(0).toUpperCase() + name.slice(1);
+};
 
 const ModalProduct = ({
   modalAddProductVisible,
@@ -35,9 +41,10 @@ const ModalProduct = ({
   addProductList,
   setAddProductList,
 }) => {
+  const [isLoading, setIsLoading] = useState(false);
   const [nameProduct, setNameProduct] = useState();
   const [quantityProduct, setQuantityProduct] = useState();
-  const [measureProduct, setMeasureProduct] = useState();
+  const [measureProduct, setMeasureProduct] = useState("Unité");
   const [brandProduct, setBrandProduct] = useState();
   const [shopProduct, setShopProduct] = useState();
   const [priceProduct, setPriceProduct] = useState();
@@ -45,21 +52,35 @@ const ModalProduct = ({
 
   // Check if typemodal update for goodstate
 
-  // useEffect(() => {
-  //   const test = () => {
-  //     if (typeModalProduct === "update product") {
-  //       // console.log(product.quantity);
-  //       setNameProduct(); // A compléter
-  //       setQuantityProduct(product.quantity);
-  //       setBrandProduct(product.brand);
-  //       setShopProduct(product.shop);
-  //       setPriceProduct(product.price);
-  //       setPictureProduct(); // A
-  //       // console.log("test", quantityProduct);
-  //     }
-  //   };
-  //   test();
-  // }, []);
+  useEffect(() => {
+    const fetchDataProduct = async () => {
+      if (typeModalProduct === "update product") {
+        try {
+          const response = await axios.get(
+            `${localURLInfosProduct}${idList}?idProduct=${product._id}`,
+
+            {
+              headers: { Authorization: `Bearer ${userToken}` },
+            }
+          );
+          console.log("response : ", response.data);
+          setNameProduct(capitalizeFirstLetter(response.data.reference.name));
+          setQuantityProduct(response.data.quantity);
+          setMeasureProduct(response.data.measure);
+          setBrandProduct(capitalizeFirstLetter(response.data.brand));
+          setShopProduct(capitalizeFirstLetter(response.data.shop));
+          setPriceProduct(response.data.price);
+          response.data.reference.picture
+            ? setPictureProduct(response.data.reference.picture.secure_url)
+            : setPictureProduct(null);
+        } catch (error) {
+          console.log(error.message);
+        }
+      }
+    };
+    fetchDataProduct();
+    // console.log(product.quantity);
+  }, [modalAddProductVisible]);
 
   const [messageErrorAfterSubmit, setMessageErrorAfterSubmit] = useState(null);
   const [modalDeleteProductVisible, setModalDeleteProductVisible] =
@@ -68,6 +89,7 @@ const ModalProduct = ({
     useState(false);
 
   const submitInfosProduct = async () => {
+    setIsLoading(true);
     try {
       // ------------------------------------ //
       // ----------- ADD PRODUCT ------------ //
@@ -78,7 +100,9 @@ const ModalProduct = ({
           if (nameProduct.length <= 30) {
             const formData = new FormData();
             formData.append("nameProduct", nameProduct);
-            quantityProduct && formData.append("quantity", quantityProduct);
+            quantityProduct &&
+              formData.append("quantity", Number(quantityProduct));
+            measureProduct && formData.append("measure", measureProduct);
             brandProduct && formData.append("brand", brandProduct);
             shopProduct && formData.append("shop", shopProduct);
             priceProduct && formData.append("price", priceProduct);
@@ -106,7 +130,7 @@ const ModalProduct = ({
             if (response.status === 200) {
               setNameProduct();
               setQuantityProduct();
-              setMeasureProduct();
+              setMeasureProduct("Unité");
               setBrandProduct();
               setShopProduct();
               setAddProductList(!addProductList);
@@ -115,6 +139,7 @@ const ModalProduct = ({
               setMessageErrorAfterSubmit();
               setModalAddProductVisible(false);
               setAddProductList(!addProductList);
+              setIsLoading(false);
               alert("Produt added successfully !");
             }
           } else {
@@ -134,6 +159,7 @@ const ModalProduct = ({
         const formData = new FormData();
         nameProduct && formData.append("nameProduct", nameProduct);
         quantityProduct && formData.append("quantity", quantityProduct);
+        measureProduct && formData.append("measure", measureProduct);
         brandProduct && formData.append("brand", brandProduct);
         shopProduct && formData.append("shop", shopProduct);
         priceProduct && formData.append("price", priceProduct);
@@ -161,7 +187,7 @@ const ModalProduct = ({
         if (response.status === 200) {
           setNameProduct();
           setQuantityProduct();
-          setMeasureProduct();
+          setMeasureProduct("Unité");
           setBrandProduct();
           setShopProduct();
           setPriceProduct();
@@ -169,10 +195,12 @@ const ModalProduct = ({
           setMessageErrorAfterSubmit();
           setModalAddProductVisible(false);
           setAddProductList(!addProductList);
+          setIsLoading(false);
           alert("Produt updated successfully !");
         }
       }
     } catch (error) {
+      setIsLoading(false);
       if (
         error.response.status === 400 &&
         error.response.data.message ===
@@ -207,6 +235,7 @@ const ModalProduct = ({
   // ------------------------------------ //
 
   const deleteProduct = async () => {
+    setIsLoading(true);
     try {
       if (product._id) {
         const response = await axios.delete(
@@ -220,24 +249,27 @@ const ModalProduct = ({
         if (response.status === 200) {
           setNameProduct();
           setQuantityProduct();
-          setMeasureProduct();
+          setMeasureProduct("Unité");
           setBrandProduct();
           setShopProduct();
           setPriceProduct();
           setPictureProduct();
           setMessageErrorAfterSubmit();
+          setIsLoading(false);
           setModalAddProductVisible(false);
           setModalDeleteProductVisible(false);
           setAddProductList(!addProductList); // Pour rafraichir après suppression
-          alert("Produt deleted successfully !");
+          // alert("Produt deleted successfully !");
         }
       } else {
         setMessageErrorAfterSubmit(
           "Le produit que vous souhaitez supprimer n'existe pas"
         );
+        setIsLoading(false);
       }
     } catch (error) {
-      console.log(error.message);
+      setIsLoading(false);
+      // console.log(error.message);
       if (
         error.response.status === 400 &&
         error.response.data.message ===
@@ -263,12 +295,13 @@ const ModalProduct = ({
     setModalAddProductVisible(false);
     setNameProduct();
     setQuantityProduct();
-    setMeasureProduct();
+    setMeasureProduct("Unité");
     setBrandProduct();
     setShopProduct();
     setPriceProduct();
     setPictureProduct();
     setMessageErrorAfterSubmit();
+    setIsLoading(false);
   };
 
   // console.log("test2", quantityProduct);
@@ -343,11 +376,13 @@ const ModalProduct = ({
               <ProductButtonCancelSave
                 closeModalProduct={closeModalProduct}
                 submitInfosProduct={submitInfosProduct}
+                isLoading={isLoading}
               />
               {typeModalProduct === "update product" && (
                 <ProductDeleteProduct
                   setModalDeleteProductVisible={setModalDeleteProductVisible}
                   setModalAddProductVisible={setModalAddProductVisible}
+                  isLoading={isLoading}
                 />
               )}
             </View>
