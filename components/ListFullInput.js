@@ -82,6 +82,8 @@ const ListFullInput = ({
     return name.charAt(0).toUpperCase() + name.slice(1);
   };
 
+  const detailsProduct = [];
+
   return (
     item._id === idListActive &&
     (item.products.length > 0 ? (
@@ -126,11 +128,21 @@ const ListFullInput = ({
                     {capitalizeFirstLetter(el.reference.name)}
                   </Text>
 
-                  {el.quantity || el.brand || el.shop ? (
-                    <Text style={styles.listCustom}>
-                      {el.quantity && `${el.quantity}, `}{" "}
-                      {el.brand && `${el.brand}, `} {el.shop && `${el.shop}, `}
-                    </Text>
+                  {el.quantity || el.brand || el.shop || el.measure ? (
+                    <View style={styles.listCustom}>
+                      <Text style={styles.textDetails}>
+                        {el.quantity && el.quantity}
+                      </Text>
+                      <Text style={styles.textDetails}>
+                        {el.measure && el.measure.toLowerCase()}
+                      </Text>
+                      <Text style={styles.textDetails}>
+                        {el.brand && el.brand}
+                      </Text>
+                      <Text style={styles.textDetails}>
+                        {el.shop && el.shop}
+                      </Text>
+                    </View>
                   ) : (
                     <Text
                       style={
@@ -190,12 +202,21 @@ const ListFullInput = ({
                     {capitalizeFirstLetter(el.reference.name)}
                   </Text>
 
-                  {/* 🚨🚨🚨 Conditions ci-dessous ne fonctionnent pas ! POURQUOI ? */}
-                  {el.quantity || el.brand || el.shop ? (
-                    <Text style={styles.listCustom}>
-                      {el.quantity && `${el.quantity}, `}{" "}
-                      {el.brand && `${el.brand}, `} {el.shop && `${el.shop}, `}
-                    </Text>
+                  {el.quantity || el.brand || el.shop || el.measure ? (
+                    <View style={styles.listCustom}>
+                      <Text style={styles.textDetails}>
+                        {el.quantity && el.quantity}
+                      </Text>
+                      <Text style={styles.textDetails}>
+                        {el.measure && el.measure.toLowerCase()}
+                      </Text>
+                      <Text style={styles.textDetails}>
+                        {el.brand && el.brand}
+                      </Text>
+                      <Text style={styles.textDetails}>
+                        {el.shop && el.shop}
+                      </Text>
+                    </View>
                   ) : (
                     <Text
                       style={
@@ -270,6 +291,10 @@ const styles = StyleSheet.create({
   },
   listCustom: {
     fontSize: 14,
+    flexDirection: "row",
+  },
+  textDetails: {
+    marginRight: 5,
     color: productDetails,
     fontFamily: "GilroyMedium",
   },

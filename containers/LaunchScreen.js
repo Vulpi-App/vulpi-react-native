@@ -1,4 +1,3 @@
-// Tools
 import React from "react";
 import { Text, Image, StyleSheet } from "react-native";
 

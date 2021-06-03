@@ -302,6 +302,7 @@ export default function App() {
                             setToken={setToken}
                             serverURL={serverURL}
                             reload={reload}
+                            setReload={setReload}
                           />
                         )}
                       </Stack.Screen>
@@ -309,6 +310,7 @@ export default function App() {
                         name="ListScreen"
                         options={{
                           title: "",
+                          headerShown: false,
                         }}
                       >
                         {(props) => <ListScreen {...props} />}

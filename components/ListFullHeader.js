@@ -2,18 +2,10 @@
 import React from "react";
 import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
 
-import axios from "axios";
-
 // Colors - import
 import colors from "../assets/colors";
-const {
-  radioBg,
-  mainBlueText,
-  orangeTotalPrice,
-  white,
-  darkGreyText,
-  buttonFlashBlue,
-} = colors;
+const { mainBlueText, orangeTotalPrice, white, darkGreyText, buttonFlashBlue } =
+  colors;
 
 const ListFullHeader = ({ item, idListActive, toggleModalUpdate }) => {
   const totalPrice = [];
@@ -24,7 +16,9 @@ const ListFullHeader = ({ item, idListActive, toggleModalUpdate }) => {
       <View style={styles.listTitleWrap}>
         <View
           horizontal={true}
-          style={item.products.length > 0 ? styles.listTitle : null}
+          style={
+            item.products.length > 0 ? styles.listTitle : styles.listTitleAlone
+          }
         >
           <Text numberOfLines={2} ellipsizeMode="tail" style={styles.h2}>
             {item.title}
@@ -82,13 +76,15 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    borderBottomColor: radioBg,
     paddingBottom: 15,
-    borderBottomWidth: 1,
   },
   listTitle: {
-    maxWidth: 170,
+    maxWidth: 180,
   },
+  listTitleAlone: {
+    maxWidth: 300,
+  },
+
   h2: {
     color: mainBlueText,
     fontSize: 22,

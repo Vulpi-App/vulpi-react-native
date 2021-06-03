@@ -5,6 +5,7 @@ import {
   SafeAreaView,
   Platform,
   Text,
+  Image,
   TouchableOpacity,
   View,
   StyleSheet,
@@ -18,7 +19,7 @@ import ListModalButton from "../components/ListModalButton";
 
 // Colors - import
 import colors from "../assets/colors";
-const { bgLight, mainLightGrey } = colors;
+const { bgLight, mainLightGrey, buttonDarkBlue } = colors;
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -81,7 +82,7 @@ async function registerForPushNotificationsAsync() {
   return token;
 }
 
-const ListScreen = () => {
+const ListScreen = ({ navigation }) => {
   const [expoPushToken, setExpoPushToken] = useState("");
   const [notification, setNotification] = useState(false);
   const notificationListener = useRef();
@@ -118,13 +119,35 @@ const ListScreen = () => {
         <SafeAreaView>
           <StatusBar style="dark" />
 
-
           <View style={styles.container}>
-            <TouchableOpacity onPress={async () => {
+            {/* ===================== */}
+            <View>
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.goBack("ListsScreen");
+                }}
+              >
+                <View style={styles.backButton}>
+                  <Image
+                    source={require("../assets/icon-chevron-left-blue.png")}
+                    style={styles.image}
+                    resizeMode={"contain"}
+                  />
+                  <Text style={styles.backText}>
+                    Mes informations personnelles
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+
+            {/* ===================== */}
+
+            {/* <TouchableOpacity onPress={async () => {
               await sendPushNotification(expoPushToken);
             }}>
               <Text>Notifications</Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
+
             <View style={styles.buttonWrap}>
               <View>
                 <ListModalButton
@@ -137,7 +160,6 @@ const ListScreen = () => {
                 * Prévenez les autres que vous allez faire les courses
               </Text>
             </View>
-
 
             <View style={styles.cardWrap}>
               <View>
@@ -155,9 +177,7 @@ const ListScreen = () => {
           </View>
         </SafeAreaView>
       </ScrollView>
-
     </View>
-
   );
 };
 
@@ -185,6 +205,23 @@ const styles = StyleSheet.create({
   },
   bold: {
     fontWeight: "bold",
+  },
+  backButton: {
+    flexDirection: "row",
+    width: "100%",
+  },
+  image: {
+    marginRight: 25,
+    height: "30%",
+    marginTop: 5,
+    width: "5%",
+  },
+  backText: {
+    color: buttonDarkBlue,
+    fontSize: 23,
+    width: "75%",
+    fontFamily: "GilroySemiBold",
+    lineHeight: 26.95,
   },
   buttonWrap: {
     flexDirection: "row",
