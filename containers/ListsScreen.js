@@ -139,7 +139,9 @@ const ListsScreen = ({
                 foldOrUnfoldLists={foldOrUnfoldLists}
               />
 
+
               {/* ----- Navigation scrollbar horizontal ✅ */}
+
               {foldedNav ? null : (
                 <View>
                   <ListButtonChoice
@@ -152,6 +154,8 @@ const ListsScreen = ({
                 </View>
               )}
 
+              {/* ----- List(s) ✅ */}
+
               <ListFull
                 data={data}
                 idListActive={idListActive}
@@ -161,6 +165,7 @@ const ListsScreen = ({
                 setAddProductList={setAddProductList}
                 serverURL={serverURL}
               />
+
             </View>
 
             <View style={styles.blockBottomAddQuicklyAutocomplete}>
@@ -173,6 +178,7 @@ const ListsScreen = ({
                   userToken={userToken}
                   addProductList={addProductList}
                   setAddProductList={setAddProductList}
+                  serverURL={serverURL}
                 />
               ) : null}
               {valueInputAddQuickly && dataProductsDisplay.length > 1 ? (
@@ -184,6 +190,7 @@ const ListsScreen = ({
                   userToken={userToken}
                   addProductList={addProductList}
                   setAddProductList={setAddProductList}
+                  serverURL={serverURL}
                 />
               ) : null}
               {valueInputAddQuickly ? (
@@ -195,6 +202,7 @@ const ListsScreen = ({
                   userToken={userToken}
                   addProductList={addProductList}
                   setAddProductList={setAddProductList}
+                  serverURL={serverURL}
                 />
               ) : null}
               <ProductBottomBlockAdd
@@ -246,6 +254,7 @@ const ListsScreen = ({
           // product={null}
           addProductList={addProductList}
           setAddProductList={setAddProductList}
+          serverURL={serverURL}
         />
       </View>
     </KeyboardAwareScrollView>

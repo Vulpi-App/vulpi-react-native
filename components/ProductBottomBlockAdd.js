@@ -41,6 +41,9 @@ const ProductBottomBlockAdd = ({
         {
           borderTopLeftRadius: valueInputAddQuickly ? 0 : 15,
           borderTopRightRadius: valueInputAddQuickly ? 0 : 15,
+          shadowColor: valueInputAddQuickly ? null : "grey",
+          shadowOpacity: valueInputAddQuickly ? 0 : 5,
+          shadowOffset: valueInputAddQuickly ? null : { height: -1 },
         },
       ]}
     >
@@ -85,9 +88,6 @@ const styles = StyleSheet.create({
     padding: 15,
     flexDirection: "row",
     justifyContent: "space-between",
-    shadowColor: "#CBCBCB",
-    shadowOpacity: 2,
-    shadowOffset: { height: -1 },
   },
   blockInput: {
     backgroundColor: "#E6E6E6",

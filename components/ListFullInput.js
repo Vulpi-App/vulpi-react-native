@@ -23,7 +23,7 @@ const {
 } = colors;
 
 // URL request
-const localURLUpdate = "http://localhost:3310/lists/update-product/";
+// const localURLUpdate = "http://localhost:3310/lists/update-product/";
 
 const ListFullInput = ({
   item,
@@ -31,6 +31,7 @@ const ListFullInput = ({
   userToken,
   addProductList,
   setAddProductList,
+  serverURL,
 }) => {
   // State for modal update product
   const [modalAddProductVisible, setModalAddProductVisible] = useState(false);
@@ -44,7 +45,7 @@ const ListFullInput = ({
       formData.append("added", !product.added);
 
       const response = await axios.put(
-        `${localURLUpdate}${idListActive}?idProduct=${product._id}`,
+        `${serverURL}/lists/update-product/${idListActive}?idProduct=${product._id}`,
         formData,
         {
           headers: { Authorization: `Bearer ${userToken}` },
@@ -248,6 +249,7 @@ const ListFullInput = ({
           product={infosProduct}
           addProductList={addProductList}
           setAddProductList={setAddProductList}
+          serverURL={serverURL}
         />
       </View>
     ) : (

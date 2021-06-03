@@ -6,7 +6,6 @@ import {
   StyleSheet,
   TouchableOpacity,
   Modal,
-  TouchableHighlight,
   TouchableWithoutFeedback,
 } from "react-native";
 
@@ -47,13 +46,13 @@ const ModalDeleteProduct = ({
               </Text>
             </View>
             <View style={styles.blockBottom}>
-              <TouchableHighlight
+              <TouchableOpacity
                 style={[styles.buttonDelete, styles.buttonsModalDelete]}
                 onPress={deleteProduct}
               >
                 <Text style={styles.textButtonDelete}>Supprimer</Text>
-              </TouchableHighlight>
-              <TouchableHighlight
+              </TouchableOpacity>
+              <TouchableOpacity
                 style={[styles.buttonCancel, styles.buttonsModalDelete]}
                 onPress={() => {
                   setModalDeleteProductVisible(false);
@@ -63,7 +62,7 @@ const ModalDeleteProduct = ({
                 <Text style={styles.textButtonCancel}>
                   Annuler et retourner à la personnalisation
                 </Text>
-              </TouchableHighlight>
+              </TouchableOpacity>
             </View>
           </View>
         </TouchableWithoutFeedback>
@@ -126,7 +125,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     paddingVertical: 18,
-    paddingHorizontal: 10,
+    paddingHorizontal: 5,
     borderRadius: 10,
   },
   buttonDelete: { backgroundColor: "#CA2121", marginBottom: 15 },
@@ -136,5 +135,10 @@ const styles = StyleSheet.create({
     borderColor: "#3443B9",
   },
   textButtonDelete: { color: "white", fontWeight: "bold" },
-  textButtonCancel: { color: "#3443B9", fontWeight: "bold" },
+  textButtonCancel: {
+    color: "#3443B9",
+    fontWeight: "bold",
+    textAlign: "center",
+    fontSize: 12,
+  },
 });

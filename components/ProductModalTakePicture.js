@@ -102,18 +102,18 @@ const ProductModalTakePicture = ({
             </View>
 
             <View style={styles.blockBottom}>
-              <TouchableHighlight
+              <TouchableOpacity
                 style={styles.buttonsModalTakePicture}
                 onPress={getPermissionAndCamera}
               >
                 <Text style={styles.textButtons}>Prendre un photo</Text>
-              </TouchableHighlight>
-              <TouchableHighlight
+              </TouchableOpacity>
+              <TouchableOpacity
                 style={styles.buttonsModalTakePicture}
                 onPress={getPermissionAndPhoto}
               >
                 <Text style={styles.textButtons}>Choisir une photo</Text>
-              </TouchableHighlight>
+              </TouchableOpacity>
             </View>
           </View>
         </TouchableWithoutFeedback>
@@ -152,14 +152,14 @@ const styles = StyleSheet.create({
       height: 2,
     },
   },
-  blockTop: { width: "100%", marginBottom: 10 },
+  blockTop: { width: "100%" },
   iconClose: { alignSelf: "flex-end" },
 
   choiceTakePicture: {
     fontSize: 20,
     fontWeight: "bold",
     color: "#181725",
-    marginTop: 20,
+    marginTop: 10,
     textAlign: "center",
     width: "100%",
   },

@@ -65,7 +65,6 @@ const ModalProduct = ({
               setValueInput(input);
             }}
             value={valueInput}
-            autoCapitalize="sentences"
             keyboardType="numeric"
           />
           <Text style={styles.textEuro}>€</Text>

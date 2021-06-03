@@ -54,6 +54,7 @@ const ListFull = ({
                 userToken={userToken}
                 addProductList={addProductList}
                 setAddProductList={setAddProductList}
+                serverURL={serverURL}
               />
             );
           }}

@@ -170,6 +170,7 @@ export default function App() {
             name: `avatar/${userId}`,
             type: `image/${fileType}`,
           });
+
         }
 
         const response = await axios.put(
@@ -178,7 +179,9 @@ export default function App() {
           { headers: { Authorization: "Bearer " + userToken } }
         );
         if (response.data) {
+
           setDisplayMessage({ message: "Ton profil a été mis a jour. ✨" });
+
           setReloadUser(true);
         } else {
           setDisplayMessage({ message: "⛔️ Une erreur s'est produite." });

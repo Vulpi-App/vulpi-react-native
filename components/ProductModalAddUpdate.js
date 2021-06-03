@@ -20,13 +20,6 @@ import ProductModalTakePicture from "./ProductModalTakePicture";
 import ModalDeleteProduct from "./ProductModalConfirmDelete";
 import { BlurView } from "expo-blur";
 
-// URL request
-const localURLAdd = "http://192.168.0.20:3310/lists/add-product/";
-// "http://192.168.0.20:3310"
-const localURLUpdate = "http://localhost:3310/lists/update-product/";
-const localURLDelete = "http://localhost:3310/lists/delete-product/";
-const localURLInfosProduct = "http://localhost:3310/lists/infos-product/";
-
 // Function to capitalize first letter of name product
 const capitalizeFirstLetter = (name) => {
   return name.charAt(0).toUpperCase() + name.slice(1);
@@ -41,8 +34,10 @@ const ModalProduct = ({
   product,
   addProductList,
   setAddProductList,
+  serverURL,
 }) => {
   const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingDelete, setIsLoadingDelete] = useState(false);
   const [nameProduct, setNameProduct] = useState();
   const [quantityProduct, setQuantityProduct] = useState();
   const [measureProduct, setMeasureProduct] = useState("Unité");
@@ -51,29 +46,28 @@ const ModalProduct = ({
   const [priceProduct, setPriceProduct] = useState();
   const [pictureProduct, setPictureProduct] = useState();
 
-  // Check if typemodal update for goodstate
-
   useEffect(() => {
     const fetchDataProduct = async () => {
       if (typeModalProduct === "update product") {
         try {
           const response = await axios.get(
-            `${localURLInfosProduct}${idList}?idProduct=${product._id}`,
+            `${serverURL}/lists/infos-product/${idList}?idProduct=${product._id}`,
 
             {
               headers: { Authorization: `Bearer ${userToken}` },
             }
           );
-          console.log("response : ", response.data);
-          setNameProduct(capitalizeFirstLetter(response.data.reference.name));
-          setQuantityProduct(response.data.quantity);
-          setMeasureProduct(response.data.measure);
-          setBrandProduct(capitalizeFirstLetter(response.data.brand));
-          setShopProduct(capitalizeFirstLetter(response.data.shop));
-          setPriceProduct(response.data.price);
-          response.data.reference.picture
-            ? setPictureProduct(response.data.reference.picture.secure_url)
-            : setPictureProduct(null);
+
+          // console.log("response : ", response.data);
+
+          setNameProduct(
+            capitalizeFirstLetter(response.data.reference.name) || null
+          );
+          setQuantityProduct(response.data.quantity || null);
+          setMeasureProduct(response.data.measure || "Unité");
+          setBrandProduct(capitalizeFirstLetter(response.data.brand) || null);
+          setShopProduct(capitalizeFirstLetter(response.data.shop) || null);
+          setPriceProduct(response.data.price || null);
         } catch (error) {
           console.log(error.message);
         }
@@ -120,7 +114,7 @@ const ModalProduct = ({
             }
 
             const response = await axios.post(
-              `${localURLAdd}${idList}`,
+              `${serverURL}/lists/add-product/${idList}`,
               formData,
               {
                 headers: { Authorization: `Bearer ${userToken}` },
@@ -177,7 +171,7 @@ const ModalProduct = ({
         }
 
         const response = await axios.put(
-          `${localURLUpdate}${idList}?idProduct=${product._id}`,
+          `${serverURL}/lists/update-product/${idList}?idProduct=${product._id}`,
           formData,
           {
             headers: { Authorization: `Bearer ${userToken}` },
@@ -236,11 +230,11 @@ const ModalProduct = ({
   // ------------------------------------ //
 
   const deleteProduct = async () => {
-    setIsLoading(true);
+    setIsLoadingDelete(true);
     try {
       if (product._id) {
         const response = await axios.delete(
-          `${localURLDelete}${idList}?idProduct=${product._id}`,
+          `${serverURL}/lists/delete-product/${idList}?idProduct=${product._id}`,
           {
             headers: { Authorization: `Bearer ${userToken}` },
           }
@@ -256,7 +250,7 @@ const ModalProduct = ({
           setPriceProduct();
           setPictureProduct();
           setMessageErrorAfterSubmit();
-          setIsLoading(false);
+          setIsLoadingDelete(false);
           setModalAddProductVisible(false);
           setModalDeleteProductVisible(false);
           setAddProductList(!addProductList); // Pour rafraichir après suppression
@@ -266,10 +260,10 @@ const ModalProduct = ({
         setMessageErrorAfterSubmit(
           "Le produit que vous souhaitez supprimer n'existe pas"
         );
-        setIsLoading(false);
+        setIsLoadingDelete(false);
       }
     } catch (error) {
-      setIsLoading(false);
+      setIsLoadingDelete(false);
       // console.log(error.message);
       if (
         error.response.status === 400 &&
@@ -303,6 +297,7 @@ const ModalProduct = ({
     setPictureProduct();
     setMessageErrorAfterSubmit();
     setIsLoading(false);
+    setIsLoadingDelete(false);
   };
 
   // console.log("test2", quantityProduct);
