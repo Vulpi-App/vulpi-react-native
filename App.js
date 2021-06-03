@@ -26,7 +26,9 @@ import IconTabBarList from "./components/IconTabBarList";
 import IconTabBarExplore from "./components/IconTabBarExplore";
 
 // Useful variables
+
 const serverURL = "http://localhost:3310";
+
 // Local server : "http://localhost:3310"
 // Heroku server : "https://vulpi-forest.herokuapp.com"
 

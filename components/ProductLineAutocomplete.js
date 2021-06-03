@@ -5,7 +5,7 @@ import { AntDesign } from "@expo/vector-icons";
 import axios from "axios";
 
 // URL request
-const localURLAdd = "http://localhost:3310/lists/add-product/";
+const localURLAdd = "http://192.168.1.40:3310/lists/add-product/";
 
 const ProductLineAutoComplete = ({
   firstLine,
