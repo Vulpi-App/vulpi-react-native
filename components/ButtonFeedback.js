@@ -2,19 +2,65 @@
 import React from "react";
 import { TouchableOpacity, Text, StyleSheet, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import axios from "axios";
 import colors from "../assets/colors";
 const { buttonFlashBlue } = colors;
 
-const ButtonFeedback = ({ buttonTitle, setFeedbackSent, object, message }) => {
+const ButtonFeedback = ({
+  buttonTitle,
+  setFeedbackSent,
+  subject,
+  description,
+  userId,
+  setErrorMessage,
+  userToken,
+  serverURL,
+}) => {
   const navigation = useNavigation();
 
-  const handlePress = () => {
+  const handlePress = async () => {
+    setErrorMessage("");
     if (buttonTitle === "Retour au compte") {
       setFeedbackSent(false);
       navigation.navigate("AccountScreen");
     } else {
-      // Add request to save message in DB
-      setFeedbackSent(true);
+      try {
+        if (subject && description) {
+          if (subject.length <= 30) {
+            const formData = new FormData();
+            formData.append("subject", subject);
+            formData.append("description", description);
+            const response = await axios.post(
+              `${serverURL}/feedback/create/${userId}`,
+              formData,
+              {
+                headers: {
+                  Authorization: "Bearer " + userToken,
+                },
+              }
+            );
+
+            if (response.status === 201) {
+              setFeedbackSent(true);
+            } else {
+              setErrorMessage(
+                "⛔️ Une erreur est survenue, veuillez réessayer."
+              );
+            }
+          } else {
+            setErrorMessage(
+              "⛔️ Votre sujet est trop long, il doit faire moins de 30 caractères !"
+            );
+          }
+        } else {
+          setErrorMessage(
+            "⛔️ Vous devez remplir tous les champs avant d'envoyer votre suggestion !"
+          );
+        }
+      } catch (error) {
+        console.log(error.message);
+        setErrorMessage("⛔️ Une erreur est survenue, veuillez réessayer.");
+      }
     }
   };
   return (

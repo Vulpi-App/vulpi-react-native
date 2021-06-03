@@ -22,8 +22,8 @@ const IconTabBarExplore = () => {
 
 const styles = StyleSheet.create({
   iconsTabBar: {
-    width: 20,
-    height: 20,
+    width: 25,
+    height: 25,
   },
 });
 
