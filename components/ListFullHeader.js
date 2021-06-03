@@ -1,12 +1,6 @@
 // React & React Native - Imports
 import React from "react";
-import {
-  Text,
-  View,
-  StyleSheet,
-  TouchableOpacity,
-  ScrollView,
-} from "react-native";
+import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
 
 import axios from "axios";
 
@@ -39,21 +33,29 @@ const ListFullHeader = ({ item, idListActive, toggleModalUpdate }) => {
 
         {/* Map for getting all prices */}
         {item.products.map((el, index) => {
-          totalPrice.push(Number(el.price));
+          el.price ? totalPrice.push(Number(el.price)) : null;
           totalArticles.push(1);
         })}
 
         <View style={styles.headerDetailsWrap}>
+          <Text style={styles.nbArticles}>
+            {totalArticles.length > 1
+              ? totalArticles.length + " articles"
+              : totalArticles.length === 1
+              ? totalArticles.length + " article"
+              : null}
+          </Text>
           {item.products.length > 0 ? (
             <View style={styles.headerDetailsWrap}>
-              <View style={styles.totalPrice}>
-                <Text style={styles.priceText}>
-                  {totalPrice.reduce((acc, item) => acc + item)} €
-                </Text>
-              </View>
-              <Text style={styles.nbArticles}>
-                {totalArticles.length} articles
-              </Text>
+              {totalPrice.length > 0 ? (
+                <View>
+                  <View style={styles.totalPrice}>
+                    <Text style={styles.priceText}>
+                      {totalPrice.reduce((acc, item) => acc + item)} €
+                    </Text>
+                  </View>
+                </View>
+              ) : null}
             </View>
           ) : null}
 
@@ -90,29 +92,31 @@ const styles = StyleSheet.create({
   h2: {
     color: mainBlueText,
     fontSize: 22,
-    // add semi-bold
+    fontFamily: "GilroySemiBold",
   },
   headerDetailsWrap: {
     flexDirection: "row",
     alignItems: "center",
   },
   nbArticles: {
-    fontSize: 12,
+    fontSize: 13,
     color: darkGreyText,
-    marginLeft: 10,
-    marginRight: 15,
+
+    fontFamily: "GilroySemiBold",
   },
   totalPrice: {
+    marginLeft: 12,
     backgroundColor: orangeTotalPrice,
-    paddingVertical: 3,
-    paddingHorizontal: 5,
+    padding: 6,
     borderRadius: 4,
   },
   priceText: {
-    fontSize: 12,
+    fontSize: 13,
     color: white,
+    fontFamily: "GilroySemiBold",
   },
   blueDot: {
+    marginLeft: 12,
     width: 6,
     height: 6,
     borderRadius: 3,

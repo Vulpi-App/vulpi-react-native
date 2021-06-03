@@ -1,6 +1,10 @@
 // React & React Native - Imports
-import React, { useState } from "react";
+import React from "react";
 import { Text, StyleSheet, View } from "react-native";
+
+// Colors - import
+import colors from "../assets/colors";
+const { whiteWithOpacity } = colors;
 
 // Icons - import
 import { AntDesign } from "@expo/vector-icons";
@@ -19,7 +23,7 @@ const ListToggle = ({
         {foldedNav ? (
           <AntDesign
             name="up"
-            size={18}
+            size={14}
             color="white"
             style={styles.icon}
             onPress={foldOrUnfoldLists}
@@ -27,7 +31,7 @@ const ListToggle = ({
         ) : (
           <AntDesign
             name="down"
-            size={18}
+            size={14}
             color="white"
             style={styles.icon}
             onPress={foldOrUnfoldLists}
@@ -43,12 +47,16 @@ export default ListToggle;
 const styles = StyleSheet.create({
   toggleWrap: {
     flexDirection: "row",
+    alignItems: "center",
   },
   listDeploy: {
-    color: "#fff",
+    marginTop: 3,
+    color: whiteWithOpacity,
     fontSize: 14,
+    fontFamily: "GilroySemiBold",
   },
   icon: {
     marginLeft: 5,
+    marginTop: 3,
   },
 });

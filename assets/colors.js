@@ -21,6 +21,7 @@ const colors = {
   darkGreyFutur: "rgba(0, 0, 0, 0.7)",
   greyAfterCheck: "#9B9B9B",
   white: "#fff",
+  whiteWithOpacity: "rgba(255, 255, 255, 0.8)",
   dark: "#000",
 };
 

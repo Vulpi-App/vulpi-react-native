@@ -9,6 +9,8 @@ import {
 } from "react-native";
 import { Dimensions } from "react-native";
 import Modal from "react-native-modal";
+
+// Axios - import
 import axios from "axios";
 
 // Components - import
@@ -20,15 +22,17 @@ import colors from "../assets/colors";
 const { buttonFlashBlue, white, deleteRed, midGreyText, darkGreyText } = colors;
 
 const ListModalRenameList = ({
+  serverURL,
+  userToken,
+  userId,
+  listId,
   isModalUpdateVisible,
   setModalUpdateVisible,
-  userToken,
-  listId,
+  deleteList,
   setDeleteList,
+  updateList,
   setUpdateList,
-  serverURL,
   titleListActive,
-  userId,
 }) => {
   // State for rename list
   const [title, setTitle] = useState("");
@@ -43,26 +47,34 @@ const ListModalRenameList = ({
     try {
       if (title || emoji) {
         if (title.length <= 30) {
-          // Create form data to sent the body
-          const formData = new FormData();
-          formData.append("title", title);
+          if (emoji.length <= 2) {
+            // Create form data to sent the body
+            const formData = new FormData();
+            formData.append("title", title);
+            formData.append("emoji", emoji);
 
-          const response = await axios.put(
-            `${serverURL}/lists/update/${listId}`,
-            formData,
-            {
-              headers: { Authorization: `Bearer ${userToken}` },
+            const response = await axios.put(
+              `${serverURL}/lists/update/${listId}`,
+              formData,
+              {
+                headers: { Authorization: `Bearer ${userToken}` },
+              }
+            );
+
+            // console.log(response.status);
+
+            if (response.status === 200) {
+              setModalUpdateVisible(false);
+              setTitle("");
+              setEmoji("");
+              setUpdateList(!updateList);
+            } else {
+              setErrorMessage("⛔️ Une erreur s'est produite.");
             }
-          );
-
-          console.log(response.status);
-
-          if (response.status === 200) {
-            setModalUpdateVisible(false);
-            setTitle("");
-            setUpdateList();
           } else {
-            setErrorMessage("⛔️ Une erreur s'est produite.");
+            setErrorMessage(
+              "⛔️ Vous ne pouvez choisir qu'un seul emoji pour votre liste."
+            );
           }
         } else {
           setErrorMessage(
@@ -85,11 +97,11 @@ const ListModalRenameList = ({
         }
       );
 
-      console.log(response.data);
+      // console.log(response.data);
 
       if (response.status === 200) {
         setModalUpdateVisible(false);
-        setDeleteList();
+        setDeleteList(!deleteList);
       }
     } catch (error) {
       console.log(error.message);
@@ -104,6 +116,7 @@ const ListModalRenameList = ({
       onBackdropPress={() => {
         setErrorMessage("");
         setTitle("");
+        setEmoji("");
         setModalUpdateVisible(false);
       }}
     >
