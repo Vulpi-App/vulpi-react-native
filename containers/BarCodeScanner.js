@@ -16,17 +16,20 @@ const windowHeight = Dimensions.get("window").height;
 const statusBarHeight = Constants.statusBarHeight;
 const scrollViewHeight = windowHeight - statusBarHeight;
 
+const localURLAdd = "http://192.168.1.40:3310/lists/add-product/";
+
 const { width } = Dimensions.get("window");
 const qrSize = width * 0.7;
 
-const ScanScreen = (userToken, serverURL) => {
+const ScanScreen = ({ userToken, serverURL, userId }) => {
   const [hasPermission, setHasPermission] = useState(null);
   const navigation = useNavigation();
   const [scanned, setScanned] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState("");
   const [errorMessages, setErrorMessages] = useState(false);
-  const [nameProduct, setNameProduct] = useState();
+
+  const [idListActive, setIdListActive] = useState();
 
   useEffect(() => {
     (async () => {
@@ -53,20 +56,40 @@ const ScanScreen = (userToken, serverURL) => {
     fetchData();
   };
 
-  const submitInfosProduct = async () => {
-    if (data.product.product_name) {
-      const formData = new FormData();
-      formData.append("nameProduct", nameProduct);
+  useEffect(() => {
+    const fetchDatas = async () => {
+      try {
+        const response = await axios.get(`${serverURL}/lists/${userId}`, {
+          headers: {
+            Authorization: `Bearer ${userToken}`,
+          },
+        });
 
-      const response = await axios.post(`${serverURL}${idList}`, formData, {
-        headers: { Authorization: `Bearer ${userToken}` },
-      });
-
-      if (data.product.product_name) {
-        setNameProduct();
-        setAddProductList(!addProductList);
-        alert("Produit ajouté avec succès !");
+        setData(response.data);
+        setIdListActive(response.data.lists[0]._id);
+      } catch (error) {
+        console.log(error.message);
       }
+    };
+    fetchDatas();
+  }, [userToken]);
+
+  const addProduct = async () => {
+    try {
+      const formData = new FormData();
+      formData.append("nameProduct", data.product.product_name);
+
+      const response = await axios.post(
+        `${localURLAdd}${idListActive}`,
+        formData,
+        {
+          headers: { Authorization: `Bearer ${userToken}` },
+        }
+      );
+
+      console.log("WORKING");
+    } catch (error) {
+      console.log("NOT WORKING");
     }
   };
 
@@ -77,10 +100,10 @@ const ScanScreen = (userToken, serverURL) => {
         style={[StyleSheet.absoluteFill, styles.container1]}
       >
         <Text style={styles.description}>Scanner le code barre du produit</Text>
-        {/* <Image
+        <Image
           style={styles.qr}
           source={require("../assets/barcodescanner.png")}
-        /> */}
+        />
         <TouchableOpacity
           onPress={() => {
             navigation.navigate("ShoppingScreen");
@@ -112,12 +135,7 @@ const ScanScreen = (userToken, serverURL) => {
               Souhaitez-vous ajouter {data.product.product_name} à votre liste ?
             </Text>
           </View>
-          <TouchableOpacity
-            onPress={() => {
-              setNameProduct(data.product.product_name);
-            }}
-            style={styles.buttonAdd}
-          >
+          <TouchableOpacity onPress={addProduct} style={styles.buttonAdd}>
             <Text style={styles.textAdd}>Ajouter à la liste</Text>
           </TouchableOpacity>
           <TouchableOpacity
