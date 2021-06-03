@@ -17,7 +17,7 @@ const windowHeight = Dimensions.get("window").height;
 const statusBarHeight = Constants.statusBarHeight;
 const scrollViewHeight = windowHeight - statusBarHeight;
 
-function RegisterScreen({ setToken, serverURL, setFirstConnection }) {
+function RegisterScreen({ setToken, serverURL }) {
   const [errorMessage, setErrorMessage] = useState(null);
   const [step, setStep] = useState(1);
   const [email, setEmail] = useState("");
@@ -25,6 +25,7 @@ function RegisterScreen({ setToken, serverURL, setFirstConnection }) {
   const [password, setPassword] = useState("");
 
   const handleSubmit = async () => {
+    console.log("test");
     if (email && firstName && password) {
       if (errorMessage !== null) {
         setErrorMessage(null);
@@ -34,21 +35,21 @@ function RegisterScreen({ setToken, serverURL, setFirstConnection }) {
         const formData = new FormData();
         formData.append("email", email);
         formData.append("password", password);
-        formData.append("firstName", firstName);
+        formData.append("firstName", password);
 
+        console.log(formData);
         const response = await axios.post(`${serverURL}/user/signup`, formData);
         formData;
 
         if (response.data.token && response.data._id) {
           const token = response.data.token;
           const id = response.data._id;
-          const firstName = response.data.account.firstName;
-          setToken(token, id, firstName);
-          setFirstConnection(true);
+          setToken(token, id);
         } else {
           setErrorMessage("An error occurred");
         }
       } catch (error) {
+        console.log(error.message);
         const errorMessage = error.response.data.error;
         if (
           errorMessage === "This email already has an account." ||
@@ -112,6 +113,8 @@ function RegisterScreen({ setToken, serverURL, setFirstConnection }) {
                     <TextInput
                       style={styles.input}
                       placeholder="Prénom"
+                      autoCapitalize="none"
+                      autoCorrect={false}
                       onChangeText={(text) => {
                         setFirstName(text);
                       }}
@@ -179,6 +182,9 @@ function RegisterScreen({ setToken, serverURL, setFirstConnection }) {
                   <View style={styles.onBoard}>
                     <TextInput
                       style={styles.input}
+                      keyboardType="email-address"
+                      autoCapitalize="none"
+                      autoCorrect={false}
                       placeholder="Adresse e-mail"
                       onChangeText={(text) => {
                         setEmail(text);
@@ -263,6 +269,9 @@ function RegisterScreen({ setToken, serverURL, setFirstConnection }) {
                   <View style={styles.onBoard}>
                     <TextInput
                       style={styles.input}
+                      secureTextEntry={true}
+                      autoCapitalize="none"
+                      autoCorrect={false}
                       placeholder="Mot de passe"
                       onChangeText={(text) => {
                         setPassword(text);

@@ -20,13 +20,14 @@ import SettingsScreen from "./containers/SettingsScreen";
 import FeedbackScreen from "./containers/FeedbackScreen";
 import ListScreen from "./containers/ListScreen";
 import RegisterScreen from "./containers/RegisterScreen";
+import BarCodeScanner from "./containers/BarCodeScanner";
 import EditListScreen from "./containers/EditListScreen";
 import IconTabBarAccount from "./components/IconTabBarAccount";
 import IconTabBarList from "./components/IconTabBarList";
 import IconTabBarExplore from "./components/IconTabBarExplore";
 
 // Useful variables
-const serverURL = "http://localhost:3310";
+const serverURL = "https://vulpi-forest.herokuapp.com";
 // Local server : "http://localhost:3310"
 // Heroku server : "https://vulpi-forest.herokuapp.com"
 
@@ -309,6 +310,20 @@ export default function App() {
                         options={{ headerShown: false }}
                       >
                         {(props) => <ListScreen {...props} />}
+                      </Stack.Screen>
+                      <Stack.Screen
+                        name="BarCodeScanner"
+                        options={{ headerShown: false }}
+                      >
+                        {(props) => (
+                          <BarCodeScanner
+                            {...props}
+                            userToken={userToken}
+                            userId={userId}
+                            setToken={setToken}
+                            serverURL={serverURL}
+                          />
+                        )}
                       </Stack.Screen>
                     </Stack.Navigator>
                   )}

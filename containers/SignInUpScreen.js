@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import {
   Dimensions,
   Image,
+  SafeAreaView,
   StatusBar,
   StyleSheet,
   Text,
@@ -22,7 +23,7 @@ const windowHeight = Dimensions.get("window").height;
 const statusBarHeight = Constants.statusBarHeight;
 const scrollViewHeight = windowHeight - statusBarHeight;
 
-function SetUpProfilScreen({ setToken, serverURL }) {
+function SetUpProfilScreen({ userToken, setToken, userId, serverURL }) {
   const [errorMessage, setErrorMessage] = useState(null);
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
@@ -39,13 +40,15 @@ function SetUpProfilScreen({ setToken, serverURL }) {
         formData.append("email", email);
         formData.append("password", password);
 
+        console.log(formData);
         const response = await axios.post(`${serverURL}/user/login`, formData);
 
         if (response.data.token && response.data._id) {
           const token = response.data.token;
           const id = response.data._id;
-          const firstName = response.data.account.firstName;
-          setToken(token, id, firstName);
+          console.log(id);
+          console.log(token);
+          setToken(token, id);
         } else {
           setErrorMessage("Une erreur s'est produite");
         }
@@ -62,7 +65,7 @@ function SetUpProfilScreen({ setToken, serverURL }) {
   };
 
   return (
-    <View>
+    <SafeAreaView style={styles.screen}>
       <StatusBar barStyle="light-content" />
       <LinearGradient colors={["#1E2C79", "#232952"]} style={styles.background}>
         <View style={styles.container}>
@@ -164,15 +167,6 @@ function SetUpProfilScreen({ setToken, serverURL }) {
                     formData.append("email", credential.email);
                     formData.append("firstName", credential.fullName.givenName);
                     formData.append("lastName", credential.fullName.familyName);
-
-                    const response = await axios.post(
-                      `${serverURL}/user/appleauth`,
-                      formData
-                    );
-                    const token = response.data.token;
-                    const id = response.data._id;
-                    const firstName = response.data.account.firstName;
-                    setToken(token, id, firstName);
                   } catch (e) {
                     if (e.code === "ERR_CANCELED") {
                       // handle that the user canceled the sign-in flow
@@ -227,13 +221,15 @@ function SetUpProfilScreen({ setToken, serverURL }) {
           </View>
         </View>
       </LinearGradient>
-    </View>
+    </SafeAreaView>
   );
 }
 
 export default SetUpProfilScreen;
 
 const styles = StyleSheet.create({
+  screen: { backgroundColor: "#1E2C79" },
+
   container: {
     height: scrollViewHeight,
     justifyContent: "flex-start",
@@ -244,7 +240,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     width: "90%",
-    // backgroundColor: "red",
   },
 
   wrapperRight: {
@@ -254,7 +249,7 @@ const styles = StyleSheet.create({
   },
 
   logo: {
-    marginTop: "25%",
+    marginTop: "15%",
     height: 32.4,
   },
 
@@ -438,7 +433,7 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     flexDirection: "row",
-    marginTop: "10%",
+    marginTop: "15%",
     paddingTop: "5%",
   },
 });
