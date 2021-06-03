@@ -7,7 +7,10 @@ import {
   StyleSheet,
   Platform,
   SafeAreaView,
+  TouchableOpacity,
 } from "react-native";
+import { useNavigation } from "@react-navigation/core";
+import Constants from "expo-constants";
 
 import colors from "../assets/colors";
 const { bgLight, buttonDarkBlue } = colors;
@@ -18,17 +21,24 @@ import FeedbackSent from "../components/FeedbackSent";
 
 const FeedbackScreen = () => {
   const [feedbackSent, setFeedbackSent] = useState(false);
+  const navigation = useNavigation();
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.backButton}>
-        <Image
-          source={require("../assets/icon-chevron-left-blue.png")}
-          style={styles.image}
-          resizeMode={"contain"}
-        />
-        <Text style={styles.backText}>J'ai une suggestion</Text>
-      </View>
+      <TouchableOpacity
+        onPress={() => {
+          navigation.navigate("AccountScreen");
+        }}
+      >
+        <View style={styles.backButton}>
+          <Image
+            source={require("../assets/icon-chevron-left-blue.png")}
+            style={styles.image}
+            resizeMode={"contain"}
+          />
+          <Text style={styles.backText}>J'ai une suggestion</Text>
+        </View>
+      </TouchableOpacity>
       {!feedbackSent ? (
         <FormFeedback setFeedbackSent={setFeedbackSent} />
       ) : (
@@ -49,13 +59,14 @@ const styles = StyleSheet.create({
   backButton: {
     flexDirection: "row",
     width: "100%",
+    marginHorizontal: 20,
   },
 
   image: {
-    marginRight: 25,
-    height: "30%",
-    marginTop: 5,
-    width: "5%",
+    marginRight: 10,
+    height: 20,
+    marginTop: 3,
+    width: 20,
   },
 
   backText: {

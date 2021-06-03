@@ -14,9 +14,9 @@ import Constants from "expo-constants";
 import * as ImagePicker from "expo-image-picker";
 import { useNavigation } from "@react-navigation/core";
 import { AntDesign } from "@expo/vector-icons";
+import axios from "axios";
 
 import colors from "../assets/colors";
-import axios from "axios";
 const {
   buttonFlashBlue,
   bgLight,
@@ -26,6 +26,8 @@ const {
   mainBlueText,
   bgLightText,
 } = colors;
+
+import AddAvatarModal from "../components/AddAvatarModal";
 
 const windowHeight = Dimensions.get("window").height;
 const statusBarHeight = Constants.statusBarHeight;
@@ -43,11 +45,16 @@ function AccountScreen({
   serverURL,
   userToken,
   userId,
+  reload,
+  setReload,
+  setReloadUser,
 }) {
   const [isPictureModified, setIsPictureModified] = useState(false);
   const [userLists, setUserLists] = useState([]);
   const [userListsVisible, setUserListsVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [modalPictureVisible, setModalPictureVisible] = useState(false);
+
   const navigation = useNavigation();
 
   useEffect(() => {
@@ -57,27 +64,14 @@ function AccountScreen({
           headers: { Authorization: "Bearer " + userToken },
         });
         setUserLists(response.data);
-        console.log(response.data);
+        setReload(false);
         setIsLoading(false);
       } catch (error) {
         console.log(error.message);
       }
     };
     fetchData();
-  }, []);
-
-  const uploadPicture = async () => {
-    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    if (status === "granted") {
-      const result = await ImagePicker.launchImageLibraryAsync();
-      if (!result.cancelled) {
-        setIsPictureModified(true);
-        setAvatar(result.uri);
-
-        editInformation("avatar", isPictureModified);
-      }
-    }
-  };
+  }, [reload]);
 
   return (
     <View style={styles.container}>
@@ -89,7 +83,7 @@ function AccountScreen({
               <View style={styles.account}>
                 <TouchableOpacity
                   onPress={() => {
-                    uploadPicture();
+                    setModalPictureVisible(true);
                   }}
                 >
                   {avatar ? (
@@ -168,6 +162,11 @@ function AccountScreen({
                     renderItem={({ item }) => (
                       <TouchableOpacity
                         style={[styles.whiteButton, styles.listView]}
+                        onPress={() => {
+                          navigation.navigate("EditListScreen", {
+                            id: item._id,
+                          });
+                        }}
                       >
                         <Text style={styles.blueText}>
                           {item.emoji} {item.title}
@@ -224,6 +223,13 @@ function AccountScreen({
           </View>
         </View>
       </View>
+      <AddAvatarModal
+        avatar={avatar}
+        setAvatar={setAvatar}
+        setModalPictureVisible={setModalPictureVisible}
+        editInformation={editInformation}
+        modalPictureVisible={modalPictureVisible}
+      />
     </View>
   );
 }
