@@ -1,14 +1,16 @@
 import React, { useState } from "react";
 import { Text, StyleSheet, View, TextInput } from "react-native";
 import colors from "../assets/colors";
-const { bgLightText } = colors;
+const { bgLightText, buttonDarkBlue, deleteRed } = colors;
 
 // Components
 import ButtonFeedback from "../components/ButtonFeedback";
 
-const FormFeedback = ({ setFeedbackSent }) => {
-  const [object, setObject] = useState("");
-  const [message, setMessage] = useState("");
+const FormFeedback = ({ setFeedbackSent, userId, userToken, serverURL }) => {
+  const [subject, setSubject] = useState("");
+  const [description, setDescription] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+
   return (
     <View style={styles.mainView}>
       <Text style={styles.title}>C'est à quel sujet ?</Text>
@@ -16,27 +18,32 @@ const FormFeedback = ({ setFeedbackSent }) => {
       <TextInput
         placeholder="Bug Technique"
         style={styles.textInput}
-        value={object}
+        value={subject}
         onChangeText={(text) => {
-          setObject(text);
+          setSubject(text);
         }}
       />
       <Text style={styles.title}>On t'écoutes, dis-nous tout :</Text>
       <TextInput
-        value={message}
+        value={description}
         style={[styles.textInput, styles.multiline]}
         multiline={true}
         textAlignVertical="top"
         onChangeText={(text) => {
-          setMessage(text);
+          setDescription(text);
         }}
         placeholder="Dis-nous ce dont tu rêves sur Vulpi, ce qui ne marche pas ou tout ce que tu voudrais nous dire d’autre 😉"
       />
+      <Text style={styles.errorMessage}>{errorMessage}</Text>
       <ButtonFeedback
         buttonTitle={"🚀  Envoyer ma suggestion à l'équipe !"}
         setFeedbackSent={setFeedbackSent}
-        object={object}
-        message={message}
+        subject={subject}
+        description={description}
+        userId={userId}
+        userToken={userToken}
+        setErrorMessage={setErrorMessage}
+        serverURL={serverURL}
       />
     </View>
   );
@@ -57,6 +64,7 @@ const styles = StyleSheet.create({
     borderColor: bgLightText,
     paddingHorizontal: 15,
     paddingVertical: 15,
+    color: buttonDarkBlue,
   },
 
   multiline: {
@@ -69,6 +77,12 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     marginTop: 30,
     fontFamily: "GilroySemiBold",
+  },
+
+  errorMessage: {
+    color: deleteRed,
+    textAlign: "center",
+    marginTop: 10,
   },
 });
 

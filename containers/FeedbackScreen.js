@@ -19,7 +19,7 @@ const { bgLight, buttonDarkBlue } = colors;
 import FormFeedback from "../components/FormFeedback";
 import FeedbackSent from "../components/FeedbackSent";
 
-const FeedbackScreen = () => {
+const FeedbackScreen = ({ userId, userToken, serverURL }) => {
   const [feedbackSent, setFeedbackSent] = useState(false);
   const navigation = useNavigation();
 
@@ -40,7 +40,12 @@ const FeedbackScreen = () => {
         </View>
       </TouchableOpacity>
       {!feedbackSent ? (
-        <FormFeedback setFeedbackSent={setFeedbackSent} />
+        <FormFeedback
+          setFeedbackSent={setFeedbackSent}
+          userId={userId}
+          userToken={userToken}
+          serverURL={serverURL}
+        />
       ) : (
         <FeedbackSent setFeedbackSent={setFeedbackSent} />
       )}
@@ -60,6 +65,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     width: "100%",
     marginHorizontal: 20,
+    marginTop: 15,
   },
 
   image: {

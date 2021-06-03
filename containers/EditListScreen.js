@@ -65,19 +65,31 @@ const EditListScreen = ({
     try {
       const formData = new FormData();
       if (data === "listName") {
+        if (!listName) {
+          return setMessage(
+            "Le nom de ta liste doit comporter au moins un caractère. 🤓"
+          );
+        }
+
         if (listName.length < 30) {
           formData.append("title", listName);
         } else {
           return setMessage(
-            "⛔️ Le titre de votre liste ne doit pas dépasser 30 caractères."
+            "⛔️ Le titre de ta liste ne doit pas dépasser 30 caractères."
           );
         }
       } else if (data === "listEmoji") {
+        if (!listEmoji) {
+          return setMessage(
+            "Indique au moins un emoji pour modifier ta liste. 🤓"
+          );
+        }
+
         if (listEmoji.length === 2) {
           formData.append("emoji", listEmoji);
-        } else {
+        } else if (listEmoji.length > 2) {
           return setMessage(
-            "⛔️ Vous ne pouvez choisir qu'un seul emoji pour votre liste."
+            "⛔️ Tu ne peux choisir qu'un seul emoji pour ta liste."
           );
         }
       }
@@ -91,9 +103,7 @@ const EditListScreen = ({
       );
 
       if (response.status === 200) {
-        setMessage(
-          "Les informations de votre liste ont bien été modifiées ! ✨"
-        );
+        setMessage("Les informations de ta liste ont bien été modifiées ! ✨");
         setReload(true);
       } else {
         setMessage("⛔️ Une erreur s'est produite.");
@@ -118,11 +128,17 @@ const EditListScreen = ({
         setReload(true);
         navigation.navigate("AccountScreen");
       } else {
-        setMessage("⛔️ Une erreur s'est produite.");
+        setMessage("⛔️ Une erreur s'est produite");
       }
     } catch (error) {
-      console.log(error.message);
-      setMessage("⛔️ Une erreur s'est produite.");
+      if (
+        error.response.data.message ===
+        "Impossible to delete the user's last list 😳"
+      ) {
+        setMessage("Tu ne peux pas supprimer ta dernière liste 😳");
+      } else {
+        setMessage("⛔️ Une erreur s'est produite.");
+      }
     }
   };
 
@@ -131,88 +147,91 @@ const EditListScreen = ({
   ) : (
     <SafeAreaView style={styles.wrapper}>
       <StatusBar barStyle="dark-content" />
-      <TouchableOpacity
-        onPress={() => {
-          navigation.navigate("AccountScreen");
-        }}
-      >
-        <View style={styles.backButton}>
-          <Image
-            source={require("../assets/icon-chevron-left-blue.png")}
-            style={styles.image}
-            resizeMode={"contain"}
-          />
-          <Text style={styles.backText}>Ma Liste</Text>
-        </View>
-      </TouchableOpacity>
+      <View style={styles.container}>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate("AccountScreen");
+          }}
+        >
+          <View style={styles.backButton}>
+            <Image
+              source={require("../assets/icon-chevron-left-blue.png")}
+              style={styles.image}
+              resizeMode={"contain"}
+            />
+            <Text style={styles.backText}>Ma Liste</Text>
+          </View>
+        </TouchableOpacity>
 
-      <Text style={styles.label}>Ma Liste</Text>
-      <View style={styles.block}>
-        <View style={styles.inputWrap}>
-          <TextInput
-            style={styles.textInputButton}
-            value={listName}
-            onChangeText={(text) => {
-              setListName(text);
-              setMessage("");
-            }}
-          />
-          <TouchableOpacity
-            style={styles.buttonInput}
-            onPress={() => {
-              editInformation("listName");
-            }}
-          >
-            <Text style={styles.buttonText}>modifier</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-      <View style={styles.block}>
-        <View style={styles.inputWrap}>
-          <TextInput
-            style={styles.textInputButton}
-            value={listEmoji}
-            onChangeText={(text) => {
-              setListEmoji(text);
-              setMessage("");
-            }}
-          />
-          <TouchableOpacity
-            style={styles.buttonInput}
-            onPress={() => {
-              editInformation("listEmoji");
-            }}
-          >
-            <Text style={styles.buttonText}>modifier</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-      <Text style={styles.message}>{message}</Text>
-      <Text style={[styles.label, styles.marginTop]}>Partage</Text>
-      <View style={styles.futur}>
-        <Text style={styles.futurText}>
-          Le partage de liste n’est pas encore disponible, il sera ajouté lors
-          de la V1 de l’application. Nous sommes pour le moment en version beta.
-        </Text>
-      </View>
-      <Text style={styles.label}>
-        Envoi de notifications au membre de la liste
-      </Text>
-      <View style={styles.futur}>
-        <Text style={styles.futurText}>
-          L’envoi de notifications sera également disponible dans la prochaine
-          version.
-        </Text>
-      </View>
-      <View style={styles.delete}>
+        <Text style={styles.label}>Ma Liste</Text>
         <View style={styles.block}>
-          <TouchableOpacity
-            style={styles.deleteButton}
-            underlayColor={deleteRed}
-            onPress={handleDeleteList}
-          >
-            <Text style={styles.deleteText}>Supprimer la liste</Text>
-          </TouchableOpacity>
+          <View style={styles.inputWrap}>
+            <TextInput
+              style={styles.textInputButton}
+              value={listName}
+              onChangeText={(text) => {
+                setListName(text);
+                setMessage("");
+              }}
+            />
+            <TouchableOpacity
+              style={styles.buttonInput}
+              onPress={() => {
+                editInformation("listName");
+              }}
+            >
+              <Text style={styles.buttonText}>modifier</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+        <View style={styles.block}>
+          <View style={styles.inputWrap}>
+            <TextInput
+              style={styles.textInputButton}
+              value={listEmoji}
+              onChangeText={(text) => {
+                setListEmoji(text);
+                setMessage("");
+              }}
+            />
+            <TouchableOpacity
+              style={styles.buttonInput}
+              onPress={() => {
+                editInformation("listEmoji");
+              }}
+            >
+              <Text style={styles.buttonText}>modifier</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+        <Text style={styles.message}>{message}</Text>
+        <Text style={[styles.label, styles.marginTop]}>Partage</Text>
+        <View style={styles.futur}>
+          <Text style={styles.futurText}>
+            Le partage de liste n’est pas encore disponible, il sera ajouté lors
+            de la V1 de l’application. Nous sommes pour le moment en version
+            beta.
+          </Text>
+        </View>
+        <Text style={styles.label}>
+          Envoi de notifications aux membres de la liste
+        </Text>
+        <View style={styles.futur}>
+          <Text style={styles.futurText}>
+            L’envoi de notifications sera également disponible dans la prochaine
+            version.
+          </Text>
+        </View>
+        <View style={styles.delete}>
+          <View style={styles.block}>
+            <TouchableOpacity
+              style={styles.deleteButton}
+              underlayColor={deleteRed}
+              onPress={handleDeleteList}
+            >
+              <Text style={styles.deleteText}>Supprimer la liste</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
     </SafeAreaView>
@@ -224,13 +243,18 @@ const styles = StyleSheet.create({
     marginTop: Platform.OS === "android" ? Constants.statusBarHeight : 0,
     backgroundColor: bgLight,
     flex: 1,
+  },
+
+  container: {
     marginHorizontal: 30,
+    height: "100%",
   },
 
   backButton: {
     flexDirection: "row",
     width: "100%",
     marginBottom: 40,
+    marginTop: 15,
   },
 
   image: {
@@ -274,10 +298,8 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 8,
     backgroundColor: "white",
     borderTopRightRadius: 8,
-    borderColor: "#EEEEEE",
     borderTopLeftRadius: 8,
     fontWeight: "600",
-    color: "#9A9A9A",
     borderWidth: 1,
     width: "90%",
     fontSize: 16,
@@ -297,7 +319,7 @@ const styles = StyleSheet.create({
     borderColor: "#EEEEEE",
     borderTopLeftRadius: 8,
     fontWeight: "600",
-    color: "#9A9A9A",
+    color: buttonDarkBlue,
     paddingLeft: 15,
     borderWidth: 1,
     width: "100%",
@@ -360,7 +382,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderRadius: 19,
     height: 67,
-    width: "90%",
+    width: "100%",
   },
 
   deleteText: {

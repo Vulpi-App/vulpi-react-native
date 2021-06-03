@@ -1,6 +1,6 @@
 // React & React Native - Imports
 import React from "react";
-import { Text, StyleSheet, View } from "react-native";
+import { Text, TouchableOpacity, StyleSheet, View } from "react-native";
 
 // Colors - import
 import colors from "../assets/colors";
@@ -18,24 +18,40 @@ const ListToggle = ({
 }) => {
   return (
     item._id === idListActive && (
-      <View style={styles.toggleWrap}>
-        <Text style={styles.listDeploy}>{item.title}</Text>
+      <View>
         {foldedNav ? (
-          <AntDesign
-            name="up"
-            size={14}
-            color="white"
-            style={styles.icon}
+          <TouchableOpacity
             onPress={foldOrUnfoldLists}
-          />
+            style={styles.toggleWrap}
+          >
+            <Text
+              numberOfLines={1}
+              ellipsizeMode="tail"
+              style={styles.listDeploy}
+            >
+              {item.title}
+            </Text>
+            <AntDesign
+              name="down"
+              size={14}
+              color="white"
+              style={styles.icon}
+            />
+          </TouchableOpacity>
         ) : (
-          <AntDesign
-            name="down"
-            size={14}
-            color="white"
-            style={styles.icon}
+          <TouchableOpacity
             onPress={foldOrUnfoldLists}
-          />
+            style={styles.toggleWrap}
+          >
+            <Text
+              numberOfLines={1}
+              ellipsizeMode="tail"
+              style={styles.listDeploy}
+            >
+              {item.title}
+            </Text>
+            <AntDesign name="up" size={14} color="white" style={styles.icon} />
+          </TouchableOpacity>
         )}
       </View>
     )
@@ -54,6 +70,7 @@ const styles = StyleSheet.create({
     color: whiteWithOpacity,
     fontSize: 14,
     fontFamily: "GilroySemiBold",
+    maxWidth: 120,
   },
   icon: {
     marginLeft: 5,

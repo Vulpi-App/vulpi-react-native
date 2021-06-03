@@ -13,6 +13,6 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontSize: 24,
     marginBottom: 5,
-    // add semi-bold
+    fontFamily: "GilroySemiBold",
   },
 });

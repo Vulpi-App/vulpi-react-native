@@ -83,7 +83,6 @@ const AddAvatarModal = ({
               name="close"
               size={24}
               color="black"
-              x
             />
           </TouchableWithoutFeedback>
 
