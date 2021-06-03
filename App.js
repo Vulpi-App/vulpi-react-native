@@ -27,8 +27,8 @@ import IconTabBarList from "./components/IconTabBarList";
 import IconTabBarExplore from "./components/IconTabBarExplore";
 
 // Useful variables
-// const serverURL = "http://localhost:3310";
-const serverURL = "http://192.168.0.20:3310";
+const serverURL = "http://localhost:3310";
+// const serverURL = "http://192.168.0.20:3310";
 // Local server : "http://localhost:3310"
 // Heroku server : "https://vulpi-forest.herokuapp.com"
 
@@ -301,6 +301,7 @@ export default function App() {
                             setToken={setToken}
                             serverURL={serverURL}
                             reload={reload}
+                            setReload={setReload}
                           />
                         )}
                       </Stack.Screen>
@@ -308,6 +309,7 @@ export default function App() {
                         name="ListScreen"
                         options={{
                           title: "",
+                          headerShown: false,
                         }}
                       >
                         {(props) => <ListScreen {...props} />}

@@ -28,6 +28,7 @@ const ListModalNewList = ({
   setModalVisible,
   newListCreated,
   setNewListCreated,
+  setReload,
 }) => {
   // States for add a new list
   const [title, setTitle] = useState("");
@@ -61,6 +62,8 @@ const ListModalNewList = ({
               setModalVisible(false);
               setTitle("");
               setEmoji("");
+              setErrorMessage("");
+              setReload(true);
               setNewListCreated(!newListCreated);
             } else {
               setErrorMessage("⛔️ Une erreur s'est produite.");
@@ -175,16 +178,21 @@ const styles = StyleSheet.create({
     color: white,
     textAlign: "center",
     fontWeight: "bold",
+    fontFamily: "GilroyBold",
+    fontSize: 16,
   },
   btnDisabled: {
     backgroundColor: midGreyText,
   },
   btnDisabledText: {
     color: darkGreyText,
+    fontFamily: "GilroyBold",
+    fontSize: 16,
   },
   errorMsg: {
     textAlign: "center",
     marginBottom: 20,
     color: deleteRed,
+    fontFamily: "GilroySemiBold",
   },
 });

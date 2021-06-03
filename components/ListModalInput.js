@@ -36,7 +36,7 @@ export default ListModalInput;
 
 const styles = StyleSheet.create({
   modalText: {
-    // add semi-bold
+    fontFamily: "GilroySemiBold",
   },
   modalInput: {
     backgroundColor: inputBg,
@@ -45,5 +45,6 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     marginTop: 10,
     marginBottom: 25,
+    fontFamily: "GilroySemiBold",
   },
 });
