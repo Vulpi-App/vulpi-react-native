@@ -67,6 +67,7 @@ export default ListFull;
 
 const styles = StyleSheet.create({
   list: {
+    maxHeight: "80%",
     backgroundColor: "#fff",
     borderRadius: 10,
     padding: 15,

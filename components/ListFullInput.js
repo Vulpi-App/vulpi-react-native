@@ -132,7 +132,9 @@ const ListFullInput = ({
                     <View style={styles.listCustom}>
                       <Text style={styles.textDetails}>
                         {el.quantity && el.quantity}
-                        {el.measure !== "Unité" && el.measure}
+                      </Text>
+                      <Text style={styles.textDetails}>
+                        {el.measure && el.measure.toLowerCase()}
                       </Text>
                       <Text style={styles.textDetails}>
                         {el.brand && el.brand}
@@ -204,7 +206,9 @@ const ListFullInput = ({
                     <View style={styles.listCustom}>
                       <Text style={styles.textDetails}>
                         {el.quantity && el.quantity}
-                        {el.measure !== "Unité" && el.measure}
+                      </Text>
+                      <Text style={styles.textDetails}>
+                        {el.measure && el.measure.toLowerCase()}
                       </Text>
                       <Text style={styles.textDetails}>
                         {el.brand && el.brand}
