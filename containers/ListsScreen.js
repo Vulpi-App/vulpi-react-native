@@ -33,7 +33,7 @@ const { buttonDarkBlue, white } = colors;
 
 // ======================================
 
-const ListsScreen = ({ navigation, userToken, userId, serverURL }) => {
+const ListsScreen = ({ navigation, userToken, userId, serverURL, reload }) => {
   // States for modals
   const [isModalVisible, setModalVisible] = useState(false);
   const [isModalUpdateVisible, setModalUpdateVisible] = useState(false);
@@ -86,7 +86,15 @@ const ListsScreen = ({ navigation, userToken, userId, serverURL }) => {
       }
     };
     fetchData();
-  }, [newListCreated, addProductList, updateList, deleteList]);
+  }, [
+    newListCreated,
+    addProductList,
+    updateList,
+    deleteList,
+    userId,
+    userToken,
+    reload,
+  ]);
 
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
@@ -159,12 +167,12 @@ const ListsScreen = ({ navigation, userToken, userId, serverURL }) => {
                 serverURL={serverURL}
               />
 
-              {/* <Button
+              <Button
                 title="Ma liste maison"
                 onPress={() => {
                   navigation.navigate("ListScreen");
                 }}
-              /> */}
+              />
             </View>
 
             <View style={styles.blockBottomAddQuicklyAutocomplete}>

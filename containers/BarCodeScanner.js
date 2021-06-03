@@ -77,10 +77,10 @@ const ScanScreen = (userToken, serverURL) => {
         style={[StyleSheet.absoluteFill, styles.container1]}
       >
         <Text style={styles.description}>Scanner le code barre du produit</Text>
-        <Image
+        {/* <Image
           style={styles.qr}
           source={require("../assets/barcodescanner.png")}
-        />
+        /> */}
         <TouchableOpacity
           onPress={() => {
             navigation.navigate("ShoppingScreen");
