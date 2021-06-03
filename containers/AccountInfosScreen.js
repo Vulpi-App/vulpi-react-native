@@ -14,6 +14,16 @@ import Constants from "expo-constants";
 import { useNavigation } from "@react-navigation/core";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
+import colors from "../assets/colors";
+const {
+  bgLight,
+  buttonDarkBlue,
+  buttonFlashBlue,
+  deleteRed,
+  greyAfterCheck,
+  bgLightText,
+} = colors;
+
 const windowHeight = Dimensions.get("window").height;
 const statusBarHeight = Constants.statusBarHeight;
 const scrollViewHeight = windowHeight - statusBarHeight;
@@ -162,7 +172,7 @@ function AccountInfosScreen({
           <View style={styles.block}>
             <TouchableOpacity
               style={styles.deleteButton}
-              underlayColor="#e24d4d"
+              underlayColor={deleteRed}
               onPress={handleDeleteAccount}
             >
               <Text style={styles.deleteText}>Supprimer mon compte</Text>
@@ -178,7 +188,7 @@ export default AccountInfosScreen;
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#F7F7F8",
+    backgroundColor: bgLight,
     width: scrollViewHeight,
     width: "100%",
   },
@@ -214,7 +224,7 @@ const styles = StyleSheet.create({
 
   backText: {
     fontWeight: "600",
-    color: "#232952",
+    color: buttonDarkBlue,
     fontSize: 23,
     width: "75%",
     fontFamily: "GilroySemiBold",
@@ -235,10 +245,10 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 8,
     backgroundColor: "white",
     borderTopRightRadius: 8,
-    borderColor: "#EEEEEE",
+    borderColor: bgLightText,
     borderTopLeftRadius: 8,
     fontWeight: "600",
-    color: "#9A9A9A",
+    color: greyAfterCheck,
     paddingLeft: 15,
     borderWidth: 1,
     width: "90%",
@@ -256,10 +266,10 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 8,
     backgroundColor: "white",
     borderTopRightRadius: 8,
-    borderColor: "#EEEEEE",
+    borderColor: bgLightText,
     borderTopLeftRadius: 8,
     fontWeight: "600",
-    color: "#9A9A9A",
+    color: greyAfterCheck,
     paddingLeft: 15,
     borderWidth: 1,
     width: "100%",
@@ -269,7 +279,7 @@ const styles = StyleSheet.create({
 
   buttonInput: {
     borderBottomRightRadius: 8,
-    backgroundColor: "#3443B9",
+    backgroundColor: buttonFlashBlue,
     borderBottomLeftRadius: 0,
     justifyContent: "center",
     borderTopRightRadius: 8,
@@ -294,7 +304,7 @@ const styles = StyleSheet.create({
   },
 
   messageText: {
-    color: "#CA2121",
+    color: deleteRed,
     fontFamily: "GilroySemiBold",
   },
 
@@ -303,7 +313,7 @@ const styles = StyleSheet.create({
   },
 
   deleteButton: {
-    backgroundColor: "#CA2121",
+    backgroundColor: deleteRed,
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 19,

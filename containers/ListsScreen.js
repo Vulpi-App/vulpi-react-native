@@ -48,11 +48,11 @@ const ListsScreen = ({ navigation, userToken, userId, serverURL }) => {
   const [titleListActive, setTitleListActive] = useState();
 
   // State for new list
-  const [newListCreated, setNewListCreated] = useState("");
+  const [newListCreated, setNewListCreated] = useState(false);
 
   // State for delete or update a list (modal)
-  const [updateList, setUpdateList] = useState("");
-  const [deleteList, setDeleteList] = useState("");
+  const [updateList, setUpdateList] = useState(false);
+  const [deleteList, setDeleteList] = useState(false);
 
   // State for fold or unfold list of lists
   const [foldedNav, setFoldedNav] = useState(true);
@@ -79,6 +79,7 @@ const ListsScreen = ({ navigation, userToken, userId, serverURL }) => {
 
         setData(response.data);
         setIdListActive(response.data.lists[0]._id);
+        setTitleListActive(response.data.lists[0].title);
         setLoading(false);
       } catch (error) {
         console.log(error.message);
@@ -104,11 +105,19 @@ const ListsScreen = ({ navigation, userToken, userId, serverURL }) => {
       <ActivityIndicator size="large" color={buttonDarkBlue} />
     </View>
   ) : (
-    <View style={styles.screen}>
-      <KeyboardAwareScrollView
+    <KeyboardAwareScrollView
+      contentContainerStyle={{ height: "100%", margin: 0 }}
+      viewIsInsideTabBar={true}
+    >
+      <View style={styles.screen}>
+        {/* <KeyboardAwareScrollView
         contentContainerStyle={{ height: "100%", margin: 0 }}
+
         viewIsInsideTabBar={false}
       >
+
+        */}
+
         <StatusBar style="light" />
         <SafeAreaView style={styles.pageScreen}>
           <View style={styles.globalContainer}>
@@ -138,9 +147,8 @@ const ListsScreen = ({ navigation, userToken, userId, serverURL }) => {
                 </View>
               )}
 
-              {/* ----- List(s) ✅ 
-             🚨 Problème de récupération du nom du produit (route back listcontent/:listId ne fonctionne pas) 
-             🚨 Gérer le screen au clic sur les 3 points */}
+              {/* ----- List(s) ✅ */}
+
               <ListFull
                 data={data}
                 idListActive={idListActive}
@@ -151,12 +159,12 @@ const ListsScreen = ({ navigation, userToken, userId, serverURL }) => {
                 serverURL={serverURL}
               />
 
-              <Button
+              {/* <Button
                 title="Ma liste maison"
                 onPress={() => {
                   navigation.navigate("ListScreen");
                 }}
-              />
+              /> */}
             </View>
 
             <View style={styles.blockBottomAddQuicklyAutocomplete}>
@@ -203,45 +211,48 @@ const ListsScreen = ({ navigation, userToken, userId, serverURL }) => {
             </View>
           </View>
         </SafeAreaView>
-      </KeyboardAwareScrollView>
+        {/* </KeyboardAwareScrollView> */}
 
-      {/* Modal "+ New list" ✅ 
-      🚨 Gérer le keyboardAwareAreaView */}
-      <ListModalNewList
-        isModalVisible={isModalVisible}
-        setModalVisible={setModalVisible}
-        userToken={userToken}
-        setNewListCreated={setNewListCreated}
-        newListCreated={newListCreated}
-        serverURL={serverURL}
-      />
+        {/* Modal "+ New list" ✅ 
+      👉🏻 Si le temps, bloquer la sélection à 1 seul emoji  */}
+        <ListModalNewList
+          serverURL={serverURL}
+          userToken={userToken}
+          isModalVisible={isModalVisible}
+          setModalVisible={setModalVisible}
+          newListCreated={newListCreated}
+          setNewListCreated={setNewListCreated}
+        />
 
-      {/* Modal "update or delete a list" ✅ */}
-      <ListModalRenameList
-        isModalUpdateVisible={isModalUpdateVisible}
-        setModalUpdateVisible={setModalUpdateVisible}
-        userToken={userToken}
-        listId={idListActive}
-        userId={userId}
-        updateList={updateList}
-        setUpdateList={setUpdateList}
-        setDeleteList={setDeleteList}
-        serverURL={serverURL}
-        titleListActive={titleListActive}
-      />
+        {/* Modal "update or delete a list" ✅
+      👉🏻 Si le temps, bloquer la sélection à 1 seul emoji */}
+        <ListModalRenameList
+          serverURL={serverURL}
+          userToken={userToken}
+          userId={userId}
+          listId={idListActive}
+          isModalUpdateVisible={isModalUpdateVisible}
+          setModalUpdateVisible={setModalUpdateVisible}
+          updateList={updateList}
+          setUpdateList={setUpdateList}
+          deleteList={deleteList}
+          setDeleteList={setDeleteList}
+          titleListActive={titleListActive}
+        />
 
-      {/* Modal "Add Product" */}
-      <ModalProduct
-        modalAddProductVisible={modalAddProductVisible}
-        setModalAddProductVisible={setModalAddProductVisible}
-        typeModalProduct="new product"
-        idList={idListActive}
-        userToken={userToken}
-        // product={null}
-        addProductList={addProductList}
-        setAddProductList={setAddProductList}
-      />
-    </View>
+        {/* Modal "Add Product" */}
+        <ModalProduct
+          modalAddProductVisible={modalAddProductVisible}
+          setModalAddProductVisible={setModalAddProductVisible}
+          typeModalProduct="new product"
+          idList={idListActive}
+          userToken={userToken}
+          // product={null}
+          addProductList={addProductList}
+          setAddProductList={setAddProductList}
+        />
+      </View>
+    </KeyboardAwareScrollView>
   );
 };
 
@@ -252,14 +263,14 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
   },
-
-  screen: { flex: 1 },
-
-  pageScreen: {
-    backgroundColor: buttonDarkBlue,
+  screen: {
     flex: 1,
-    // height: "100%",
+    backgroundColor: buttonDarkBlue,
   },
+  // pageScreen: {
+  //   backgroundColor: buttonDarkBlue,
+  //   flex: 1,
+  // },
 
   globalContainer: {
     height: "100%",

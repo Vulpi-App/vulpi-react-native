@@ -46,23 +46,28 @@ const styles = StyleSheet.create({
   otherList: {
     marginRight: 10,
     borderRadius: 20,
-    paddingVertical: 10,
     paddingHorizontal: 15,
     backgroundColor: "#181D39",
     maxWidth: 160,
+    justifyContent: "center",
   },
   otherListText: {
     color: buttonNewList,
+    fontFamily: "GilroySemiBold",
+    marginTop: -2,
   },
   otherListBlue: {
     marginRight: 10,
     borderRadius: 20,
-    paddingVertical: 10,
     paddingHorizontal: 15,
     backgroundColor: buttonFlashBlue,
     maxWidth: 160,
+    justifyContent: "center",
+    alignItems: "center",
   },
   otherListTextWhite: {
     color: white,
+    fontFamily: "GilroySemiBold",
+    marginTop: -2,
   },
 });

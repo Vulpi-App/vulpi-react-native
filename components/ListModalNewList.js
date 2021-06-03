@@ -10,6 +10,7 @@ import {
 import { Dimensions } from "react-native";
 import Modal from "react-native-modal";
 
+// Axios - import
 import axios from "axios";
 
 // Components - import
@@ -21,12 +22,12 @@ import colors from "../assets/colors";
 const { buttonFlashBlue, white, midGreyText, darkGreyText, deleteRed } = colors;
 
 const ListModalNewList = ({
+  serverURL,
+  userToken,
   isModalVisible,
   setModalVisible,
-  userToken,
-  setNewListCreated,
   newListCreated,
-  serverURL,
+  setNewListCreated,
 }) => {
   // States for add a new list
   const [title, setTitle] = useState("");
@@ -40,30 +41,34 @@ const ListModalNewList = ({
     try {
       if (title && emoji) {
         if (title.length <= 30) {
-          // Create form data to sent the body
-          const formData = new FormData();
-          formData.append("title", title);
-          formData.append("emoji", emoji);
+          if (emoji.length <= 2) {
+            // Create form data to sent the body
+            const formData = new FormData();
+            formData.append("title", title);
+            formData.append("emoji", emoji);
 
-          const response = await axios.post(
-            `${serverURL}/lists/create`,
-            formData,
-            {
-              headers: { Authorization: `Bearer ${userToken}` },
+            const response = await axios.post(
+              `${serverURL}/lists/create`,
+              formData,
+              {
+                headers: { Authorization: `Bearer ${userToken}` },
+              }
+            );
+
+            // console.log(response.status);
+
+            if (response.status === 200) {
+              setModalVisible(false);
+              setTitle("");
+              setEmoji("");
+              setNewListCreated(!newListCreated);
+            } else {
+              setErrorMessage("⛔️ Une erreur s'est produite.");
             }
-          );
-
-          console.log(response.status);
-
-          console.log(emoji[0].length);
-
-          if (response.status === 200) {
-            setModalVisible(false);
-            setTitle("");
-            setEmoji("");
-            setNewListCreated();
           } else {
-            setErrorMessage("⛔️ Une erreur s'est produite.");
+            setErrorMessage(
+              "⛔️ Vous ne pouvez choisir qu'un seul emoji pour votre liste."
+            );
           }
         } else {
           setErrorMessage(

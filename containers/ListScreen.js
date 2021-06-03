@@ -1,7 +1,6 @@
 // Tools
 import React, { useState, useEffect, useRef } from "react";
 import {
-  Button,
   ScrollView,
   SafeAreaView,
   Platform,
@@ -19,7 +18,7 @@ import ListModalButton from "../components/ListModalButton";
 
 // Colors - import
 import colors from "../assets/colors";
-const { bgLight } = colors;
+const { bgLight, mainLightGrey } = colors;
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -114,41 +113,51 @@ const ListScreen = () => {
   }, []);
 
   return (
-    <SafeAreaView style={styles.screen}>
-      <ScrollView style={styles.scrollView}>
-        <StatusBar style="dark" />
-        <View style={[styles.wrapper, styles.buttonWrap]}>
-          <View>
-            <ListModalButton
-              name="👋🏻 Je vais faire les courses !"
-              color="blue"
-            />
-          </View>
+    <View style={styles.screen}>
+      <ScrollView style={[styles.wrapper, styles.scrollView]}>
+        <SafeAreaView>
+          <StatusBar style="dark" />
 
-          <TouchableOpacity
-            onPress={async () => {
+
+          <View style={styles.container}>
+            <TouchableOpacity onPress={async () => {
               await sendPushNotification(expoPushToken);
-            }}
-          >
-            <Text>👋🏻 Je vais faire les courses !</Text>
-          </TouchableOpacity>
-          <Text style={styles.asterisk}>
-            * Prévenez les autres que vous allez faire les courses
-          </Text>
-        </View>
+            }}>
+              <Text>Notifications</Text>
+            </TouchableOpacity>
+            <View style={styles.buttonWrap}>
+              <View>
+                <ListModalButton
+                  name="👋 Je vais faire les courses !"
+                  color="blue"
+                  style={styles.boxShadow}
+                />
+              </View>
+              <Text style={styles.asterisk}>
+                * Prévenez les autres que vous allez faire les courses
+              </Text>
+            </View>
 
-        <View>
-          <View>
-            <Text>👏🏻</Text>
+
+            <View style={styles.cardWrap}>
+              <View>
+                <Text style={styles.emoji}>🛒</Text>
+              </View>
+              <View>
+                <Text>
+                  <Text style={styles.bold}>Pauline</Text> part faire les
+                  courses !
+                </Text>
+                <Text>"Courses maison"</Text>
+                <Text style={styles.date}>Aujourd'hui à 18:10</Text>
+              </View>
+            </View>
           </View>
-          <View>
-            <Text>Mattéo a ajouté "Belin Croutille" à la liste</Text>
-            <Text>"Courses maison"</Text>
-          </View>
-        </View>
-        <Text>Hier à 12:20</Text>
+        </SafeAreaView>
       </ScrollView>
-    </SafeAreaView>
+
+    </View>
+
   );
 };
 
@@ -160,7 +169,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   scrollView: {
-    marginTop: Platform.OS === "android" ? Constants.statusBarHeight : 0,
+    // marginTop: Platform.OS === "android" ? Constants.statusBarHeight : 0,
     paddingTop: 20,
   },
   wrapper: {
@@ -170,12 +179,46 @@ const styles = StyleSheet.create({
     marginLeft: "auto",
     marginRight: "auto",
   },
+  container: {
+    marginTop: Platform.OS === "android" ? Constants.statusBarHeight : 0,
+    paddingTop: 20,
+  },
+  bold: {
+    fontWeight: "bold",
+  },
   buttonWrap: {
     flexDirection: "row",
+    marginBottom: 80,
+    marginTop: 30,
   },
+  // boxShadow: {
+  //   shadowColor: "red",
+  //   shadowOffset: { width: 2, height: 2 },
+  // },
   asterisk: {
     width: "35%",
     marginLeft: 15,
     fontSize: 11,
+  },
+  cardWrap: {
+    backgroundColor: "white",
+    borderRadius: 8,
+    padding: 20,
+    paddingRight: 50,
+    paddingLeft: 30,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 10,
+  },
+  emoji: {
+    fontSize: 26,
+  },
+  date: {
+    marginTop: 10,
+    textAlign: "right",
+    fontSize: 13,
+    marginRight: -30,
+    color: mainLightGrey,
   },
 });

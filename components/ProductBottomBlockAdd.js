@@ -1,7 +1,14 @@
 // Tools
 import React from "react";
-import { StyleSheet, View, TextInput } from "react-native";
+import {
+  Navigation,
+  StyleSheet,
+  View,
+  TextInput,
+  TouchableOpacity,
+} from "react-native";
 import { Ionicons, FontAwesome5 } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/core";
 
 const ProductBottomBlockAdd = ({
   setModalAddProductVisible,
@@ -11,6 +18,7 @@ const ProductBottomBlockAdd = ({
   setDataProductsDisplay,
 }) => {
   // Autocomplete dataProducts
+  const navigation = useNavigation();
   const handleSearchProductsInDB = (text) => {
     const newDataProducts = [];
     for (let i of dataProducts) {
@@ -54,9 +62,15 @@ const ProductBottomBlockAdd = ({
         ></TextInput>
       </View>
 
-      <View style={styles.blockScan}>
+      <TouchableOpacity
+        style={styles.blockScan}
+        underlayColor="#EEEEEE"
+        onPress={() => {
+          navigation.navigate("BarCodeScanner");
+        }}
+      >
         <FontAwesome5 name="barcode" size={24} color="white" />
-      </View>
+      </TouchableOpacity>
 
       {/* Add Modal to Add Product */}
     </View>

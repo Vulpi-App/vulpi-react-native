@@ -190,6 +190,7 @@ const ListFullInput = ({
                     {capitalizeFirstLetter(el.reference.name)}
                   </Text>
 
+                  {/* 🚨🚨🚨 Conditions ci-dessous ne fonctionnent pas ! POURQUOI ? */}
                   {el.quantity || el.brand || el.shop ? (
                     <Text style={styles.listCustom}>
                       {el.quantity && `${el.quantity}, `}{" "}
@@ -258,18 +259,19 @@ const styles = StyleSheet.create({
 
   listProductText: {
     fontSize: 16,
-    fontWeight: "bold",
+    fontFamily: "GilroyBold",
     color: mainBlueText,
-    lineHeight: 19,
+    lineHeight: 30,
   },
   listNotCustom: {
     fontSize: 14,
     color: midGreyText,
+    fontFamily: "GilroyMedium",
   },
   listCustom: {
     fontSize: 14,
     color: productDetails,
-    // add medium
+    fontFamily: "GilroyMedium",
   },
   price: {
     position: "absolute",
@@ -277,6 +279,8 @@ const styles = StyleSheet.create({
     right: 0,
     fontSize: 16,
     color: midGreyText,
+    fontFamily: "GilroyMedium",
+    lineHeight: 30,
   },
 
   textAfterCheck: {
