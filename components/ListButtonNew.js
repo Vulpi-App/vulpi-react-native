@@ -25,8 +25,11 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     paddingVertical: 10,
     paddingHorizontal: 15,
+    justifyContent: "center",
   },
   addNewListText: {
     color: buttonNewList,
+    fontFamily: "GilroySemiBold",
+    marginBottom: -2,
   },
 });

@@ -53,7 +53,6 @@ const styles = StyleSheet.create({
     marginLeft: "-3%",
     marginRight: "-3%",
     paddingLeft: "6%",
-    height: 40,
   },
   buttonsWrap: {
     flexDirection: "row",

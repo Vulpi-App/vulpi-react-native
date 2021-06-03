@@ -2,9 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 
-
-import { View, Text, FlatList, StyleSheet } from "react-native";
-
+import { View, Text, FlatList, StyleSheet, ScrollView } from "react-native";
 
 // Axios - import
 import axios from "axios";
@@ -93,7 +91,6 @@ export default ListFull;
 
 const styles = StyleSheet.create({
   list: {
-    maxHeight: "85%",
     backgroundColor: "#fff",
     borderRadius: 10,
     padding: 15,
