@@ -33,6 +33,7 @@ const ListModalRenameList = ({
   updateList,
   setUpdateList,
   titleListActive,
+  setReload,
 }) => {
   // State for rename list
   const [title, setTitle] = useState("");
@@ -67,6 +68,8 @@ const ListModalRenameList = ({
               setModalUpdateVisible(false);
               setTitle("");
               setEmoji("");
+              setErrorMessage("");
+              setReload(true);
               setUpdateList(!updateList);
             } else {
               setErrorMessage("⛔️ Une erreur s'est produite.");
@@ -102,6 +105,7 @@ const ListModalRenameList = ({
       if (response.status === 200) {
         setModalUpdateVisible(false);
         setDeleteList(!deleteList);
+        setReload(true);
       }
     } catch (error) {
       console.log(error.message);
@@ -217,6 +221,8 @@ const styles = StyleSheet.create({
     color: white,
     textAlign: "center",
     fontWeight: "bold",
+    fontFamily: "GilroyBold",
+    fontSize: 16,
   },
   btnDelete: {
     padding: 15,
@@ -225,19 +231,22 @@ const styles = StyleSheet.create({
   },
   btnTextDelete: {
     color: deleteRed,
-    fontSize: 16,
     textAlign: "center",
-    fontWeight: "bold",
+    fontFamily: "GilroyBold",
+    fontSize: 16,
   },
   btnDisabled: {
     backgroundColor: midGreyText,
   },
   btnDisabledText: {
     color: darkGreyText,
+    fontFamily: "GilroyBold",
+    fontSize: 16,
   },
   errorMsg: {
     textAlign: "center",
     marginBottom: 20,
     color: deleteRed,
+    fontFamily: "GilroySemiBold",
   },
 });
