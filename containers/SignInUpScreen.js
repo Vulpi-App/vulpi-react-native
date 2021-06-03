@@ -150,7 +150,7 @@ function SetUpProfilScreen({ userToken, setToken, userId, serverURL }) {
                   AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN
                 }
                 buttonStyle={
-                  AppleAuthentication.AppleAuthenticationButtonStyle.BLACK
+                  AppleAuthentication.AppleAuthenticationButtonStyle.WHITE
                 }
                 cornerRadius={5}
                 style={{ width: "100%", height: 49 }}
@@ -207,7 +207,7 @@ function SetUpProfilScreen({ userToken, setToken, userId, serverURL }) {
               </TouchableHighlight>
             </View>
           </View>
-
+          <Text style={styles.withLove}>Made with ❤️ in Paris</Text>
           <View style={styles.block}>
             <TouchableOpacity
               style={styles.signUp}
@@ -258,6 +258,7 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 35,
     marginTop: "3%",
+    fontFamily: "GilroyBold",
   },
 
   title: {
@@ -265,18 +266,18 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 15,
     marginTop: "1%",
+    fontFamily: "GilroySemiBold",
   },
 
   messageWrap: {
     justifyContent: "center",
     backgroundColor: "green",
     alignItems: "center",
-    height: "5%",
+    height: "3%",
   },
 
   errorWrap: {
     position: "absolute",
-    marginBottom: 20,
   },
 
   icon: {
@@ -290,7 +291,8 @@ const styles = StyleSheet.create({
   },
 
   errorText: {
-    color: "#CA2121",
+    color: "white",
+    fontFamily: "GilroySemiBold",
   },
 
   inputText: {
@@ -322,6 +324,7 @@ const styles = StyleSheet.create({
     color: "#0C166D",
     fontWeight: "bold",
     fontSize: 16,
+    fontFamily: "GilroyExtraBold",
   },
 
   textLost: {
@@ -330,12 +333,14 @@ const styles = StyleSheet.create({
     fontSize: 14,
     textDecorationLine: "underline",
     marginTop: "2%",
+    fontFamily: "GilroySemiBold",
   },
 
   textSignUp: {
     color: "#232952",
     fontWeight: "500",
     fontSize: 14,
+    fontFamily: "GilroySemiBold",
   },
 
   textUnderline: {
@@ -343,6 +348,7 @@ const styles = StyleSheet.create({
     fontWeight: "500",
     fontSize: 14,
     textDecorationLine: "underline",
+    fontFamily: "GilroySemiBold",
   },
 
   lineWrap: {
@@ -368,6 +374,7 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 20,
     fontWeight: "600",
+    fontFamily: "GilroySemiBold",
   },
 
   buttonWrap: {
@@ -418,10 +425,11 @@ const styles = StyleSheet.create({
     fontSize: 18,
     position: "relative",
   },
+
   logos: {
-    width: 20,
+    width: 15,
     position: "relative",
-    marginRight: 10,
+    marginRight: 7,
   },
 
   block: {
@@ -433,7 +441,16 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     flexDirection: "row",
-    marginTop: "15%",
+    marginTop: "5%",
     paddingTop: "5%",
+  },
+
+  withLove: {
+    marginTop: "15%",
+    color: "white",
+    fontWeight: "600",
+    fontSize: 15,
+    position: "relative",
+    fontFamily: "GilroySemiBold",
   },
 });

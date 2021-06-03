@@ -111,7 +111,7 @@ function RegisterScreen({ setToken, serverURL }) {
                     <TextInput
                       style={styles.input}
                       placeholder="Prénom"
-                      autoCapitalize="none"
+                      autoCapitalize="words"
                       autoCorrect={false}
                       onChangeText={(text) => {
                         setFirstName(text);
@@ -390,6 +390,7 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     color: "white",
     fontSize: 11,
+    fontFamily: "GilroyBold",
   },
 
   logos: {
@@ -398,18 +399,20 @@ const styles = StyleSheet.create({
   },
 
   progressText: {
-    marginLeft: 25,
+    marginLeft: 35,
   },
 
   text1: {
     fontWeight: "600",
     color: "white",
     fontSize: 19,
+    fontFamily: "GilroySemiBold",
   },
 
   text2: {
     color: "white",
     fontSize: 11,
+    fontFamily: "GilroySemiBold",
   },
 
   textWrap: {
@@ -431,6 +434,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginTop: "5%",
     width: "100%",
+    fontFamily: "GilroyBold",
   },
 
   inputWrap: {
@@ -458,6 +462,7 @@ const styles = StyleSheet.create({
     width: "100%",
     fontSize: 16,
     height: 53,
+    fontFamily: "GilroySemiBold",
   },
 
   buttonWrap: {
@@ -491,9 +496,11 @@ const styles = StyleSheet.create({
   },
 
   nextText: {
+    marginTop: 1,
     fontWeight: "bold",
     color: "white",
     fontSize: 16,
+    fontFamily: "GilroyBold",
   },
 
   buttonIcon: {
@@ -505,8 +512,9 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontWeight: "bold",
     color: "white",
-    width: "86%",
+    width: "90%",
     fontSize: 24,
+    fontFamily: "GilroyBold",
   },
 
   buttonBack: {
@@ -542,9 +550,11 @@ const styles = StyleSheet.create({
   },
 
   validateText: {
+    marginTop: 1,
     fontWeight: "bold",
     color: "white",
     fontSize: 16,
+    fontFamily: "GilroyBold",
   },
 
   lastContainer: {
@@ -559,13 +569,15 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 24,
     width: "86%",
+    fontFamily: "GilroyBold",
   },
 
   title2: {
     textAlign: "center",
     marginTop: "5%",
     color: "white",
-    width: "80%",
+    width: "70%",
     fontSize: 13,
+    fontFamily: "GilroyMedium",
   },
 });
