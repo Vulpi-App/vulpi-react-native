@@ -151,12 +151,12 @@ const ListsScreen = ({ navigation, userToken, userId, serverURL }) => {
                 serverURL={serverURL}
               />
 
-              {/* <Button
+              <Button
                 title="Ma liste maison"
                 onPress={() => {
                   navigation.navigate("ListScreen");
                 }}
-              /> */}
+              />
             </View>
 
             <View style={styles.blockBottomAddQuicklyAutocomplete}>

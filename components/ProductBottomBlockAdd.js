@@ -49,10 +49,6 @@ const ProductBottomBlockAdd = ({
           style={styles.inputAddQuickly}
           placeholder="Ajout rapide"
           placeholderTextColor="#797979"
-          // autoCapitalize="sentences"
-          // onChangeText={(text) => {
-          //   setValueInputAddQuickly(text);
-          // }}
           onChangeText={handleSearchProductsInDB}
           value={valueInputAddQuickly}
         ></TextInput>
@@ -75,6 +71,9 @@ const styles = StyleSheet.create({
     padding: 15,
     flexDirection: "row",
     justifyContent: "space-between",
+    shadowColor: "#CBCBCB",
+    shadowOpacity: 2,
+    shadowOffset: { height: -1 },
   },
   blockInput: {
     backgroundColor: "#E6E6E6",

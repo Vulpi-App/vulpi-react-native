@@ -66,7 +66,10 @@ const ListFull = ({
         }}
       />
 
-      <ScrollView style={styles.listContent}>
+      <ScrollView
+        style={styles.listContent}
+        showsVerticalScrollIndicator={false}
+      >
         <FlatList
           data={data.lists}
           keyExtractor={(item) => item._id}

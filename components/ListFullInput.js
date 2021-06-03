@@ -211,18 +211,6 @@ const ListFullInput = ({
                 {el.price ? (
                   <Text style={styles.price}>{el.price} €</Text>
                 ) : null}
-
-                {/* {/* Modal "Update Product"
-                <ModalProduct
-                  modalAddProductVisible={modalAddProductVisible}
-                  setModalAddProductVisible={setModalAddProductVisible}
-                  typeModalProduct="update product"
-                  idList={idListActive}
-                  userToken={userToken}
-                  product={infosProduct}
-                  addProductList={addProductList}
-                  setAddProductList={setAddProductList}
-                /> */}
               </View>
             )
           );
