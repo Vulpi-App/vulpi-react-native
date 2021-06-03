@@ -1,11 +1,21 @@
 // React & React Native - Imports
 import React from "react";
-import { View, FlatList, StyleSheet } from "react-native";
+import {
+  View,
+  FlatList,
+  TouchableOpacity,
+  Image,
+  StyleSheet,
+} from "react-native";
+import { useNavigation } from "@react-navigation/core";
 
 // Components - import
 import ListMainTitle from "./ListMainTitle";
 import ListToggle from "./ListToggle";
-import ListIconCircle from "./ListIconCircle";
+
+// Colors - import
+import colors from "../assets/colors";
+const { mainBlueText } = colors;
 
 const ListHeader = ({
   data,
@@ -14,6 +24,7 @@ const ListHeader = ({
   foldedNav,
   setFoldedNav,
 }) => {
+  const navigation = useNavigation();
   return (
     <View style={[styles.wrapper, styles.headerWrap]}>
       <View>
@@ -36,16 +47,31 @@ const ListHeader = ({
       </View>
 
       <View style={styles.headerIcon}>
-        <ListIconCircle
-          color="blue"
-          source={require("../assets/icon-bell.png")}
-          resizeMode="contain"
-        />
-        <ListIconCircle
-          color="blue"
-          source={require("../assets/icon-share.png")}
-          resizeMode="contain"
-        />
+        <TouchableOpacity
+          style={[styles.circleIcon, styles.circleIconBlue]}
+          onPress={() => {
+            navigation.navigate("ListScreen");
+          }}
+        >
+          <Image
+            style={styles.icon}
+            source={require("../assets/icon-bell.png")}
+            resizeMode="contain"
+          />
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={[styles.circleIcon, styles.circleIconBlue]}
+          onPress={() => {
+            navigation.navigate("Account", { screen: "EditListScreen" });
+          }}
+        >
+          <Image
+            style={styles.icon}
+            source={require("../assets/icon-share.png")}
+            resizeMode="contain"
+          />
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -68,5 +94,20 @@ const styles = StyleSheet.create({
   },
   headerIcon: {
     flexDirection: "row",
+  },
+  circleIcon: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    marginLeft: 10,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  circleIconBlue: {
+    backgroundColor: mainBlueText,
+  },
+  icon: {
+    width: 20,
+    height: 20,
   },
 });

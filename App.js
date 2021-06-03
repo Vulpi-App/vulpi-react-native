@@ -16,7 +16,6 @@ import ExploreScreen from "./containers/ExploreScreen";
 import ListsScreen from "./containers/ListsScreen";
 import AccountScreen from "./containers/AccountScreen";
 import AccountInfosScreen from "./containers/AccountInfosScreen";
-import SettingsScreen from "./containers/SettingsScreen";
 import FeedbackScreen from "./containers/FeedbackScreen";
 import ListScreen from "./containers/ListScreen";
 import RegisterScreen from "./containers/RegisterScreen";
@@ -27,8 +26,9 @@ import IconTabBarList from "./components/IconTabBarList";
 import IconTabBarExplore from "./components/IconTabBarExplore";
 
 // Useful variables
-// const serverURL = "http://localhost:3310";
-const serverURL = "http://192.168.0.20:3310";
+
+const serverURL = "http://localhost:3310";
+
 // Local server : "http://localhost:3310"
 // Heroku server : "https://vulpi-forest.herokuapp.com"
 
@@ -163,16 +163,14 @@ export default function App() {
         } else if (data === "firstName") {
           formData.append("firstName", firstName);
         } else if (data === "avatar") {
-          console.log("avatar: " + avatar);
           const uriParts = avatar.split(".");
-
           const fileType = uriParts[uriParts.length - 1];
           formData.append("avatar", {
             uri: avatar,
-            name: `avatar.${userId}`,
+            name: `avatar/${userId}`,
             type: `image/${fileType}`,
           });
-          console.log("formData : " + formData);
+
         }
 
         const response = await axios.put(
@@ -181,20 +179,27 @@ export default function App() {
           { headers: { Authorization: "Bearer " + userToken } }
         );
         if (response.data) {
-          console.log("formData : " + formData.avatar);
-          console.log("requête passée", response.data);
-          setDisplayMessage({ message: "Votre profil a été mis a jour." });
+
+          setDisplayMessage({ message: "Ton profil a été mis a jour. ✨" });
+
           setReloadUser(true);
         } else {
-          console.log("erreur produite");
-          setDisplayMessage({ message: "Une erreur s'est produite" });
+          setDisplayMessage({ message: "⛔️ Une erreur s'est produite." });
         }
       } catch (error) {
-        console.log("error message catch: " + error.response.data.error);
-        setDisplayMessage({ message: error.response.data.error });
+        if (
+          error.response.data.message ===
+          "An account already exists with this email"
+        ) {
+          setDisplayMessage({
+            message: "⛔️ Cet email est déjà utilisé sur Vulpi.",
+          });
+        } else {
+          setDisplayMessage({ message: "⛔️ Une erreur s'est produite." });
+        }
       }
     } else {
-      setDisplayMessage({ message: "Modifier au moins une information" });
+      setDisplayMessage({ message: "Modifie au moins une information ! ⚡️" });
     }
   };
 
@@ -302,6 +307,7 @@ export default function App() {
                             setToken={setToken}
                             serverURL={serverURL}
                             reload={reload}
+                            setReload={setReload}
                           />
                         )}
                       </Stack.Screen>
@@ -309,6 +315,7 @@ export default function App() {
                         name="ListScreen"
                         options={{
                           title: "",
+                          headerShown: false,
                         }}
                       >
                         {(props) => <ListScreen {...props} />}
@@ -403,7 +410,12 @@ export default function App() {
                         options={{ title: "J'ai une suggestion" }}
                       >
                         {(props) => (
-                          <FeedbackScreen {...props} serverURL={serverURL} />
+                          <FeedbackScreen
+                            {...props}
+                            serverURL={serverURL}
+                            userId={userId}
+                            userToken={userToken}
+                          />
                         )}
                       </Stack.Screen>
                     </Stack.Navigator>

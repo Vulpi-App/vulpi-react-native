@@ -1,15 +1,16 @@
 // React & React Native - Imports
 
-import React, { useState, useEffect } from "react";
+import React from "react";
 
 import { View, Text, FlatList, StyleSheet, ScrollView } from "react-native";
-
-// Axios - import
-import axios from "axios";
 
 // Components - import
 import ListFullHeader from "./ListFullHeader";
 import ListFullInput from "./ListFullInput";
+
+// Colors - import
+import colors from "../assets/colors";
+const { radioBg } = colors;
 
 const ListFull = ({
   data,
@@ -20,34 +21,6 @@ const ListFull = ({
   addProductList,
   setAddProductList,
 }) => {
-  const [result, setResult] = useState();
-
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const response = await axios.get(
-  //         `${serverURL}/listcontent/${idListActive}`,
-  //         {
-  //           headers: {
-  //             Authorization: `Bearer ${userToken}`,
-  //           },
-  //         }
-  //       );
-
-  //       console.log("response.data HEREEEEEEE ", response.data);
-  //       // console.log("response.data.lists", response.data.lists);
-
-  //       setResult(response.data);
-  //       setLoading(false);
-
-  //     } catch (error) {
-  //       console.log(error.message);
-  //     }
-  //   };
-  //   fetchData();
-
-  // }, []);
-
   return (
     <View style={styles.list}>
       <FlatList
@@ -95,13 +68,14 @@ export default ListFull;
 
 const styles = StyleSheet.create({
   list: {
-    // maxHeight: "80%",
+    maxHeight: "80%",
     backgroundColor: "#fff",
     borderRadius: 10,
     padding: 15,
-    flex: 1,
   },
   listContent: {
     paddingTop: 15,
+    borderTopColor: radioBg,
+    borderTopWidth: 1,
   },
 });

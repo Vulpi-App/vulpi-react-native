@@ -12,6 +12,7 @@ import {
 import { StatusBar } from "expo-status-bar";
 import Constants from "expo-constants";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { LinearGradient } from "expo-linear-gradient";
 // import { BlurView } from "expo-blur"; TO TEST
 
 // Axios - import
@@ -33,7 +34,14 @@ const { buttonDarkBlue, white } = colors;
 
 // ======================================
 
-const ListsScreen = ({ navigation, userToken, userId, serverURL, reload }) => {
+const ListsScreen = ({
+  navigation,
+  userToken,
+  userId,
+  serverURL,
+  reload,
+  setReload,
+}) => {
   // States for modals
   const [isModalVisible, setModalVisible] = useState(false);
   const [isModalUpdateVisible, setModalUpdateVisible] = useState(false);
@@ -77,9 +85,9 @@ const ListsScreen = ({ navigation, userToken, userId, serverURL, reload }) => {
 
         // console.log("===== response.data", response.data);
 
+        !data ? setIdListActive(response.data.lists[0]._id) : null;
         setData(response.data);
-        setIdListActive(response.data.lists[0]._id);
-        setTitleListActive(response.data.lists[0].title);
+        // setTitleListActive(response.data.lists[0].title);
         setLoading(false);
       } catch (error) {
         console.log(error.message);
@@ -109,30 +117,20 @@ const ListsScreen = ({ navigation, userToken, userId, serverURL, reload }) => {
   };
 
   return loading ? (
-    <View style={styles.loading}>
-      <ActivityIndicator size="large" color={buttonDarkBlue} />
-    </View>
+    <LinearGradient colors={["#1E2C79", "#232952"]} style={styles.background}>
+      <ActivityIndicator size="large" color={white} />
+    </LinearGradient>
   ) : (
     <KeyboardAwareScrollView
       contentContainerStyle={{ height: "100%", margin: 0 }}
       viewIsInsideTabBar={true}
     >
       <View style={styles.screen}>
-        {/* <KeyboardAwareScrollView
-        contentContainerStyle={{ height: "100%", margin: 0 }}
-
-        viewIsInsideTabBar={false}
-      >
-
-        */}
-
         <StatusBar style="light" />
         <SafeAreaView style={styles.pageScreen}>
           <View style={styles.globalContainer}>
             <View style={styles.wrapper}>
-              {/* ----- Header 
-            ✅  Gérer le toggle dépliant 
-            🚨 Gérer les onPress "notifications" + "partager" - vers quelles screen ça renvoit ?*/}
+              {/* ----- Header ✅ */}
               <ListHeader
                 data={data}
                 idListActive={idListActive}
@@ -140,8 +138,10 @@ const ListsScreen = ({ navigation, userToken, userId, serverURL, reload }) => {
                 setFoldedNav={setFoldedNav}
                 foldOrUnfoldLists={foldOrUnfoldLists}
               />
-              {/* ----- Navigation scrollbar horizontal ✅ 
-            🚨 Gérer l'ajout de la nouvelle liste au DEBUT et non à la suite des listes existantes */}
+
+
+              {/* ----- Navigation scrollbar horizontal ✅ */}
+
               {foldedNav ? null : (
                 <View>
                   <ListButtonChoice
@@ -153,7 +153,9 @@ const ListsScreen = ({ navigation, userToken, userId, serverURL, reload }) => {
                   />
                 </View>
               )}
+
               {/* ----- List(s) ✅ */}
+
               <ListFull
                 data={data}
                 idListActive={idListActive}
@@ -163,12 +165,7 @@ const ListsScreen = ({ navigation, userToken, userId, serverURL, reload }) => {
                 setAddProductList={setAddProductList}
                 serverURL={serverURL}
               />
-              <Button
-                title="Ma liste maison"
-                onPress={() => {
-                  navigation.navigate("ListScreen");
-                }}
-              />
+
             </View>
 
             <View style={styles.blockBottomAddQuicklyAutocomplete}>
@@ -220,8 +217,7 @@ const ListsScreen = ({ navigation, userToken, userId, serverURL, reload }) => {
         </SafeAreaView>
         {/* </KeyboardAwareScrollView> */}
 
-        {/* Modal "+ New list" ✅ 
-      👉🏻 Si le temps, bloquer la sélection à 1 seul emoji  */}
+        {/* Modal "+ New list" ✅  */}
         <ListModalNewList
           serverURL={serverURL}
           userToken={userToken}
@@ -229,10 +225,10 @@ const ListsScreen = ({ navigation, userToken, userId, serverURL, reload }) => {
           setModalVisible={setModalVisible}
           newListCreated={newListCreated}
           setNewListCreated={setNewListCreated}
+          setReload={setReload}
         />
 
-        {/* Modal "update or delete a list" ✅
-      👉🏻 Si le temps, bloquer la sélection à 1 seul emoji */}
+        {/* Modal "Update or delete a list" ✅*/}
         <ListModalRenameList
           serverURL={serverURL}
           userToken={userToken}
@@ -245,6 +241,7 @@ const ListsScreen = ({ navigation, userToken, userId, serverURL, reload }) => {
           deleteList={deleteList}
           setDeleteList={setDeleteList}
           titleListActive={titleListActive}
+          setReload={setReload}
         />
 
         {/* Modal "Add Product" */}
@@ -267,24 +264,19 @@ const ListsScreen = ({ navigation, userToken, userId, serverURL, reload }) => {
 export default ListsScreen;
 
 const styles = StyleSheet.create({
-  loading: {
+  background: {
     flex: 1,
     justifyContent: "center",
+    alignItems: "center",
   },
   screen: {
     flex: 1,
     backgroundColor: buttonDarkBlue,
   },
-  // pageScreen: {
-  //   backgroundColor: buttonDarkBlue,
-  //   flex: 1,
-  // },
-
   globalContainer: {
     height: "100%",
     justifyContent: "space-between",
   },
-
   wrapper: {
     paddingTop: 20,
     width: "96%",
@@ -294,11 +286,8 @@ const styles = StyleSheet.create({
     marginRight: "auto",
     flex: 1,
   },
-
   blockBottomAddQuicklyAutocomplete: {
-    // backgroundColor: "red",
     height: 65,
     justifyContent: "flex-end",
-    // marginTop: 30,
   },
 });
