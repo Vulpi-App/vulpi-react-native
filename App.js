@@ -4,7 +4,6 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import axios from "axios";
-import { Image, StyleSheet } from "react-native";
 import { useFonts } from "expo-font";
 import colors from "./assets/colors";
 const { buttonDarkBlue, inactiveTabBar } = colors;
@@ -21,6 +20,10 @@ import SettingsScreen from "./containers/SettingsScreen";
 import FeedbackScreen from "./containers/FeedbackScreen";
 import ListScreen from "./containers/ListScreen";
 import RegisterScreen from "./containers/RegisterScreen";
+import EditListScreen from "./containers/EditListScreen";
+import IconTabBarAccount from "./components/IconTabBarAccount";
+import IconTabBarList from "./components/IconTabBarList";
+import IconTabBarExplore from "./components/IconTabBarExplore";
 
 // Useful variables
 const serverURL = "http://localhost:3310";
@@ -34,8 +37,6 @@ const Stack = createStackNavigator();
 // ================================================
 
 export default function App() {
-
-
   const [isLoading, setIsLoading] = useState(true);
   const [userToken, setUserToken] = useState(null);
   const [userId, setUserId] = useState(null);
@@ -45,6 +46,8 @@ export default function App() {
   const [firstName, setFirstName] = useState("");
   const [password, setPassword] = useState("");
   const [displayMessage, setDisplayMessage] = useState("");
+  const [reload, setReload] = useState(false);
+  const [reloadUser, setReloadUser] = useState(false);
 
   // Loading of font GILROY
   const [fontLoaded] = useFonts({
@@ -82,9 +85,6 @@ export default function App() {
       setUserToken(userToken);
       setUserId(userId);
 
-
-
-
       // Check if the user has already seen the on-Boarding
       const onBoarding = await AsyncStorage.getItem("onBoarding");
       if (onBoarding === "done") {
@@ -112,7 +112,7 @@ export default function App() {
     };
 
     bootstrapAsync();
-  }, []);
+  }, [reloadUser]);
 
   // Function used to sign up, log in and log out user
   const setToken = async (token, id, firstName) => {
@@ -127,7 +127,6 @@ export default function App() {
     setUserId(id);
 
     setFirstName(firstName);
-
   };
 
   // Function used after the user has seen the onBoarding
@@ -149,8 +148,6 @@ export default function App() {
     }
   };
 
-
-
   // Function to update user account
   const editInformation = async (data, isInfosModified) => {
     setDisplayMessage(false);
@@ -164,18 +161,16 @@ export default function App() {
         } else if (data === "firstName") {
           formData.append("firstName", firstName);
         } else if (data === "avatar") {
-          console.log("ici");
-          console.log(avatar);
+          console.log("avatar: " + avatar);
           const uriParts = avatar.split(".");
-          console.log("la");
-          console.log(uriParts);
+
           const fileType = uriParts[uriParts.length - 1];
-          console.log("fileTupe : " + fileType);
           formData.append("avatar", {
-            avatar,
-            name: `avatar.${firstName}`,
-            type: fileType,
+            uri: avatar,
+            name: `avatar.${userId}`,
+            type: `image/${fileType}`,
           });
+          console.log("formData : " + formData.avatar);
         }
 
         const response = await axios.put(
@@ -184,11 +179,15 @@ export default function App() {
           { headers: { Authorization: "Bearer " + userToken } }
         );
         if (response.data) {
+          console.log("requête passée");
           setDisplayMessage({ message: "Votre profil a été mis a jour." });
+          setReloadUser(true);
         } else {
+          console.log("erreur produite");
           setDisplayMessage({ message: "Une erreur s'est produite" });
         }
       } catch (error) {
+        console.log("error message catch: " + error.response.data.error);
         setDisplayMessage({ message: error.response.data.error });
       }
     } else {
@@ -198,9 +197,6 @@ export default function App() {
 
   // ===============================================
   // ===============================================
-
-
-
 
   return (
     <NavigationContainer>
@@ -230,7 +226,11 @@ export default function App() {
       ) : (
         // User is signed in
         <Stack.Navigator>
-          <Stack.Screen name="Tab" options={{ headerShown: false }}>
+          <Stack.Screen
+            name="Tab"
+            options={{ headerShown: false }}
+            //initialRouteName="ShoppingScreen"
+          >
             {() => (
               <Tab.Navigator
                 tabBarOptions={{
@@ -246,13 +246,7 @@ export default function App() {
                   name="Explore"
                   options={{
                     tabBarLabel: "Explorer",
-                    tabBarIcon: ({ color, size }) => (
-                      <Image
-                        source={require("./assets/icon-tab-explore-active.png")}
-                        resizeMode="contain"
-                        style={styles.iconsTabBar}
-                      />
-                    ),
+                    tabBarIcon: () => <IconTabBarExplore />,
                   }}
                 >
                   {() => (
@@ -285,13 +279,7 @@ export default function App() {
                   name="Lists"
                   options={{
                     tabBarLabel: "Liste",
-                    tabBarIcon: ({ color, size }) => (
-                      <Image
-                        source={require("./assets/icon-tab-list-active.png")}
-                        resizeMode="contain"
-                        style={styles.iconsTabBar}
-                      />
-                    ),
+                    tabBarIcon: () => <IconTabBarList />,
                   }}
                 >
                   {() => (
@@ -334,13 +322,7 @@ export default function App() {
                   name="Account"
                   options={{
                     tabBarLabel: "Compte",
-                    tabBarIcon: ({ color, size }) => (
-                      <Image
-                        source={require("./assets/icon-tab-account-active.png")}
-                        resizeMode="contain"
-                        style={styles.iconsTabBar}
-                      />
-                    ),
+                    tabBarIcon: () => <IconTabBarAccount />,
                   }}
                 >
                   {() => (
@@ -359,6 +341,9 @@ export default function App() {
                             userToken={userToken}
                             userId={userId}
                             serverURL={serverURL}
+                            reload={reload}
+                            setReload={setReload}
+                            setReloadUser={setReloadUser}
                           />
                         )}
                       </Stack.Screen>
@@ -384,11 +369,17 @@ export default function App() {
                           />
                         )}
                       </Stack.Screen>
-                      <Stack.Screen
-                        name="SettingsScreen"
-                        options={{ title: "Paramètres" }}
-                      >
-                        {(props) => <SettingsScreen {...props} />}
+                      <Stack.Screen name="EditListScreen">
+                        {(props) => (
+                          <EditListScreen
+                            {...props}
+                            reload={reload}
+                            setReload={setReload}
+                            serverURL={serverURL}
+                            userToken={userToken}
+                            userId={userId}
+                          />
+                        )}
                       </Stack.Screen>
                       <Stack.Screen
                         name="FeedbackScreen"
@@ -409,10 +400,3 @@ export default function App() {
     </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  iconsTabBar: {
-    width: 20,
-    height: 20,
-  },
-});
