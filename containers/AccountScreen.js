@@ -49,7 +49,6 @@ function AccountScreen({
   setReload,
   setReloadUser,
 }) {
-  const [isPictureModified, setIsPictureModified] = useState(false);
   const [userLists, setUserLists] = useState([]);
   const [userListsVisible, setUserListsVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -130,12 +129,11 @@ function AccountScreen({
               <TouchableOpacity
                 style={styles.navigation}
                 onPress={() => {
-                  //navigation.navigate("Lists");
                   setUserListsVisible(!userListsVisible);
                 }}
               >
                 <View style={styles.whiteButton}>
-                  <Text style={styles.blueText}>🗒{"   "}Mes listes</Text>
+                  <Text style={styles.blueText}>🗒 Mes listes</Text>
                   {isLoading ? (
                     <ActivityIndicator />
                   ) : !userListsVisible ? (
@@ -168,7 +166,7 @@ function AccountScreen({
                           });
                         }}
                       >
-                        <Text style={styles.blueText}>
+                        <Text style={styles.blueText} numberOfLines={1}>
                           {item.emoji} {item.title}
                         </Text>
                         <Image
@@ -326,6 +324,7 @@ const styles = StyleSheet.create({
     color: mainBlueText,
     fontSize: 16,
     fontFamily: "GilroySemiBold",
+    maxWidth: "80%",
   },
 
   icon: {

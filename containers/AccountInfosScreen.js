@@ -7,7 +7,9 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
+  TouchableWithoutFeedback,
   View,
+  Modal,
 } from "react-native";
 import axios from "axios";
 import Constants from "expo-constants";
@@ -20,9 +22,11 @@ const {
   buttonDarkBlue,
   buttonFlashBlue,
   deleteRed,
-  greyAfterCheck,
+  darkGreyFutur,
   bgLightText,
 } = colors;
+
+import ModalDeleteAccount from "../components/ModalDeleteAccount";
 
 const windowHeight = Dimensions.get("window").height;
 const statusBarHeight = Constants.statusBarHeight;
@@ -44,6 +48,8 @@ function AccountInfosScreen({
   editInformation,
 }) {
   const [isInfosModified, setIsInfosModified] = useState(false);
+  const [passwordVisible, setPasswordVisible] = useState(false);
+  const [modalDeleteVisible, setModalDeleteVisible] = useState(false);
   const navigation = useNavigation();
 
   const handleDeleteAccount = async () => {
@@ -141,7 +147,7 @@ function AccountInfosScreen({
               <TextInput
                 style={styles.textInputButton}
                 placeholder="••••••••••"
-                secureTextEntry={true}
+                secureTextEntry={!passwordVisible ? true : false}
                 autoCapitalize="none"
                 textContentType="none"
                 value={password}
@@ -153,6 +159,21 @@ function AccountInfosScreen({
                   setIsInfosModified(true);
                 }}
               />
+              <TouchableWithoutFeedback
+                onPress={() => {
+                  setPasswordVisible(!passwordVisible);
+                }}
+              >
+                <Image
+                  source={
+                    !passwordVisible
+                      ? require("../assets/icon-eye.png")
+                      : require("../assets/icon-eye-inactive.png")
+                  }
+                  style={styles.icon}
+                  resizeMode={"contain"}
+                />
+              </TouchableWithoutFeedback>
               <TouchableOpacity
                 style={styles.buttonInput}
                 onPress={() => {
@@ -173,13 +194,20 @@ function AccountInfosScreen({
             <TouchableOpacity
               style={styles.deleteButton}
               underlayColor={deleteRed}
-              onPress={handleDeleteAccount}
+              onPress={() => {
+                setModalDeleteVisible(true);
+              }}
             >
               <Text style={styles.deleteText}>Supprimer mon compte</Text>
             </TouchableOpacity>
           </View>
         </View>
       </View>
+      <ModalDeleteAccount
+        modalDeleteVisible={modalDeleteVisible}
+        setModalDeleteVisible={setModalDeleteVisible}
+        handleDeleteAccount={handleDeleteAccount}
+      />
     </View>
   );
 }
@@ -240,22 +268,6 @@ const styles = StyleSheet.create({
     fontFamily: "GilroySemiBold",
   },
 
-  inputText: {
-    borderBottomRightRadius: 8,
-    borderBottomLeftRadius: 8,
-    backgroundColor: "white",
-    borderTopRightRadius: 8,
-    borderColor: bgLightText,
-    borderTopLeftRadius: 8,
-    fontWeight: "600",
-    color: greyAfterCheck,
-    paddingLeft: 15,
-    borderWidth: 1,
-    width: "90%",
-    fontSize: 16,
-    height: 53,
-  },
-
   inputWrap: {
     alignItems: "flex-end",
     width: "90%",
@@ -269,7 +281,7 @@ const styles = StyleSheet.create({
     borderColor: bgLightText,
     borderTopLeftRadius: 8,
     fontWeight: "600",
-    color: greyAfterCheck,
+    color: buttonDarkBlue,
     paddingLeft: 15,
     borderWidth: 1,
     width: "100%",
@@ -326,5 +338,32 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 18,
     fontFamily: "GilroySemiBold",
+  },
+
+  icon: {
+    width: 25,
+    height: 25,
+    position: "absolute",
+    bottom: 15,
+    right: 118,
+  },
+
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: darkGreyFutur,
+  },
+
+  viewModal: {
+    backgroundColor: "white",
+    borderRadius: 10,
+    paddingVertical: 25,
+    paddingHorizontal: 20,
+    marginHorizontal: 10,
+  },
+
+  iconClose: {
+    alignSelf: "flex-end",
   },
 });
