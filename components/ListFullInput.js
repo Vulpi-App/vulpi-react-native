@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { Text, View, TouchableOpacity, StyleSheet } from "react-native";
 import axios from "axios";
+import * as Haptics from "expo-haptics";
 
 // Components - import
 import ListEmptyContent from "./ListEmptyContent";
@@ -92,6 +93,7 @@ const ListFullInput = ({
                 <View>
                   <TouchableOpacity
                     onPress={() => {
+                      Haptics.selectionAsync();
                       checkProduct(el);
                     }}
                     style={styles.listRadioButton}
@@ -200,6 +202,7 @@ const ListFullInput = ({
                 <View>
                   <TouchableOpacity
                     onPress={() => {
+                      Haptics.selectionAsync();
                       checkProduct(el);
                     }}
                     style={styles.listRadioButton}

@@ -65,7 +65,7 @@ const EditListScreen = ({
       }
     };
     fetchData();
-  }, [reload, serverURL]);
+  }, [reload, serverURL, route.params.type]);
 
   const editInformation = async (data) => {
     try {

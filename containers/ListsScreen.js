@@ -39,6 +39,8 @@ const ListsScreen = ({
   serverURL,
   reload,
   setReload,
+  idListActive,
+  setIdListActive,
 }) => {
   // States for modals
   const [isModalVisible, setModalVisible] = useState(false);
@@ -50,7 +52,7 @@ const ListsScreen = ({
   const [data, setData] = useState();
 
   // State for active lists (scrollbar horizontal)
-  const [idListActive, setIdListActive] = useState();
+  // const [idListActive, setIdListActive] = useState();
   const [titleListActive, setTitleListActive] = useState();
 
   // State for new list
@@ -208,7 +210,6 @@ const ListsScreen = ({
             </View>
             {/* </View> */}
           </View>
-
         </KeyboardAwareScrollView>
       </SafeAreaView>
 
@@ -227,7 +228,7 @@ const ListsScreen = ({
       <ListModalRenameList
         serverURL={serverURL}
         userToken={userToken}
-data={data}
+        data={data}
         userId={userId}
         listId={idListActive}
         isModalUpdateVisible={isModalUpdateVisible}
@@ -238,7 +239,7 @@ data={data}
         setDeleteList={setDeleteList}
         titleListActive={titleListActive}
         setReload={setReload}
-setIdListActive={setIdListActive}
+        setIdListActive={setIdListActive}
       />
 
       {/* Modal "Add Product" */}
@@ -254,8 +255,6 @@ setIdListActive={setIdListActive}
         serverURL={serverURL}
       />
     </View>
-
- 
   );
 };
 

@@ -134,9 +134,7 @@ const ListScreen = ({ navigation }) => {
                     style={styles.image}
                     resizeMode={"contain"}
                   />
-                  <Text style={styles.backText}>
-                    Mes informations personnelles
-                  </Text>
+                  <Text style={styles.backText}>Notifications</Text>
                 </View>
               </TouchableOpacity>
             </View>
@@ -215,7 +213,7 @@ const styles = StyleSheet.create({
   },
   image: {
     marginRight: 25,
-    height: "30%",
+    height: "50%",
     marginTop: 5,
     width: "5%",
   },
