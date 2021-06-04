@@ -7,8 +7,11 @@ import {
   TextInput,
   Modal,
   TouchableWithoutFeedback,
-  Dimensions,
 } from "react-native";
+
+// Colors - import
+import colors from "../assets/colors";
+const { midGreyText, inputBg, productDetails, bgMeasure, greyLight } = colors;
 
 // Import icons
 import { Entypo } from "@expo/vector-icons";
@@ -60,7 +63,7 @@ const ModalProduct = ({
           <TextInput
             style={styles.inputTextPrice}
             placeholder={placeholderInput}
-            placeholderTextColor="#797979"
+            placeholderTextColor={midGreyText}
             onChangeText={(input) => {
               setValueInput(input);
             }}
@@ -77,7 +80,7 @@ const ModalProduct = ({
           <TextInput
             style={styles.inputTextQuantity}
             placeholder={placeholderInput}
-            placeholderTextColor="#797979"
+            placeholderTextColor={midGreyText}
             onChangeText={(input) => {
               setValueInput(input);
             }}
@@ -92,7 +95,7 @@ const ModalProduct = ({
               style={styles.iconDown}
               name="chevron-down"
               size={20}
-              color="#797979"
+              color={greyLight}
               onPress={() => {
                 setModalMeasuresVisible(true);
               }}
@@ -103,7 +106,7 @@ const ModalProduct = ({
         <TextInput
           style={styles.inputText}
           placeholder={placeholderInput}
-          placeholderTextColor="#797979"
+          placeholderTextColor={midGreyText}
           onChangeText={(input) => {
             setValueInput(input);
           }}
@@ -150,28 +153,31 @@ export default ModalProduct;
 
 const styles = StyleSheet.create({
   blockInput: { width: "100%", marginBottom: 10 },
-  labelInput: { marginBottom: 5, fontWeight: "bold", fontSize: 13 },
+  labelInput: { marginBottom: 5, fontFamily: "GilroyBold", fontSize: 13 },
   inputText: {
     borderRadius: 8,
     paddingHorizontal: 20,
     paddingVertical: 15,
-    backgroundColor: "#FAFAFA",
-    color: "#3E4685",
-    fontWeight: "bold",
+    backgroundColor: inputBg,
+    color: productDetails,
+    fontFamily: "GilroyBold",
   },
   blockInputPrice: {
     borderRadius: 8,
     paddingHorizontal: 20,
     paddingVertical: 15,
-    color: "grey",
-    backgroundColor: "#FAFAFA",
+    backgroundColor: inputBg,
     flexDirection: "row",
     justifyContent: "space-between",
   },
-  inputTextPrice: { width: "90%", color: "#3E4685", fontWeight: "bold" },
+  inputTextPrice: {
+    width: "90%",
+    color: productDetails,
+    fontFamily: "GilroyBold",
+  },
   textEuro: {
-    color: "#3E4685",
-    fontWeight: "bold",
+    color: productDetails,
+    fontFamily: "GilroyBold",
     width: "10%",
     textAlign: "right",
   },
@@ -180,12 +186,15 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     paddingHorizontal: 20,
     paddingVertical: 15,
-    color: "grey",
-    backgroundColor: "#FAFAFA",
+    backgroundColor: inputBg,
     flexDirection: "row",
     justifyContent: "space-between",
   },
-  inputTextQuantity: { width: "70%", color: "#3E4685", fontWeight: "bold" },
+  inputTextQuantity: {
+    width: "70%",
+    color: productDetails,
+    fontFamily: "GilroyBold",
+  },
   blockMeasures: {
     width: "30%",
     flexDirection: "row",
@@ -193,8 +202,13 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     borderLeftWidth: 2,
     borderLeftColor: "grey",
+    alignItems: "center",
   },
-  textMeasures: { width: "70%", color: "#797979" },
+  textMeasures: {
+    width: "70%",
+    color: greyLight,
+    fontFamily: "GilroySemiBold",
+  },
   iconDown: { width: "30%" },
 
   modalMeasures: {
@@ -209,7 +223,7 @@ const styles = StyleSheet.create({
   modalMeasuresView: {
     width: "100%",
     height: "30%",
-    backgroundColor: "#E5E3E3",
+    backgroundColor: bgMeasure,
   },
 
   // pickerMeasures: { height: 50, backgroundColor: "red", color: "green" },

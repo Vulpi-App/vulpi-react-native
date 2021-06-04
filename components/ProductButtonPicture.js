@@ -1,6 +1,10 @@
 // Tools
-import React, { useState } from "react";
+import React from "react";
 import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
+
+// Colors - import
+import colors from "../assets/colors";
+const { buttonFlashBlue } = colors;
 
 const ProductButtonPicture = ({
   pictureProduct,
@@ -41,7 +45,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     borderStyle: "dashed",
     borderWidth: 1,
-    borderColor: "#3443B9",
+    borderColor: buttonFlashBlue,
     borderRadius: 8,
     height: 50,
     alignItems: "center",
@@ -53,8 +57,9 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   textAddPicture: {
-    color: "#3443B9",
-    fontWeight: "bold",
+    color: buttonFlashBlue,
+    fontFamily: "GilroyBold",
+    fontSize: 15,
     flex: 1,
     textAlign: "center",
   },

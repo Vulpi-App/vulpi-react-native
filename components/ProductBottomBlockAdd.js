@@ -1,14 +1,12 @@
 // Tools
 import React from "react";
-import {
-  Navigation,
-  StyleSheet,
-  View,
-  TextInput,
-  TouchableOpacity,
-} from "react-native";
+import { StyleSheet, View, TextInput, TouchableOpacity } from "react-native";
 import { Ionicons, FontAwesome5 } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/core";
+
+// Colors - import
+import colors from "../assets/colors";
+const { white, greenButton, greenUnderlay, greyInput } = colors;
 
 const ProductBottomBlockAdd = ({
   setModalAddProductVisible,
@@ -67,7 +65,7 @@ const ProductBottomBlockAdd = ({
 
       <TouchableOpacity
         style={styles.blockScan}
-        underlayColor="#EEEEEE"
+        underlayColor={greenUnderlay}
         onPress={() => {
           navigation.navigate("BarCodeScanner");
         }}
@@ -84,13 +82,13 @@ export default ProductBottomBlockAdd;
 
 const styles = StyleSheet.create({
   bottomBlockAdd: {
-    backgroundColor: "white",
+    backgroundColor: white,
     padding: 15,
     flexDirection: "row",
     justifyContent: "space-between",
   },
   blockInput: {
-    backgroundColor: "#E6E6E6",
+    backgroundColor: greyInput,
     borderRadius: 15,
     padding: 8,
     paddingRight: 15,
@@ -104,15 +102,16 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: "black",
     flex: 1,
+    fontFamily: "GilroyMedium",
   },
   blockScan: {
     width: 45,
     height: 45,
-    backgroundColor: "#4EBF53",
+    backgroundColor: greenButton,
     alignItems: "center",
     justifyContent: "center",
     borderRadius: 15,
-    shadowColor: "#4EBF53",
+    shadowColor: greenButton,
     shadowOpacity: 1,
     shadowOffset: { height: 1 },
   },

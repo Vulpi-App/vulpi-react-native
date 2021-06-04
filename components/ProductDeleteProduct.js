@@ -10,7 +10,7 @@ import {
 
 // Colors - import
 import colors from "../assets/colors";
-const { buttonDarkBlue } = colors;
+const { buttonDarkBlue, deleteRed } = colors;
 
 const ProductDeleteProduct = ({
   setModalAddProductVisible,
@@ -46,8 +46,11 @@ const styles = StyleSheet.create({
     width: "100%",
     justifyContent: "center",
     alignItems: "center",
-    borderColor: "#3443B9",
     borderRadius: 10,
   },
-  textDeleteProduct: { color: "#CA2121", fontWeight: "bold" },
+  textDeleteProduct: {
+    color: deleteRed,
+    fontFamily: "GilroyBold",
+    fontSize: 15,
+  },
 });

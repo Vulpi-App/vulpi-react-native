@@ -23,6 +23,11 @@ const colors = {
   white: "#fff",
   whiteWithOpacity: "rgba(255, 255, 255, 0.8)",
   dark: "#000",
+  greenUnderlay: "#EEEEEE",
+  greyInput: "#E6E6E6",
+  greenButton: "#4EBF53",
+  bgMeasure: "#E5E3E3",
+  greyLight: "#797979",
 };
 
 export default colors;

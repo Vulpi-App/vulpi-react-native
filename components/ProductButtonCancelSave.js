@@ -8,6 +8,10 @@ import {
   TouchableOpacity,
 } from "react-native";
 
+// Colors - import
+import colors from "../assets/colors";
+const { white, buttonFlashBlue } = colors;
+
 const ProductButtonCancelSave = ({
   closeModalProduct,
   submitInfosProduct,
@@ -26,7 +30,7 @@ const ProductButtonCancelSave = ({
         onPress={submitInfosProduct}
       >
         {isLoading ? (
-          <ActivityIndicator size="small" color="white" />
+          <ActivityIndicator size="small" color={white} />
         ) : (
           <Text style={styles.textSave}>Enregistrer</Text>
         )}
@@ -52,8 +56,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderRadius: 8,
   },
-  buttonCancel: { backgroundColor: "white" },
-  buttonSave: { backgroundColor: "#3443B9" },
-  textCancel: { color: "#3443B9", fontWeight: "bold" },
-  textSave: { color: "white", fontWeight: "bold" },
+  buttonCancel: { backgroundColor: white },
+  buttonSave: { backgroundColor: buttonFlashBlue },
+  textCancel: { color: buttonFlashBlue, fontFamily: "GilroyBold" },
+  textSave: { color: white, fontFamily: "GilroyBold" },
 });

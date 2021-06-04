@@ -1,8 +1,12 @@
 // Tools
 import React from "react";
-import { StyleSheet, View, Text } from "react-native";
+import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import axios from "axios";
+
+// Colors - import
+import colors from "../assets/colors";
+const { white, greenButton, greyLight } = colors;
 
 const ProductLineAutoComplete = ({
   firstLine,
@@ -77,14 +81,9 @@ const ProductLineAutoComplete = ({
       <Text style={styles.textAdd}>
         {capitalizeFirstLetter(valueAutocomplete)}
       </Text>
-      <View style={styles.blockButtonAdd}>
-        <AntDesign
-          name="arrowup"
-          size={20}
-          color="white"
-          onPress={addProduct}
-        />
-      </View>
+      <TouchableOpacity style={styles.blockButtonAdd} onPress={addProduct}>
+        <AntDesign name="arrowup" size={20} color={white} />
+      </TouchableOpacity>
     </View>
   );
 };
@@ -93,7 +92,7 @@ export default ProductLineAutoComplete;
 
 const styles = StyleSheet.create({
   bottomBlockAdd: {
-    backgroundColor: "white",
+    backgroundColor: white,
     paddingVertical: 10,
     paddingHorizontal: 15,
     flexDirection: "row",
@@ -103,7 +102,7 @@ const styles = StyleSheet.create({
   blockButtonAdd: {
     width: 45,
     height: 35,
-    backgroundColor: "#4EBF53",
+    backgroundColor: greenButton,
     alignItems: "center",
     justifyContent: "center",
     borderRadius: 20,
@@ -112,8 +111,8 @@ const styles = StyleSheet.create({
   textAdd: {
     flex: 1,
     marginRight: 10,
-    color: "#797979",
-    fontWeight: "bold",
+    color: greyLight,
+    fontFamily: "GilroyBold",
     paddingLeft: 10,
   },
 });
