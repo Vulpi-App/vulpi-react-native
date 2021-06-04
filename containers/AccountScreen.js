@@ -158,8 +158,9 @@ function AccountScreen({
                       <TouchableOpacity
                         style={[styles.whiteButton, styles.listView]}
                         onPress={() => {
-                          navigation.navigate("EditListScreen", {
-                            id: item._id,
+                          navigation.navigate("Account", {
+                            screen: "EditListScreen",
+                            params: { type: item._id },
                           });
                         }}
                       >

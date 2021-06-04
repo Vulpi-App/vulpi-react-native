@@ -46,15 +46,21 @@ const EditListScreen = ({
   const navigation = useNavigation();
   // console.log("ROUTE ", route.params.type);
 
+  let idList;
+
   useEffect(() => {
     const fetchData = async () => {
+      if (route.params.type) {
+        console.log("la");
+        idList = route.params.type;
+      } else if (route.params.id) {
+        console.log("ici");
+        idList = route.params.id;
+      }
       try {
-        const response = await axios.get(
-          `${serverURL}/list/${route.params.type}`,
-          {
-            headers: { Authorization: "Bearer " + userToken },
-          }
-        );
+        const response = await axios.get(`${serverURL}/list/${idList}`, {
+          headers: { Authorization: "Bearer " + userToken },
+        });
 
         setListName(response.data.title);
         setListEmoji(response.data.emoji);
@@ -65,7 +71,9 @@ const EditListScreen = ({
       }
     };
     fetchData();
-  }, [reload, serverURL, route.params.type]);
+
+  }, [reload, serverURL, idList]);
+
 
   const editInformation = async (data) => {
     try {
@@ -101,7 +109,7 @@ const EditListScreen = ({
       }
 
       const response = await axios.put(
-        `${serverURL}/lists/update/${route.params.type}`,
+        `${serverURL}/lists/update/${idList}`,
         formData,
         {
           headers: { Authorization: `Bearer ${userToken}` },
@@ -125,7 +133,7 @@ const EditListScreen = ({
     setActivityIndicator(true);
     try {
       const response = await axios.delete(
-        `${serverURL}/lists/delete/${route.params.type}/${userId}`,
+        `${serverURL}/lists/delete/${idList}/${userId}`,
         {
           headers: { Authorization: `Bearer ${userToken}` },
         }
