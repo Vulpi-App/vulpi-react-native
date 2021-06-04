@@ -80,7 +80,7 @@ const ScanScreen = ({ userToken, serverURL, userId }) => {
       formData.append("nameProduct", data.product.product_name);
 
       const response = await axios.post(
-        `${localURLAdd}${idListActive}`,
+        `${serverURL}/lists/add-product/${idListActive}`,
         formData,
         {
           headers: { Authorization: `Bearer ${userToken}` },

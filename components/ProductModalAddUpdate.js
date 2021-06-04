@@ -9,7 +9,10 @@ import {
   TouchableWithoutFeedback,
 } from "react-native";
 import axios from "axios";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+
+// Colors - import
+import colors from "../assets/colors";
+const { white, mainBlueText } = colors;
 
 // Components
 import InputProduct from "./ProductInputAddUpdate";
@@ -18,7 +21,6 @@ import ProductButtonCancelSave from "./ProductButtonCancelSave";
 import ProductDeleteProduct from "./ProductDeleteProduct";
 import ProductModalTakePicture from "./ProductModalTakePicture";
 import ModalDeleteProduct from "./ProductModalConfirmDelete";
-import { BlurView } from "expo-blur";
 
 // Function to capitalize first letter of name product
 const capitalizeFirstLetter = (name) => {
@@ -60,14 +62,12 @@ const ModalProduct = ({
 
           // console.log("response : ", response.data);
 
-          setNameProduct(
-            capitalizeFirstLetter(response.data.reference.name) || null
-          );
-          setQuantityProduct(response.data.quantity || null);
+          setNameProduct(capitalizeFirstLetter(response.data.reference.name));
+          setQuantityProduct(response.data.quantity);
           setMeasureProduct(response.data.measure || "Unité");
-          setBrandProduct(capitalizeFirstLetter(response.data.brand) || null);
-          setShopProduct(capitalizeFirstLetter(response.data.shop) || null);
-          setPriceProduct(response.data.price || null);
+          setBrandProduct(capitalizeFirstLetter(response.data.brand));
+          setShopProduct(capitalizeFirstLetter(response.data.shop));
+          setPriceProduct(response.data.price);
         } catch (error) {
           console.log(error.message);
         }
@@ -141,9 +141,11 @@ const ModalProduct = ({
             setMessageErrorAfterSubmit(
               "Le nom du produit ne doit pas excéder 30 caractères"
             );
+            setIsLoading(false);
           }
         } else {
           setMessageErrorAfterSubmit("Merci de saisir un nom d'article");
+          setIsLoading(false);
         }
 
         // ------------------------------------ //
@@ -300,8 +302,6 @@ const ModalProduct = ({
     setIsLoadingDelete(false);
   };
 
-  // console.log("test2", quantityProduct);
-
   return (
     <View style={styles.pageScreen}>
       <Modal
@@ -378,7 +378,7 @@ const ModalProduct = ({
                 <ProductDeleteProduct
                   setModalDeleteProductVisible={setModalDeleteProductVisible}
                   setModalAddProductVisible={setModalAddProductVisible}
-                  isLoading={isLoading}
+                  isLoadingDelete={isLoadingDelete}
                 />
               )}
             </View>
@@ -424,7 +424,7 @@ const styles = StyleSheet.create({
   modalView: {
     width: "90%",
     height: "80%",
-    backgroundColor: "white",
+    backgroundColor: white,
     borderRadius: 20,
     paddingHorizontal: 20,
     paddingVertical: 30,
@@ -439,15 +439,15 @@ const styles = StyleSheet.create({
 
   modalTitle: {
     fontSize: 20,
-    fontWeight: "bold",
-    color: "#181725",
+    fontFamily: "GilroyBold",
+    color: mainBlueText,
     marginBottom: 20,
   },
 
   blockInputs: { width: "100%" },
   messageErrorAfterSubmit: {
     color: "red",
-    fontWeight: "bold",
+    fontFamily: "GilroySemiBold",
     textAlign: "center",
   },
 });

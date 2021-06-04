@@ -25,9 +25,14 @@ import IconTabBarAccount from "./components/IconTabBarAccount";
 import IconTabBarList from "./components/IconTabBarList";
 import IconTabBarExplore from "./components/IconTabBarExplore";
 
+// Disable warnings
+import { LogBox } from "react-native";
+LogBox.ignoreAllLogs();
+
+
 // Useful variables
-
-
+// const serverURL = "http://localhost:3310";
+// const serverURL = "http://192.168.0.20:3310";
 const serverURL = "https://vulpi-forest.herokuapp.com";
 // const serverURL = "http://192.168.1.40:3310";
 // Local server : "http://localhost:3310"
@@ -180,7 +185,9 @@ export default function App() {
         );
         if (response.data) {
 
+
           setDisplayMessage({ message: "Votre profil a été mis a jour. ✨" });
+
 
 
           setReloadUser(true);

@@ -1,20 +1,18 @@
 // Tools
-import React, { useState } from "react";
+import React from "react";
 import {
   Text,
   View,
   StyleSheet,
   TouchableOpacity,
   Modal,
-  TouchableHighlight,
   TouchableWithoutFeedback,
 } from "react-native";
-import Constants from "expo-constants";
-import axios from "axios";
-import { BlurView } from "expo-blur";
 import * as ImagePicker from "expo-image-picker";
 
-// Components
+// Colors - import
+import colors from "../assets/colors";
+const { white, mainBlueText, buttonFlashBlue } = colors;
 
 // Icons
 import { AntDesign } from "@expo/vector-icons";
@@ -140,7 +138,7 @@ const styles = StyleSheet.create({
   modalView: {
     width: "90%",
     height: "35%",
-    backgroundColor: "white",
+    backgroundColor: white,
     borderRadius: 20,
     paddingHorizontal: 20,
     paddingVertical: 30,
@@ -157,8 +155,8 @@ const styles = StyleSheet.create({
 
   choiceTakePicture: {
     fontSize: 20,
-    fontWeight: "bold",
-    color: "#181725",
+    fontFamily: "GilroyBold",
+    color: mainBlueText,
     marginTop: 10,
     textAlign: "center",
     width: "100%",
@@ -174,16 +172,9 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderStyle: "solid",
     borderWidth: 1,
-    borderColor: "#3443B9",
+    borderColor: buttonFlashBlue,
     marginTop: 15,
   },
 
-  textButtons: { color: "#3443B9", fontWeight: "bold" },
-
-  // //   buttonDelete: { backgroundColor: "#CA2121", marginBottom: 15 },
-  // //   buttonCancel: {
-  // //     borderStyle: "solid",
-  // //     borderWidth: 1,
-  // //     borderColor: "#3443B9",
-  //   },
+  textButtons: { color: buttonFlashBlue, fontFamily: "GilroyBold" },
 });

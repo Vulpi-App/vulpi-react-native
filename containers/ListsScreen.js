@@ -116,13 +116,14 @@ const ListsScreen = ({
       <ActivityIndicator size="large" color={white} />
     </LinearGradient>
   ) : (
-    <KeyboardAwareScrollView
-      contentContainerStyle={{ height: "100%", margin: 0 }}
-      viewIsInsideTabBar={true}
-    >
-      <View style={styles.screen}>
-        <StatusBar style="light" />
-        <SafeAreaView style={styles.pageScreen}>
+    <View style={styles.screen}>
+      <StatusBar style="light" />
+      <SafeAreaView style={styles.pageScreen}>
+        <KeyboardAwareScrollView
+          contentContainerStyle={{ height: "100%" }}
+          viewIsInsideTabBar={false}
+          extraScrollHeight={-57}
+        >
           <View style={styles.globalContainer}>
             <View style={styles.wrapper}>
               {/* ----- Header ✅ */}
@@ -159,6 +160,7 @@ const ListsScreen = ({
               />
             </View>
 
+            {/* <View> */}
             <View style={styles.blockBottomAddQuicklyAutocomplete}>
               {valueInputAddQuickly && dataProductsDisplay.length > 0 ? (
                 <ProductLineAutoComplete
@@ -204,52 +206,56 @@ const ListsScreen = ({
                 setDataProductsDisplay={setDataProductsDisplay}
               />
             </View>
+            {/* </View> */}
           </View>
-        </SafeAreaView>
 
-        {/* Modal "+ New list" ✅  */}
-        <ListModalNewList
-          serverURL={serverURL}
-          userToken={userToken}
-          isModalVisible={isModalVisible}
-          setModalVisible={setModalVisible}
-          newListCreated={newListCreated}
-          setNewListCreated={setNewListCreated}
-          setReload={setReload}
-        />
+        </KeyboardAwareScrollView>
+      </SafeAreaView>
 
-        {/* Modal "Update or delete a list" ✅*/}
-        <ListModalRenameList
-          serverURL={serverURL}
-          userToken={userToken}
-          data={data}
-          userId={userId}
-          listId={idListActive}
-          isModalUpdateVisible={isModalUpdateVisible}
-          setModalUpdateVisible={setModalUpdateVisible}
-          updateList={updateList}
-          setUpdateList={setUpdateList}
-          deleteList={deleteList}
-          setDeleteList={setDeleteList}
-          titleListActive={titleListActive}
-          setReload={setReload}
-          setIdListActive={setIdListActive}
-        />
+      {/* Modal "+ New list" ✅  */}
+      <ListModalNewList
+        serverURL={serverURL}
+        userToken={userToken}
+        isModalVisible={isModalVisible}
+        setModalVisible={setModalVisible}
+        newListCreated={newListCreated}
+        setNewListCreated={setNewListCreated}
+        setReload={setReload}
+      />
 
-        {/* Modal "Add Product" */}
-        <ModalProduct
-          modalAddProductVisible={modalAddProductVisible}
-          setModalAddProductVisible={setModalAddProductVisible}
-          typeModalProduct="new product"
-          idList={idListActive}
-          userToken={userToken}
-          // product={null}
-          addProductList={addProductList}
-          setAddProductList={setAddProductList}
-          serverURL={serverURL}
-        />
-      </View>
-    </KeyboardAwareScrollView>
+      {/* Modal "Update or delete a list" ✅*/}
+      <ListModalRenameList
+        serverURL={serverURL}
+        userToken={userToken}
+data={data}
+        userId={userId}
+        listId={idListActive}
+        isModalUpdateVisible={isModalUpdateVisible}
+        setModalUpdateVisible={setModalUpdateVisible}
+        updateList={updateList}
+        setUpdateList={setUpdateList}
+        deleteList={deleteList}
+        setDeleteList={setDeleteList}
+        titleListActive={titleListActive}
+        setReload={setReload}
+setIdListActive={setIdListActive}
+      />
+
+      {/* Modal "Add Product" */}
+      <ModalProduct
+        modalAddProductVisible={modalAddProductVisible}
+        setModalAddProductVisible={setModalAddProductVisible}
+        typeModalProduct="new product"
+        idList={idListActive}
+        userToken={userToken}
+        // product={null}
+        addProductList={addProductList}
+        setAddProductList={setAddProductList}
+        serverURL={serverURL}
+      />
+    </View>
+
+ 
   );
 };
 

@@ -9,7 +9,9 @@ import {
   TouchableWithoutFeedback,
 } from "react-native";
 
-// Components
+// Colors - import
+import colors from "../assets/colors";
+const { white, mainBlueText, greyLight, deleteRed, buttonFlashBlue } = colors;
 
 const ModalDeleteProduct = ({
   modalDeleteProductVisible,
@@ -89,7 +91,7 @@ const styles = StyleSheet.create({
   modalView: {
     width: "90%",
     height: "36%",
-    backgroundColor: "white",
+    backgroundColor: white,
     borderRadius: 20,
     paddingHorizontal: 20,
     paddingVertical: 30,
@@ -105,14 +107,15 @@ const styles = StyleSheet.create({
 
   modalDeleteTitle: {
     fontSize: 20,
-    fontWeight: "bold",
-    color: "#181725",
+    fontFamily: "GilroyBold",
+    color: mainBlueText,
     marginBottom: 30,
     textAlign: "left",
     width: "100%",
   },
   modalDeleteText: {
-    color: "#545560",
+    color: greyLight,
+    fontFamily: "GilroyRegular",
     textAlign: "left",
     width: "100%",
     fontSize: 15,
@@ -128,16 +131,16 @@ const styles = StyleSheet.create({
     paddingHorizontal: 5,
     borderRadius: 10,
   },
-  buttonDelete: { backgroundColor: "#CA2121", marginBottom: 15 },
+  buttonDelete: { backgroundColor: deleteRed, marginBottom: 15 },
   buttonCancel: {
     borderStyle: "solid",
     borderWidth: 1,
-    borderColor: "#3443B9",
+    borderColor: buttonFlashBlue,
   },
-  textButtonDelete: { color: "white", fontWeight: "bold" },
+  textButtonDelete: { color: white, fontFamily: "GilroyBold" },
   textButtonCancel: {
-    color: "#3443B9",
-    fontWeight: "bold",
+    color: buttonFlashBlue,
+    fontFamily: "GilroyBold",
     textAlign: "center",
     fontSize: 12,
   },
