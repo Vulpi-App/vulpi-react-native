@@ -219,6 +219,7 @@ function AccountScreen({
               <Text style={styles.logoutText}>Déconnexion</Text>
             </TouchableOpacity>
           </View>
+          <Text style={styles.withLove}>Made with ❤️ in Paris</Text>
         </View>
       </View>
       <AddAvatarModal
@@ -383,5 +384,13 @@ const styles = StyleSheet.create({
     height: 20,
     zIndex: 1,
     width: 20,
+  },
+  withLove: {
+    marginTop: "5%",
+    color: "#3C3C3C",
+    fontWeight: "600",
+    fontSize: 15,
+    position: "relative",
+    fontFamily: "GilroySemiBold",
   },
 });

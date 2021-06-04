@@ -87,9 +87,9 @@ const ScanScreen = ({ userToken, serverURL, userId }) => {
         }
       );
 
-      console.log("WORKING");
+      alert("Produit ajouté à la liste !");
     } catch (error) {
-      console.log("NOT WORKING");
+      alert("Produit non trouvé");
     }
   };
 
@@ -99,6 +99,17 @@ const ScanScreen = ({ userToken, serverURL, userId }) => {
         onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
         style={[StyleSheet.absoluteFill, styles.container1]}
       >
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate("ShoppingScreen");
+          }}
+          style={styles.buttonCross}
+        >
+          <Image
+            style={styles.cross}
+            source={require("../assets/icon-cross.png")}
+          />
+        </TouchableOpacity>
         <Text style={styles.description}>Scanner le code barre du produit</Text>
         <Image
           style={styles.qr}
@@ -130,6 +141,7 @@ const ScanScreen = ({ userToken, serverURL, userId }) => {
                 marginTop: "5%",
                 marginLeft: "5%",
                 marginRight: "5%",
+                fontFamily: "GilroyMedium",
               }}
             >
               Souhaitez-vous ajouter {data.product.product_name} à votre liste ?
@@ -142,9 +154,9 @@ const ScanScreen = ({ userToken, serverURL, userId }) => {
             onPress={() => {
               navigation.navigate("ShoppingScreen");
             }}
-            style={styles.buttonCancel}
+            style={styles.buttonCancel2}
           >
-            <Text style={styles.textCancel}>Annuler</Text>
+            <Text style={styles.textCancel}>Retour</Text>
           </TouchableOpacity>
         </View>
       ) : (
@@ -174,10 +186,11 @@ const styles = StyleSheet.create({
 
   description: {
     fontSize: 20,
-    marginTop: "30%",
+    marginTop: "15%",
     textAlign: "center",
     width: "100%",
     color: "white",
+    fontFamily: "GilroyMedium",
   },
   cancel: {
     fontSize: width * 0.05,
@@ -207,6 +220,11 @@ const styles = StyleSheet.create({
     width: "100%",
   },
 
+  cross: {
+    width: 14,
+    height: 14,
+  },
+
   flash: {
     width: 18,
     height: 30,
@@ -230,6 +248,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "white",
     fontSize: 16,
+    fontFamily: "GilroyBold",
   },
 
   buttonCancel: {
@@ -244,10 +263,36 @@ const styles = StyleSheet.create({
     marginTop: "5%",
   },
 
+  buttonCancel2: {
+    width: "90%",
+    height: 50,
+    backgroundColor: "#FFFFFF",
+    borderRadius: 8,
+    flexDirection: "row",
+    borderColor: "#3443B9",
+    borderWidth: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: "5%",
+  },
+
+  buttonCross: {
+    width: "100%",
+
+    borderRadius: 100,
+    flexDirection: "row",
+
+    alignItems: "center",
+    justifyContent: "flex-start",
+    marginTop: "20%",
+    marginLeft: "10%",
+  },
+
   textCancel: {
     fontWeight: "bold",
     color: "#3443B9",
     fontSize: 16,
+    fontFamily: "GilroyBold",
   },
 
   product: {
@@ -258,6 +303,7 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     marginLeft: "5%",
     marginBottom: "5%",
+    fontFamily: "GilroySemiBold",
   },
 
   cameraContainer: {
