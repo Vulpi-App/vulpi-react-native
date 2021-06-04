@@ -11,7 +11,6 @@ import {
   FlatList,
 } from "react-native";
 import Constants from "expo-constants";
-import * as ImagePicker from "expo-image-picker";
 import { useNavigation } from "@react-navigation/core";
 import { AntDesign } from "@expo/vector-icons";
 import axios from "axios";
@@ -31,7 +30,6 @@ import AddAvatarModal from "../components/AddAvatarModal";
 
 const windowHeight = Dimensions.get("window").height;
 const statusBarHeight = Constants.statusBarHeight;
-const scrollViewHeight = windowHeight - statusBarHeight;
 
 function AccountScreen({
   setToken,
@@ -39,7 +37,6 @@ function AccountScreen({
   firstName,
   avatar,
   setAvatar,
-  displayMessage,
   setDisplayMessage,
   editInformation,
   serverURL,
@@ -219,6 +216,7 @@ function AccountScreen({
               <Text style={styles.logoutText}>Déconnexion</Text>
             </TouchableOpacity>
           </View>
+          <Text style={styles.withLove}>Made with ❤️ in Paris</Text>
         </View>
       </View>
       <AddAvatarModal
@@ -227,6 +225,7 @@ function AccountScreen({
         setModalPictureVisible={setModalPictureVisible}
         editInformation={editInformation}
         modalPictureVisible={modalPictureVisible}
+        setReloadUser={setReloadUser}
       />
     </View>
   );
@@ -383,5 +382,13 @@ const styles = StyleSheet.create({
     height: 20,
     zIndex: 1,
     width: 20,
+  },
+  withLove: {
+    marginTop: "5%",
+    color: "#3C3C3C",
+    fontWeight: "600",
+    fontSize: 15,
+    position: "relative",
+    fontFamily: "GilroySemiBold",
   },
 });

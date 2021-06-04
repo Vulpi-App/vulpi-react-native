@@ -14,6 +14,9 @@ import {
 import { useNavigation } from "@react-navigation/core";
 import Constants from "expo-constants";
 import axios from "axios";
+import * as Haptics from "expo-haptics";
+
+import ModalDeleteList from "../components/ModalDeleteList";
 
 import colors from "../assets/colors";
 const {
@@ -37,14 +40,17 @@ const EditListScreen = ({
   const [listName, setListName] = useState("");
   const [listEmoji, setListEmoji] = useState("");
   const [message, setMessage] = useState("");
+  const [modalDeleteVisible, setModalDeleteVisible] = useState(false);
+  const [activityIndicator, setActivityIndicator] = useState(false);
 
   const navigation = useNavigation();
+  // console.log("ROUTE ", route.params.type);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `${serverURL}/list/${route.params.id}`,
+          `${serverURL}/list/${route.params.type}`,
           {
             headers: { Authorization: "Bearer " + userToken },
           }
@@ -89,13 +95,13 @@ const EditListScreen = ({
           formData.append("emoji", listEmoji);
         } else if (listEmoji.length > 2) {
           return setMessage(
-            "⛔️ Tu ne peux choisir qu'un seul emoji pour ta liste."
+            "⛔️ Vous ne pouvez choisir qu'un seul emoji pour votre liste."
           );
         }
       }
 
       const response = await axios.put(
-        `${serverURL}/lists/update/${route.params.id}`,
+        `${serverURL}/lists/update/${route.params.type}`,
         formData,
         {
           headers: { Authorization: `Bearer ${userToken}` },
@@ -116,9 +122,10 @@ const EditListScreen = ({
 
   const handleDeleteList = async () => {
     setMessage("");
+    setActivityIndicator(true);
     try {
       const response = await axios.delete(
-        `${serverURL}/lists/delete/${route.params.id}/${userId}`,
+        `${serverURL}/lists/delete/${route.params.type}/${userId}`,
         {
           headers: { Authorization: `Bearer ${userToken}` },
         }
@@ -127,15 +134,17 @@ const EditListScreen = ({
       if (response.status === 200) {
         setReload(true);
         navigation.navigate("AccountScreen");
+        setActivityIndicator(true);
       } else {
         setMessage("⛔️ Une erreur s'est produite");
+        setActivityIndicator(true);
       }
     } catch (error) {
       if (
         error.response.data.message ===
         "Impossible to delete the user's last list 😳"
       ) {
-        setMessage("Tu ne peux pas supprimer ta dernière liste 😳");
+        setMessage("Vous ne pouvez pas supprimer votre dernière liste 😳");
       } else {
         setMessage("⛔️ Une erreur s'est produite.");
       }
@@ -227,13 +236,22 @@ const EditListScreen = ({
             <TouchableOpacity
               style={styles.deleteButton}
               underlayColor={deleteRed}
-              onPress={handleDeleteList}
+              onPress={() => {
+                Haptics.selectionAsync();
+                setModalDeleteVisible(true);
+              }}
             >
               <Text style={styles.deleteText}>Supprimer la liste</Text>
             </TouchableOpacity>
           </View>
         </View>
       </View>
+      <ModalDeleteList
+        handleDeleteList={handleDeleteList}
+        setModalDeleteVisible={setModalDeleteVisible}
+        modalDeleteVisible={modalDeleteVisible}
+        activityIndicator={activityIndicator}
+      />
     </SafeAreaView>
   );
 };

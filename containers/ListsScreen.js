@@ -2,13 +2,10 @@
 import React, { useState, useEffect } from "react";
 import {
   View,
-  Button,
   Platform,
   SafeAreaView,
   ActivityIndicator,
   StyleSheet,
-  ScrollView,
-  KeyboardAvoidingView,
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import Constants from "expo-constants";
@@ -72,9 +69,6 @@ const ListsScreen = ({
   // State for refresh products list
   const [addProductList, setAddProductList] = useState(false);
 
-  // console.log(idListActive);
-  // console.log(idProductActif);
-
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -84,7 +78,7 @@ const ListsScreen = ({
           },
         });
 
-        // console.log("===== response.data", response.data);
+        // console.log(response.data);
 
         !data ? setIdListActive(response.data.lists[0]._id) : null;
         setData(response.data);
@@ -142,7 +136,6 @@ const ListsScreen = ({
               />
 
               {/* ----- Navigation scrollbar horizontal ✅ */}
-
               {foldedNav ? null : (
                 <View>
                   <ListButtonChoice
@@ -156,7 +149,6 @@ const ListsScreen = ({
               )}
 
               {/* ----- List(s) ✅ */}
-
               <ListFull
                 data={data}
                 idListActive={idListActive}
@@ -216,6 +208,7 @@ const ListsScreen = ({
             </View>
             {/* </View> */}
           </View>
+
         </KeyboardAwareScrollView>
       </SafeAreaView>
 
@@ -234,6 +227,7 @@ const ListsScreen = ({
       <ListModalRenameList
         serverURL={serverURL}
         userToken={userToken}
+data={data}
         userId={userId}
         listId={idListActive}
         isModalUpdateVisible={isModalUpdateVisible}
@@ -244,6 +238,7 @@ const ListsScreen = ({
         setDeleteList={setDeleteList}
         titleListActive={titleListActive}
         setReload={setReload}
+setIdListActive={setIdListActive}
       />
 
       {/* Modal "Add Product" */}
@@ -259,6 +254,8 @@ const ListsScreen = ({
         serverURL={serverURL}
       />
     </View>
+
+ 
   );
 };
 

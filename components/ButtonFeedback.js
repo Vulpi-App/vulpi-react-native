@@ -5,6 +5,7 @@ import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
 import colors from "../assets/colors";
 const { buttonFlashBlue } = colors;
+import * as Haptics from "expo-haptics";
 
 const ButtonFeedback = ({
   buttonTitle,
@@ -19,12 +20,13 @@ const ButtonFeedback = ({
   const navigation = useNavigation();
 
   const handlePress = async () => {
-    setErrorMessage("");
     if (buttonTitle === "Retour au compte") {
       setFeedbackSent(false);
       navigation.navigate("AccountScreen");
     } else {
       try {
+        Haptics.selectionAsync();
+        setErrorMessage("");
         if (subject && description) {
           if (subject.length <= 30) {
             const formData = new FormData();
@@ -58,13 +60,18 @@ const ButtonFeedback = ({
           );
         }
       } catch (error) {
-        console.log(error.message);
         setErrorMessage("⛔️ Une erreur est survenue, veuillez réessayer.");
       }
     }
   };
   return (
-    <View style={styles.viewButton}>
+    <View
+      style={
+        !buttonTitle === "Retour au compte"
+          ? [styles.viewButton]
+          : [styles.viewButton, styles.viewButtonSent]
+      }
+    >
       <TouchableOpacity
         style={
           buttonTitle === "Retour au compte"
@@ -84,9 +91,12 @@ const ButtonFeedback = ({
 const styles = StyleSheet.create({
   viewButton: {
     position: "absolute",
-    bottom: 100,
     alignItems: "center",
     width: "100%",
+  },
+
+  viewButtonSent: {
+    bottom: 100,
   },
 
   button: {
@@ -100,6 +110,7 @@ const styles = StyleSheet.create({
   },
   center: {
     left: 30,
+    bottom: -230,
   },
 });
 

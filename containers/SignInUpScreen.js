@@ -40,14 +40,12 @@ function SetUpProfilScreen({ userToken, setToken, userId, serverURL }) {
         formData.append("email", email);
         formData.append("password", password);
 
-        console.log(formData);
         const response = await axios.post(`${serverURL}/user/login`, formData);
 
         if (response.data.token && response.data._id) {
           const token = response.data.token;
           const id = response.data._id;
-          console.log(id);
-          console.log(token);
+
           setToken(token, id);
         } else {
           setErrorMessage("Une erreur s'est produite");
@@ -147,10 +145,10 @@ function SetUpProfilScreen({ userToken, setToken, userId, serverURL }) {
             <View style={styles.buttonWrap}>
               <AppleAuthentication.AppleAuthenticationButton
                 buttonType={
-                  AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN
+                  AppleAuthentication.AppleAuthenticationButtonType.CONTINUE
                 }
                 buttonStyle={
-                  AppleAuthentication.AppleAuthenticationButtonStyle.BLACK
+                  AppleAuthentication.AppleAuthenticationButtonStyle.WHITE
                 }
                 cornerRadius={5}
                 style={{ width: "100%", height: 49 }}
@@ -162,11 +160,27 @@ function SetUpProfilScreen({ userToken, setToken, userId, serverURL }) {
                         AppleAuthentication.AppleAuthenticationScope.EMAIL,
                       ],
                     });
+
                     const formData = new FormData();
                     formData.append("appleId", credential.user);
                     formData.append("email", credential.email);
                     formData.append("firstName", credential.fullName.givenName);
                     formData.append("lastName", credential.fullName.familyName);
+
+                    const response = await axios.post(
+                      `${serverURL}/user/appleauth`,
+                      formData
+                    );
+                    console.log("response : " + response);
+                    if (response.data.token && response.data._id) {
+                      const token = response.data.token;
+                      const id = response.data._id;
+                      const firstName = response.data.account.firstName;
+
+                      setToken(token, id, firstName);
+                    } else {
+                      setErrorMessage("Une erreur s'est produite");
+                    }
                   } catch (e) {
                     if (e.code === "ERR_CANCELED") {
                       // handle that the user canceled the sign-in flow
@@ -207,7 +221,7 @@ function SetUpProfilScreen({ userToken, setToken, userId, serverURL }) {
               </TouchableHighlight>
             </View>
           </View>
-
+          <Text style={styles.withLove}>Made with ❤️ in Paris</Text>
           <View style={styles.block}>
             <TouchableOpacity
               style={styles.signUp}
@@ -258,6 +272,7 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 35,
     marginTop: "3%",
+    fontFamily: "GilroyBold",
   },
 
   title: {
@@ -265,18 +280,18 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 15,
     marginTop: "1%",
+    fontFamily: "GilroySemiBold",
   },
 
   messageWrap: {
     justifyContent: "center",
     backgroundColor: "green",
     alignItems: "center",
-    height: "5%",
+    height: "3%",
   },
 
   errorWrap: {
     position: "absolute",
-    marginBottom: 20,
   },
 
   icon: {
@@ -290,7 +305,8 @@ const styles = StyleSheet.create({
   },
 
   errorText: {
-    color: "#CA2121",
+    color: "white",
+    fontFamily: "GilroySemiBold",
   },
 
   inputText: {
@@ -322,6 +338,7 @@ const styles = StyleSheet.create({
     color: "#0C166D",
     fontWeight: "bold",
     fontSize: 16,
+    fontFamily: "GilroyExtraBold",
   },
 
   textLost: {
@@ -330,12 +347,14 @@ const styles = StyleSheet.create({
     fontSize: 14,
     textDecorationLine: "underline",
     marginTop: "2%",
+    fontFamily: "GilroySemiBold",
   },
 
   textSignUp: {
     color: "#232952",
     fontWeight: "500",
     fontSize: 14,
+    fontFamily: "GilroySemiBold",
   },
 
   textUnderline: {
@@ -343,6 +362,7 @@ const styles = StyleSheet.create({
     fontWeight: "500",
     fontSize: 14,
     textDecorationLine: "underline",
+    fontFamily: "GilroySemiBold",
   },
 
   lineWrap: {
@@ -368,6 +388,7 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 20,
     fontWeight: "600",
+    fontFamily: "GilroySemiBold",
   },
 
   buttonWrap: {
@@ -418,10 +439,11 @@ const styles = StyleSheet.create({
     fontSize: 18,
     position: "relative",
   },
+
   logos: {
-    width: 20,
+    width: 15,
     position: "relative",
-    marginRight: 10,
+    marginRight: 7,
   },
 
   block: {
@@ -433,7 +455,16 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     flexDirection: "row",
-    marginTop: "15%",
+    marginTop: "5%",
     paddingTop: "5%",
+  },
+
+  withLove: {
+    marginTop: "15%",
+    color: "white",
+    fontWeight: "600",
+    fontSize: 15,
+    position: "relative",
+    fontFamily: "GilroySemiBold",
   },
 });

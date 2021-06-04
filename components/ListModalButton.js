@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
   buttonTextBlue: {
     color: white,
     textAlign: "center",
-    // add bold
+    fontFamily: "GilroyBold",
   },
   buttonDelete: {
     padding: 15,
@@ -41,6 +41,6 @@ const styles = StyleSheet.create({
     color: deleteRed,
     fontSize: 16,
     textAlign: "center",
-    // add bold
+    fontFamily: "GilroyBold",
   },
 });

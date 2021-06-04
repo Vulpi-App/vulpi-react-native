@@ -9,12 +9,12 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
   View,
-  Modal,
 } from "react-native";
 import axios from "axios";
 import Constants from "expo-constants";
 import { useNavigation } from "@react-navigation/core";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as Haptics from "expo-haptics";
 
 import colors from "../assets/colors";
 const {
@@ -50,17 +50,21 @@ function AccountInfosScreen({
   const [isInfosModified, setIsInfosModified] = useState(false);
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [modalDeleteVisible, setModalDeleteVisible] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const navigation = useNavigation();
 
   const handleDeleteAccount = async () => {
+    setIsLoading(true);
     try {
       await axios.delete(`${serverURL}/user/delete/${userId}`, {
         headers: { Authorization: "Bearer " + userToken },
       });
       await AsyncStorage.removeItem("onBoarding");
       setToken(null, null, null);
+      setIsLoading(true);
     } catch (error) {
       setDisplayMessage({ message: "Une erreur s'est produite" });
+      setIsLoading(true);
     }
   };
 
@@ -195,6 +199,7 @@ function AccountInfosScreen({
               style={styles.deleteButton}
               underlayColor={deleteRed}
               onPress={() => {
+                Haptics.selectionAsync();
                 setModalDeleteVisible(true);
               }}
             >
@@ -207,6 +212,7 @@ function AccountInfosScreen({
         modalDeleteVisible={modalDeleteVisible}
         setModalDeleteVisible={setModalDeleteVisible}
         handleDeleteAccount={handleDeleteAccount}
+        isLoading={isLoading}
       />
     </View>
   );

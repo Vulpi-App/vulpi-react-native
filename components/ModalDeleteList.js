@@ -11,13 +11,13 @@ import {
 import { AntDesign } from "@expo/vector-icons";
 
 import colors from "../assets/colors";
-const { darkGreyFutur, mainBlueText, buttonFlashBlue, deleteRed } = colors;
+const { darkGreyFutur, buttonFlashBlue, deleteRed } = colors;
 
-const ModalDeleteAccount = ({
+const ModalDeleteList = ({
   modalDeleteVisible,
-  handleDeleteAccount,
+  handleDeleteList,
   setModalDeleteVisible,
-  isLoading,
+  activityIndicator,
 }) => {
   return (
     <Modal
@@ -47,11 +47,11 @@ const ModalDeleteAccount = ({
           </TouchableWithoutFeedback>
           <TouchableOpacity
             style={[styles.buttonsModal, styles.redButton]}
-            onPress={handleDeleteAccount}
+            onPress={handleDeleteList}
           >
-            {!isLoading ? (
+            {!activityIndicator ? (
               <Text style={styles.whiteTextButton}>
-                Valider la suppression du compte
+                Valider la suppression de la liste
               </Text>
             ) : (
               <ActivityIndicator />
@@ -116,4 +116,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ModalDeleteAccount;
+export default ModalDeleteList;

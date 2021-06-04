@@ -29,10 +29,12 @@ import IconTabBarExplore from "./components/IconTabBarExplore";
 import { LogBox } from "react-native";
 LogBox.ignoreAllLogs();
 
+
 // Useful variables
 // const serverURL = "http://localhost:3310";
-const serverURL = "http://192.168.0.20:3310";
-
+// const serverURL = "http://192.168.0.20:3310";
+const serverURL = "https://vulpi-forest.herokuapp.com";
+// const serverURL = "http://192.168.1.40:3310";
 // Local server : "http://localhost:3310"
 // Heroku server : "https://vulpi-forest.herokuapp.com"
 
@@ -118,7 +120,7 @@ export default function App() {
     };
 
     bootstrapAsync();
-  }, [reloadUser]);
+  }, [reloadUser, userToken]);
 
   // Function used to sign up, log in and log out user
   const setToken = async (token, id, firstName) => {
@@ -182,7 +184,11 @@ export default function App() {
           { headers: { Authorization: "Bearer " + userToken } }
         );
         if (response.data) {
-          setDisplayMessage({ message: "Ton profil a été mis a jour. ✨" });
+
+
+          setDisplayMessage({ message: "Votre profil a été mis a jour. ✨" });
+
+
 
           setReloadUser(true);
         } else {
@@ -201,7 +207,7 @@ export default function App() {
         }
       }
     } else {
-      setDisplayMessage({ message: "Modifie au moins une information ! ⚡️" });
+      setDisplayMessage({ message: "Modifiez au moins une information ! ⚡️" });
     }
   };
 
@@ -329,6 +335,8 @@ export default function App() {
                         {(props) => (
                           <BarCodeScanner
                             {...props}
+                            reload={reload}
+                            setReload={setReload}
                             userToken={userToken}
                             userId={userId}
                             setToken={setToken}

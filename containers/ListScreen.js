@@ -14,12 +14,10 @@ import { StatusBar } from "expo-status-bar";
 import Constants from "expo-constants";
 import * as Notifications from "expo-notifications";
 
-// Components - import
-import ListModalButton from "../components/ListModalButton";
-
 // Colors - import
 import colors from "../assets/colors";
-const { bgLight, mainLightGrey, buttonDarkBlue } = colors;
+const { bgLight, mainLightGrey, buttonDarkBlue, buttonFlashBlue, white } =
+  colors;
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -124,8 +122,6 @@ const ListScreen = ({ navigation }) => {
           <StatusBar style="dark" />
 
           <View style={styles.container}>
-
-            {/* ===================== */}
             <View>
               <TouchableOpacity
                 onPress={() => {
@@ -145,8 +141,6 @@ const ListScreen = ({ navigation }) => {
               </TouchableOpacity>
             </View>
 
-            {/* ===================== */}
-
             {/* <TouchableOpacity onPress={async () => {
               await sendPushNotification(expoPushToken);
             }}>
@@ -156,12 +150,14 @@ const ListScreen = ({ navigation }) => {
 
             <View style={styles.buttonWrap}>
               <View>
-                <ListModalButton
-                  name="👋 Je vais faire les courses !"
-                  color="blue"
-                  style={styles.boxShadow}
-                  handleSubmit={handleSubmit}
-                />
+                <TouchableOpacity
+                  style={styles.buttonBlue}
+                  onPress={handleSubmit}
+                >
+                  <Text style={styles.buttonTextBlue}>
+                    "👋 Je vais faire les courses !"
+                  </Text>
+                </TouchableOpacity>
               </View>
               <Text style={styles.asterisk}>
                 * Prévenez les autres que vous allez faire les courses
@@ -235,10 +231,21 @@ const styles = StyleSheet.create({
     marginBottom: 80,
     marginTop: 30,
   },
-  // boxShadow: {
-  //   shadowColor: "red",
-  //   shadowOffset: { width: 2, height: 2 },
-  // },
+  buttonBlue: {
+    backgroundColor: buttonFlashBlue,
+    borderRadius: 8,
+    padding: 15,
+    textAlign: "center",
+    shadowColor: buttonFlashBlue,
+    shadowOpacity: 1,
+    shadowOffset: { height: 1 },
+  },
+  buttonTextBlue: {
+    color: white,
+    textAlign: "center",
+    fontFamily: "GilroyBold",
+  },
+
   asterisk: {
     width: "35%",
     marginLeft: 15,
