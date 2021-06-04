@@ -22,9 +22,6 @@ const {
   greyAfterCheck,
 } = colors;
 
-// URL request
-// const localURLUpdate = "http://localhost:3310/lists/update-product/";
-
 const ListFullInput = ({
   item,
   idListActive,
@@ -83,8 +80,6 @@ const ListFullInput = ({
     return name.charAt(0).toUpperCase() + name.slice(1);
   };
 
-  const detailsProduct = [];
-
   return (
     item._id === idListActive &&
     (item.products.length > 0 ? (
@@ -129,20 +124,53 @@ const ListFullInput = ({
                     {capitalizeFirstLetter(el.reference.name)}
                   </Text>
 
-                  {el.quantity || el.brand || el.shop || el.measure ? (
+                  {el.quantity || el.brand || el.shop ? (
                     <View style={styles.listCustom}>
-                      <Text style={styles.textDetails}>
-                        {el.quantity && el.quantity}
-                      </Text>
-                      <Text style={styles.textDetails}>
-                        {el.measure && el.measure.toLowerCase()}
-                      </Text>
-                      <Text style={styles.textDetails}>
-                        {el.brand && el.brand}
-                      </Text>
-                      <Text style={styles.textDetails}>
-                        {el.shop && el.shop}
-                      </Text>
+                      {el.quantity > 1 && el.measure ? (
+                        <Text
+                          style={
+                            el.added
+                              ? [styles.textAfterCheck, styles.textThrough]
+                              : styles.textDetails
+                          }
+                        >
+                          {el.quantity + " " + el.measure.toLowerCase() + "s"}
+                        </Text>
+                      ) : el.quantity && el.measure ? (
+                        <Text
+                          style={
+                            el.added
+                              ? [styles.textAfterCheck, styles.textThrough]
+                              : styles.textDetails
+                          }
+                        >
+                          {el.quantity + " " + el.measure.toLowerCase()}
+                        </Text>
+                      ) : null}
+
+                      {el.brand ? (
+                        <Text
+                          style={
+                            el.added
+                              ? [styles.textAfterCheck, styles.textThrough]
+                              : styles.textDetails
+                          }
+                        >
+                          {el.brand}
+                        </Text>
+                      ) : null}
+
+                      {el.shop ? (
+                        <Text
+                          style={
+                            el.added
+                              ? styles.textAfterCheck
+                              : styles.textDetails
+                          }
+                        >
+                          {el.shop}
+                        </Text>
+                      ) : null}
                     </View>
                   ) : (
                     <Text
@@ -164,6 +192,7 @@ const ListFullInput = ({
             )
           );
         })}
+
         {item.products.map((el) => {
           return (
             el.added && (
@@ -203,20 +232,53 @@ const ListFullInput = ({
                     {capitalizeFirstLetter(el.reference.name)}
                   </Text>
 
-                  {el.quantity || el.brand || el.shop || el.measure ? (
+                  {el.quantity || el.brand || el.shop ? (
                     <View style={styles.listCustom}>
-                      <Text style={styles.textDetails}>
-                        {el.quantity && el.quantity}
-                      </Text>
-                      <Text style={styles.textDetails}>
-                        {el.measure && el.measure.toLowerCase()}
-                      </Text>
-                      <Text style={styles.textDetails}>
-                        {el.brand && el.brand}
-                      </Text>
-                      <Text style={styles.textDetails}>
-                        {el.shop && el.shop}
-                      </Text>
+                      {el.quantity > 1 && el.measure ? (
+                        <Text
+                          style={
+                            el.added
+                              ? [styles.textAfterCheck, styles.textThrough]
+                              : styles.textDetails
+                          }
+                        >
+                          {el.quantity + " " + el.measure.toLowerCase() + "s"}
+                        </Text>
+                      ) : el.quantity && el.measure ? (
+                        <Text
+                          style={
+                            el.added
+                              ? [styles.textAfterCheck, styles.textThrough]
+                              : styles.textDetails
+                          }
+                        >
+                          {el.quantity + " " + el.measure.toLowerCase()}
+                        </Text>
+                      ) : null}
+
+                      {el.brand ? (
+                        <Text
+                          style={
+                            el.added
+                              ? [styles.textAfterCheck, styles.textThrough]
+                              : styles.textDetails
+                          }
+                        >
+                          {el.brand}
+                        </Text>
+                      ) : null}
+
+                      {el.shop ? (
+                        <Text
+                          style={
+                            el.added
+                              ? styles.textAfterCheck
+                              : styles.textDetails
+                          }
+                        >
+                          {el.shop}
+                        </Text>
+                      ) : null}
                     </View>
                   ) : (
                     <Text
@@ -277,9 +339,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-
-  pointCheckRadioButton: {},
-
   listProductText: {
     fontSize: 16,
     fontFamily: "GilroyBold",
@@ -309,11 +368,13 @@ const styles = StyleSheet.create({
     fontFamily: "GilroyMedium",
     lineHeight: 30,
   },
-
   textAfterCheck: {
     color: greyAfterCheck,
     textDecorationStyle: "solid",
     textDecorationColor: greyAfterCheck,
     textDecorationLine: "line-through",
+  },
+  textThrough: {
+    marginRight: 5,
   },
 });

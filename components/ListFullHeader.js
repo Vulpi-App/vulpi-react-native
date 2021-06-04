@@ -84,7 +84,6 @@ const styles = StyleSheet.create({
   listTitleAlone: {
     maxWidth: 300,
   },
-
   h2: {
     color: mainBlueText,
     fontSize: 22,

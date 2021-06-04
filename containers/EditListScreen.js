@@ -44,12 +44,13 @@ const EditListScreen = ({
   const [activityIndicator, setActivityIndicator] = useState(false);
 
   const navigation = useNavigation();
+  // console.log("ROUTE ", route.params.type);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `${serverURL}/list/${route.params.id}`,
+          `${serverURL}/list/${route.params.type}`,
           {
             headers: { Authorization: "Bearer " + userToken },
           }
@@ -100,7 +101,7 @@ const EditListScreen = ({
       }
 
       const response = await axios.put(
-        `${serverURL}/lists/update/${route.params.id}`,
+        `${serverURL}/lists/update/${route.params.type}`,
         formData,
         {
           headers: { Authorization: `Bearer ${userToken}` },
@@ -124,7 +125,7 @@ const EditListScreen = ({
     setActivityIndicator(true);
     try {
       const response = await axios.delete(
-        `${serverURL}/lists/delete/${route.params.id}/${userId}`,
+        `${serverURL}/lists/delete/${route.params.type}/${userId}`,
         {
           headers: { Authorization: `Bearer ${userToken}` },
         }

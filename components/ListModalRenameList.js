@@ -24,6 +24,7 @@ const { buttonFlashBlue, white, deleteRed, midGreyText, darkGreyText } = colors;
 const ListModalRenameList = ({
   serverURL,
   userToken,
+  data,
   userId,
   listId,
   isModalUpdateVisible,
@@ -34,6 +35,7 @@ const ListModalRenameList = ({
   setUpdateList,
   titleListActive,
   setReload,
+  setIdListActive,
 }) => {
   // State for rename list
   const [title, setTitle] = useState("");
@@ -105,6 +107,7 @@ const ListModalRenameList = ({
       if (response.status === 200) {
         setModalUpdateVisible(false);
         setDeleteList(!deleteList);
+        setIdListActive(data.lists[0]._id);
         setReload(true);
       }
     } catch (error) {
