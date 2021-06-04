@@ -7,6 +7,7 @@ import {
   Image,
   Modal,
   View,
+  ActivityIndicator,
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import { AntDesign } from "@expo/vector-icons";
@@ -20,10 +21,14 @@ const AddAvatarModal = ({
   setModalPictureVisible,
   editInformation,
   modalPictureVisible,
+  setReloadUser,
 }) => {
-  const [pictureChosen, setPictureChosen, setReloadUser] = useState(false);
+  const [pictureChosen, setPictureChosen] = useState(false);
+  const [isLoadingTake, setIsLoadingTake] = useState(false);
+  const [isLoadingChoose, setIsLoadingChoose] = useState(false);
 
   const getPermissionAndPhoto = async () => {
+    setIsLoadingChoose(true);
     // Get permission
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
     // If permission granted, get the photo and store it in a state
@@ -36,12 +41,14 @@ const AddAvatarModal = ({
         setAvatar(photo.uri);
         setPictureChosen(true);
       }
+      setIsLoadingChoose(false);
     } else {
       alert("Permission d'accès à la galerie refusée");
     }
   };
 
   const getPermissionAndCamera = async () => {
+    setIsLoadingTake(true);
     // Ask the User for permission to access his camera
     const { status } = await ImagePicker.requestCameraPermissionsAsync();
 
@@ -55,6 +62,7 @@ const AddAvatarModal = ({
         setAvatar(photo.uri);
         setPictureChosen(true);
       }
+      setIsLoadingTake(false);
     } else {
       alert("Permission d'accès à la caméra refusée");
     }
@@ -93,13 +101,21 @@ const AddAvatarModal = ({
             onPress={getPermissionAndCamera}
             style={styles.buttonsModalTakePicture}
           >
-            <Text style={styles.textButtons}>Prendre une photo</Text>
+            {isLoadingTake ? (
+              <ActivityIndicator />
+            ) : (
+              <Text style={styles.textButtons}>Prendre une photo</Text>
+            )}
           </TouchableOpacity>
           <TouchableOpacity
             onPress={getPermissionAndPhoto}
             style={styles.buttonsModalTakePicture}
           >
-            <Text style={styles.textButtons}>Choisir une photo</Text>
+            {isLoadingChoose ? (
+              <ActivityIndicator />
+            ) : (
+              <Text style={styles.textButtons}>Choisir une photo</Text>
+            )}
           </TouchableOpacity>
         </View>
       </TouchableOpacity>
@@ -127,7 +143,7 @@ const AddAvatarModal = ({
               setModalPictureVisible(false);
             }}
           >
-            <Text style={styles.textButtons}>Enregistrer</Text>
+            <Text style={styles.textButtons}>Enregistrer le nouvel avatar</Text>
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {

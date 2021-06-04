@@ -17,7 +17,7 @@ const FeedbackSent = ({ setFeedbackSent }) => {
       </View>
       <Text style={[styles.title, styles.color]}>Bien reçu !</Text>
       <Text style={[styles.message, styles.color]}>
-        Merci pour ton aide, on va étudier à 100% ta demande !
+        Merci pour votre aide, on va étudier à 100% votre demande !
       </Text>
       <ButtonFeedback
         buttonTitle={"Retour au compte"}

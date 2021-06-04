@@ -6,19 +6,19 @@ const DescriptionOnBoarding = ({ screenNumber }) => {
   let descriptionParagraph1;
   let descriptionParagraph2;
   if (screenNumber === 0) {
-    descriptionParagraph1 = "Planifie tes courses en préparant ta liste.";
+    descriptionParagraph1 = "Planifiez vos courses en préparant votre liste.";
     descriptionParagraph2 =
       "Psst : elle est accessible même sans connexion... au supermarché par exemple 😉";
   } else if (screenNumber === 1) {
     descriptionParagraph1 =
-      "Partagez la liste avec le reste de la famille. Chacun peut y rajouter ce dont il a besoin. Et s’ils achètent l’un des articles avant toi, il disparaitra de la liste.";
-    descriptionParagraph2 = "Ou gardes ta liste privée.";
+      "Partagez la liste avec le reste de la famille. Chacun peut y rajouter ce dont il a besoin. Et s’ils achètent l’un des articles avant vous, il disparaitra de la liste.";
+    descriptionParagraph2 = "Ou gardez votre liste privée.";
   } else if (screenNumber === 2) {
     descriptionParagraph1 =
-      "Ajoutes la quantité, le prix, le magasin et même une photo du produit pour être sûr que personne ne se trompe.";
+      "Ajoutez la quantité, le prix, le magasin et même une photo du produit pour être sûr que personne ne se trompe.";
   } else if (screenNumber === 3) {
     descriptionParagraph1 =
-      "Recevez les bonnes promotions au bon moment en fonction de vos réels besoins. Plus besoin de chercher ou trouver les meilleurs offres autour de chez vous.";
+      "Recevez les bonnes promotions au bon moment en fonction de vos réels besoins. Plus besoin de chercher où trouver les meilleurs offres autour de chez vous.";
   }
 
   return (

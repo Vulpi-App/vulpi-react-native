@@ -5,13 +5,13 @@ const TitleOnBoarding = ({ screenNumber }) => {
   // Modification of the title depending on the onBoarding page
   let titleContent;
   if (screenNumber === 0) {
-    titleContent = "Crées une liste de course qui te suit partout";
+    titleContent = "Créez une liste de course qui vous suit partout";
   } else if (screenNumber === 1) {
     titleContent = "Toute la famille peut écrire sur la liste... ou pas";
   } else if (screenNumber === 2) {
     titleContent = "Une vraie liste de course qui vous ressemble !";
   } else if (screenNumber === 3) {
-    titleContent = "Ne dépenses plus inutilement";
+    titleContent = "Ne dépensez plus inutilement";
   }
 
   return (

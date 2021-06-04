@@ -36,7 +36,7 @@ class ModalExample extends Component {
           >
             <View style={styles.modal}>
               <ScreenTitle title={"🤔"} />
-              <ScreenTitle title={"Comment t'appelles tu ?"} />
+              <ScreenTitle title={"Comment vous appellez-vous ?"} />
               <Input />
 
               <SubmitButton text="Suivant" />
@@ -55,7 +55,9 @@ class ModalExample extends Component {
               this.toggleModal(true);
             }}
           >
-            <Text style={styles.text}>Tu n’as pas de compte ? Crées en un</Text>
+            <Text style={styles.text}>
+              Vous n’avez pas de compte ? Créez en un
+            </Text>
           </TouchableHighlight>
         </View>
       </SafeAreaView>
