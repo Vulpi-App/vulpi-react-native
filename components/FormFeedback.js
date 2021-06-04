@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Text, StyleSheet, View, TextInput } from "react-native";
 import colors from "../assets/colors";
 const { bgLightText, buttonDarkBlue, deleteRed } = colors;
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 // Components
 import ButtonFeedback from "../components/ButtonFeedback";
@@ -12,47 +13,49 @@ const FormFeedback = ({ setFeedbackSent, userId, userToken, serverURL }) => {
   const [errorMessage, setErrorMessage] = useState("");
 
   return (
-    <View style={styles.mainView}>
-      <Text style={styles.title}>C'est à quel sujet ?</Text>
+    <KeyboardAwareScrollView style={styles.keyboardSafe}>
+      <View style={styles.mainView}>
+        <Text style={styles.title}>C'est à quel sujet ?</Text>
 
-      <TextInput
-        placeholder="Bug Technique"
-        style={styles.textInput}
-        value={subject}
-        onChangeText={(text) => {
-          setSubject(text);
-        }}
-      />
-      <Text style={styles.title}>On t'écoutes, dis-nous tout :</Text>
-      <TextInput
-        value={description}
-        style={[styles.textInput, styles.multiline]}
-        multiline={true}
-        textAlignVertical="top"
-        onChangeText={(text) => {
-          setDescription(text);
-        }}
-        placeholder="Dis-nous ce dont tu rêves sur Vulpi, ce qui ne marche pas ou tout ce que tu voudrais nous dire d’autre 😉"
-      />
-      <Text style={styles.errorMessage}>{errorMessage}</Text>
-      <ButtonFeedback
-        buttonTitle={"🚀  Envoyer ma suggestion à l'équipe !"}
-        setFeedbackSent={setFeedbackSent}
-        subject={subject}
-        description={description}
-        userId={userId}
-        userToken={userToken}
-        setErrorMessage={setErrorMessage}
-        serverURL={serverURL}
-      />
-    </View>
+        <TextInput
+          placeholder="Bug Technique"
+          style={styles.textInput}
+          value={subject}
+          onChangeText={(text) => {
+            setSubject(text);
+          }}
+        />
+        <Text style={styles.title}>On vous écoutes, dites-nous tout :</Text>
+        <TextInput
+          value={description}
+          style={[styles.textInput, styles.multiline]}
+          multiline={true}
+          textAlignVertical="top"
+          onChangeText={(text) => {
+            setDescription(text);
+          }}
+          placeholder="Dites-nous ce dont vous rêvez sur Vulpi, ce qui ne marche pas ou tout ce que vous voudriez nous dire d’autre 😉"
+        />
+        <Text style={styles.errorMessage}>{errorMessage}</Text>
+        <ButtonFeedback
+          buttonTitle={"🚀  Envoyer ma suggestion à l'équipe !"}
+          setFeedbackSent={setFeedbackSent}
+          subject={subject}
+          description={description}
+          userId={userId}
+          userToken={userToken}
+          setErrorMessage={setErrorMessage}
+          serverURL={serverURL}
+        />
+      </View>
+    </KeyboardAwareScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   mainView: {
-    position: "relative",
     flex: 1,
+    position: "relative",
     paddingHorizontal: 30,
   },
 

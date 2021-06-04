@@ -6,6 +6,7 @@ import {
   StyleSheet,
   Modal,
   View,
+  ActivityIndicator,
 } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 
@@ -16,6 +17,7 @@ const ModalDeleteAccount = ({
   modalDeleteVisible,
   handleDeleteAccount,
   setModalDeleteVisible,
+  isLoading,
 }) => {
   return (
     <Modal
@@ -47,9 +49,13 @@ const ModalDeleteAccount = ({
             style={[styles.buttonsModal, styles.redButton]}
             onPress={handleDeleteAccount}
           >
-            <Text style={styles.whiteTextButton}>
-              Valider la suppression du compte
-            </Text>
+            {!isLoading ? (
+              <Text style={styles.whiteTextButton}>
+                Valider la suppression du compte
+              </Text>
+            ) : (
+              <ActivityIndicator />
+            )}
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.buttonsModal}

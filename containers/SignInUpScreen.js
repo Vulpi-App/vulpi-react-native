@@ -40,14 +40,12 @@ function SetUpProfilScreen({ userToken, setToken, userId, serverURL }) {
         formData.append("email", email);
         formData.append("password", password);
 
-        console.log(formData);
         const response = await axios.post(`${serverURL}/user/login`, formData);
 
         if (response.data.token && response.data._id) {
           const token = response.data.token;
           const id = response.data._id;
-          console.log(id);
-          console.log(token);
+
           setToken(token, id);
         } else {
           setErrorMessage("Une erreur s'est produite");
@@ -147,10 +145,10 @@ function SetUpProfilScreen({ userToken, setToken, userId, serverURL }) {
             <View style={styles.buttonWrap}>
               <AppleAuthentication.AppleAuthenticationButton
                 buttonType={
-                  AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN
+                  AppleAuthentication.AppleAuthenticationButtonType.CONTINUE
                 }
                 buttonStyle={
-                  AppleAuthentication.AppleAuthenticationButtonStyle.BLACK
+                  AppleAuthentication.AppleAuthenticationButtonStyle.WHITE
                 }
                 cornerRadius={5}
                 style={{ width: "100%", height: 49 }}
@@ -162,11 +160,27 @@ function SetUpProfilScreen({ userToken, setToken, userId, serverURL }) {
                         AppleAuthentication.AppleAuthenticationScope.EMAIL,
                       ],
                     });
+
                     const formData = new FormData();
                     formData.append("appleId", credential.user);
                     formData.append("email", credential.email);
                     formData.append("firstName", credential.fullName.givenName);
                     formData.append("lastName", credential.fullName.familyName);
+
+                    const response = await axios.post(
+                      `${serverURL}/user/appleauth`,
+                      formData
+                    );
+                    console.log("response : " + response);
+                    if (response.data.token && response.data._id) {
+                      const token = response.data.token;
+                      const id = response.data._id;
+                      const firstName = response.data.account.firstName;
+
+                      setToken(token, id, firstName);
+                    } else {
+                      setErrorMessage("Une erreur s'est produite");
+                    }
                   } catch (e) {
                     if (e.code === "ERR_CANCELED") {
                       // handle that the user canceled the sign-in flow
