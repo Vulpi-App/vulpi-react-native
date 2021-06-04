@@ -30,6 +30,6 @@ const styles = StyleSheet.create({
   h2: {
     color: mainBlueText,
     fontSize: 24,
-    // add semi-bold
+    fontFamily: "GilroySemiBold",
   },
 });

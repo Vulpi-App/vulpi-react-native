@@ -167,7 +167,6 @@ const styles = StyleSheet.create({
     padding: 30,
     borderRadius: 10,
   },
-  // =========
   btnBlue: {
     backgroundColor: buttonFlashBlue,
     borderRadius: 8,

@@ -1,8 +1,7 @@
 // React & React Native - Imports
-
 import React from "react";
 
-import { View, Text, FlatList, StyleSheet, ScrollView } from "react-native";
+import { View, FlatList, StyleSheet, ScrollView } from "react-native";
 
 // Components - import
 import ListFullHeader from "./ListFullHeader";

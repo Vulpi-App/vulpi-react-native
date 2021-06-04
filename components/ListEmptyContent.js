@@ -36,13 +36,13 @@ const styles = StyleSheet.create({
   listEmptyText: {
     color: darkGreyText,
     fontSize: 14,
-    // add semi-bold
+    fontFamily: "GilroyMedium",
   },
   listEmptyTextNext: {
     textAlign: "center",
     fontSize: 13,
     marginTop: 10,
     paddingBottom: 30,
-    // add medium
+    fontFamily: "GilroyMedium",
   },
 });

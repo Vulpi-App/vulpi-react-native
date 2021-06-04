@@ -63,7 +63,10 @@ const ListHeader = ({
         <TouchableOpacity
           style={[styles.circleIcon, styles.circleIconBlue]}
           onPress={() => {
-            navigation.navigate("Account", { screen: "EditListScreen" });
+            navigation.navigate("Account", {
+              screen: "EditListScreen",
+              params: { type: idListActive },
+            });
           }}
         >
           <Image
