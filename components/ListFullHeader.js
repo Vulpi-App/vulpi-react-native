@@ -54,7 +54,7 @@ const ListFullHeader = ({ item, idListActive, toggleModalUpdate }) => {
           ) : null}
 
           {/* 3 dots for setting the list */}
-          <TouchableOpacity onPress={toggleModalUpdate}>
+          <TouchableOpacity onPress={toggleModalUpdate} style={styles.dots}>
             <View style={styles.blueDot}></View>
             <View style={[styles.blueDot, styles.marginDot]}></View>
             <View style={styles.blueDot}></View>
@@ -120,4 +120,5 @@ const styles = StyleSheet.create({
   marginDot: {
     marginVertical: 3,
   },
+  dots: { marginRight: 2 },
 });

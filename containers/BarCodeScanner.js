@@ -21,7 +21,15 @@ const localURLAdd = "http://192.168.1.40:3310/lists/add-product/";
 const { width } = Dimensions.get("window");
 const qrSize = width * 0.7;
 
-const ScanScreen = ({ userToken, serverURL, userId }) => {
+const ScanScreen = ({
+  userToken,
+  serverURL,
+  userId,
+  idListActive,
+  setIdListActive,
+  reload,
+  setReload,
+}) => {
   const [hasPermission, setHasPermission] = useState(null);
   const navigation = useNavigation();
   const [scanned, setScanned] = useState(false);
@@ -29,7 +37,7 @@ const ScanScreen = ({ userToken, serverURL, userId }) => {
   const [data, setData] = useState("");
   const [errorMessages, setErrorMessages] = useState(false);
 
-  const [idListActive, setIdListActive] = useState();
+  // const [idListActive, setIdListActive] = useState();
 
   useEffect(() => {
     (async () => {
@@ -56,28 +64,34 @@ const ScanScreen = ({ userToken, serverURL, userId }) => {
     fetchData();
   };
 
-  useEffect(() => {
-    const fetchDatas = async () => {
-      try {
-        const response = await axios.get(`${serverURL}/lists/${userId}`, {
-          headers: {
-            Authorization: `Bearer ${userToken}`,
-          },
-        });
+  // useEffect(() => {
+  //   const fetchDatas = async () => {
+  //     try {
+  //       const response = await axios.get(`${serverURL}/lists/${userId}`, {
+  //         headers: {
+  //           Authorization: `Bearer ${userToken}`,
+  //         },
+  //       });
 
-        setData(response.data);
-        setIdListActive(response.data.lists[0]._id);
-      } catch (error) {
-        console.log(error.message);
-      }
-    };
-    fetchDatas();
-  }, [userToken]);
+  //       setData(response.data);
+  //       setIdListActive(response.data.lists[0]._id);
+  //     } catch (error) {
+  //       console.log(error.message);
+  //     }
+  //   };
+  //   fetchDatas();
+  // }, [userToken]);
 
   const addProduct = async () => {
     try {
+      const productNameSend = data.product.product_name.split("");
+      const productNameSend2 = [];
+      for (let i = 0; i < 30; i++) {
+        productNameSend2.push(productNameSend[i]);
+      }
+
       const formData = new FormData();
-      formData.append("nameProduct", data.product.product_name);
+      formData.append("nameProduct", productNameSend2.join(""));
 
       const response = await axios.post(
         `${serverURL}/lists/add-product/${idListActive}`,
@@ -87,7 +101,11 @@ const ScanScreen = ({ userToken, serverURL, userId }) => {
         }
       );
 
-      alert("Produit ajouté à la liste !");
+      if (response.status === 200) {
+        alert("Produit ajouté à la liste !");
+        setReload(!reload);
+        navigation.navigate("ShoppingScreen");
+      }
     } catch (error) {
       alert("Produit non trouvé");
     }

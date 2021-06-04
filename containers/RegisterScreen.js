@@ -327,7 +327,7 @@ function RegisterScreen({ setToken, serverURL }) {
             </View>
           </SafeAreaView>
         )}
-        {step === 4 && (
+        {/* {step === 4 && (
           <View style={styles.lastContainer}>
             <View style={styles.block}>
               <View style={styles.textWrap}>
@@ -339,7 +339,7 @@ function RegisterScreen({ setToken, serverURL }) {
               </View>
             </View>
           </View>
-        )}
+        )} */}
       </ImageBackground>
     </>
   );

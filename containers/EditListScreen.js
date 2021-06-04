@@ -71,7 +71,9 @@ const EditListScreen = ({
       }
     };
     fetchData();
+
   }, [reload, serverURL, idList]);
+
 
   const editInformation = async (data) => {
     try {

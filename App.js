@@ -29,11 +29,10 @@ import IconTabBarExplore from "./components/IconTabBarExplore";
 import { LogBox } from "react-native";
 LogBox.ignoreAllLogs();
 
-
 // Useful variables
 // const serverURL = "http://localhost:3310";
-// const serverURL = "http://192.168.0.20:3310";
-const serverURL = "https://vulpi-forest.herokuapp.com";
+const serverURL = "http://192.168.0.20:3310";
+// const serverURL = "https://vulpi-forest.herokuapp.com";
 // const serverURL = "http://192.168.1.40:3310";
 // Local server : "http://localhost:3310"
 // Heroku server : "https://vulpi-forest.herokuapp.com"
@@ -56,6 +55,7 @@ export default function App() {
   const [displayMessage, setDisplayMessage] = useState("");
   const [reload, setReload] = useState(false);
   const [reloadUser, setReloadUser] = useState(false);
+  const [idListActive, setIdListActive] = useState();
 
   // Loading of font GILROY
   const [fontLoaded] = useFonts({
@@ -184,11 +184,7 @@ export default function App() {
           { headers: { Authorization: "Bearer " + userToken } }
         );
         if (response.data) {
-
-
           setDisplayMessage({ message: "Votre profil a été mis a jour. ✨" });
-
-
 
           setReloadUser(true);
         } else {
@@ -316,6 +312,8 @@ export default function App() {
                             serverURL={serverURL}
                             reload={reload}
                             setReload={setReload}
+                            idListActive={idListActive}
+                            setIdListActive={setIdListActive}
                           />
                         )}
                       </Stack.Screen>
@@ -341,6 +339,8 @@ export default function App() {
                             userId={userId}
                             setToken={setToken}
                             serverURL={serverURL}
+                            idListActive={idListActive}
+                            setIdListActive={setIdListActive}
                           />
                         )}
                       </Stack.Screen>

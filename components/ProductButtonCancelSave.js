@@ -7,6 +7,7 @@ import {
   ActivityIndicator,
   TouchableOpacity,
 } from "react-native";
+import * as Haptics from "expo-haptics";
 
 // Colors - import
 import colors from "../assets/colors";
@@ -27,7 +28,10 @@ const ProductButtonCancelSave = ({
       </TouchableOpacity>
       <TouchableOpacity
         style={[styles.button, styles.buttonSave]}
-        onPress={submitInfosProduct}
+        onPress={() => {
+          Haptics.selectionAsync();
+          submitInfosProduct();
+        }}
       >
         {isLoading ? (
           <ActivityIndicator size="small" color={white} />

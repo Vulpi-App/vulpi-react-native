@@ -3,6 +3,7 @@ import React from "react";
 import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import axios from "axios";
+import * as Haptics from "expo-haptics";
 
 // Colors - import
 import colors from "../assets/colors";
@@ -81,7 +82,13 @@ const ProductLineAutoComplete = ({
       <Text style={styles.textAdd}>
         {capitalizeFirstLetter(valueAutocomplete)}
       </Text>
-      <TouchableOpacity style={styles.blockButtonAdd} onPress={addProduct}>
+      <TouchableOpacity
+        style={styles.blockButtonAdd}
+        onPress={() => {
+          Haptics.selectionAsync();
+          addProduct();
+        }}
+      >
         <AntDesign name="arrowup" size={20} color={white} />
       </TouchableOpacity>
     </View>
