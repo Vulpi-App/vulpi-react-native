@@ -190,7 +190,6 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   scrollView: {
-    // marginTop: Platform.OS === "android" ? Constants.statusBarHeight : 0,
     paddingTop: 20,
   },
   wrapper: {
@@ -243,7 +242,6 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontFamily: "GilroyBold",
   },
-
   asterisk: {
     width: "35%",
     marginLeft: 15,

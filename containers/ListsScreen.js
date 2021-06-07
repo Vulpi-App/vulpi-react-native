@@ -11,7 +11,6 @@ import { StatusBar } from "expo-status-bar";
 import Constants from "expo-constants";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { LinearGradient } from "expo-linear-gradient";
-// import { BlurView } from "expo-blur"; TO TEST
 
 // Axios - import
 import axios from "axios";
@@ -30,10 +29,7 @@ import ProductLineAutoComplete from "../components/ProductLineAutocomplete";
 import colors from "../assets/colors";
 const { buttonDarkBlue, white } = colors;
 
-// ======================================
-
 const ListsScreen = ({
-  navigation,
   userToken,
   userId,
   serverURL,
@@ -52,7 +48,6 @@ const ListsScreen = ({
   const [data, setData] = useState();
 
   // State for active lists (scrollbar horizontal)
-  // const [idListActive, setIdListActive] = useState();
   const [titleListActive, setTitleListActive] = useState();
 
   // State for new list
@@ -80,11 +75,8 @@ const ListsScreen = ({
           },
         });
 
-        // console.log(response.data);
-
         !data ? setIdListActive(response.data.lists[0]._id) : null;
         setData(response.data);
-        // setTitleListActive(response.data.lists[0].title);
         setLoading(false);
       } catch (error) {
         console.log(error.message);
@@ -128,7 +120,7 @@ const ListsScreen = ({
         >
           <View style={styles.globalContainer}>
             <View style={styles.wrapper}>
-              {/* ----- Header ✅ */}
+              {/* Header  */}
               <ListHeader
                 data={data}
                 idListActive={idListActive}
@@ -137,7 +129,7 @@ const ListsScreen = ({
                 foldOrUnfoldLists={foldOrUnfoldLists}
               />
 
-              {/* ----- Navigation scrollbar horizontal ✅ */}
+              {/* Navigation scrollbar horizontal */}
               {foldedNav ? null : (
                 <View>
                   <ListButtonChoice
@@ -150,7 +142,7 @@ const ListsScreen = ({
                 </View>
               )}
 
-              {/* ----- List(s) ✅ */}
+              {/* List(s) */}
               <ListFull
                 data={data}
                 idListActive={idListActive}
@@ -213,7 +205,7 @@ const ListsScreen = ({
         </KeyboardAwareScrollView>
       </SafeAreaView>
 
-      {/* Modal "+ New list" ✅  */}
+      {/* Modal "+ New list"  */}
       <ListModalNewList
         serverURL={serverURL}
         userToken={userToken}
@@ -224,7 +216,7 @@ const ListsScreen = ({
         setReload={setReload}
       />
 
-      {/* Modal "Update or delete a list" ✅*/}
+      {/* Modal "Update or delete a list" */}
       <ListModalRenameList
         serverURL={serverURL}
         userToken={userToken}

@@ -56,8 +56,6 @@ const ListModalNewList = ({
               }
             );
 
-            // console.log(response.status);
-
             if (response.status === 200) {
               setModalVisible(false);
               setTitle("");
