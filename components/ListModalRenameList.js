@@ -64,8 +64,6 @@ const ListModalRenameList = ({
               }
             );
 
-            // console.log(response.status);
-
             if (response.status === 200) {
               setModalUpdateVisible(false);
               setTitle("");

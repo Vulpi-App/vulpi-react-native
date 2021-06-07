@@ -9,13 +9,7 @@ const { whiteWithOpacity } = colors;
 // Icons - import
 import { AntDesign } from "@expo/vector-icons";
 
-const ListToggle = ({
-  item,
-  idListActive,
-  foldOrUnfoldLists,
-  foldedNav,
-  setFoldedNav,
-}) => {
+const ListToggle = ({ item, idListActive, foldOrUnfoldLists, foldedNav }) => {
   return (
     item._id === idListActive && (
       <View>
