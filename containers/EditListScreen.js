@@ -44,19 +44,11 @@ const EditListScreen = ({
   const [activityIndicator, setActivityIndicator] = useState(false);
 
   const navigation = useNavigation();
-  // console.log("ROUTE ", route.params.type);
 
-  let idList;
+  const idList = route.params.type;
 
   useEffect(() => {
     const fetchData = async () => {
-      if (route.params.type) {
-        console.log("la");
-        idList = route.params.type;
-      } else if (route.params.id) {
-        console.log("ici");
-        idList = route.params.id;
-      }
       try {
         const response = await axios.get(`${serverURL}/list/${idList}`, {
           headers: { Authorization: "Bearer " + userToken },
@@ -67,13 +59,11 @@ const EditListScreen = ({
         setReload(false);
         setIsLoading(false);
       } catch (error) {
-        console.log(error.message);
+        setMessage("⛔️ Une erreur s'est produite.");
       }
     };
     fetchData();
-
   }, [reload, serverURL, idList]);
-
 
   const editInformation = async (data) => {
     try {
@@ -107,7 +97,6 @@ const EditListScreen = ({
           );
         }
       }
-
       const response = await axios.put(
         `${serverURL}/lists/update/${idList}`,
         formData,
@@ -123,7 +112,6 @@ const EditListScreen = ({
         setMessage("⛔️ Une erreur s'est produite.");
       }
     } catch (error) {
-      console.log(error.message);
       setMessage("⛔️ Une erreur s'est produite.");
     }
   };
